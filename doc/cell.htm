@@ -1,0 +1,68 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1"> 
+<TITLE>Manuel de r&eacute;f&eacute;rence de FPDF</TITLE>
+</HEAD>
+<BODY>
+<H2>Cell</H2>
+<TT>Cell(<B>double</B> w [, <B>double</B> h [, <B>string</B> txt [, <B>string</B> border [, <B>string</B> ln]]]])</TT>
+<H4>Description</H4>
+Imprime une cellule (zone rectangulaire) avec éventuellement un cadre et une chaîne de
+caractères. Le coin supérieur gauche de la cellule correspond à la position courante.
+Après l'appel, la position courante se déplace à droite ou un retour à la ligne est effectué.
+<BR>
+La chaîne doit utiliser l'encodage Windows.
+<BR>
+Si le saut de page automatique est activé et que la cellule dépasse le seuil de déclenchement,
+un saut de page est effectué avant de l'imprimer.
+<H4>Paramètres</H4>
+<TT><U>w</U></TT>
+<BLOCKQUOTE>
+Largeur de la cellule.
+</BLOCKQUOTE>
+<TT><U>h</U></TT>
+<BLOCKQUOTE>
+Hauteur de la cellule.
+<BR>
+Valeur par défaut : 0.
+</BLOCKQUOTE>
+<TT><U>txt</U></TT>
+<BLOCKQUOTE>
+Chaîne à imprimer.
+<BR>
+Valeur par défaut : chaîne vide.
+</BLOCKQUOTE>
+<TT><U>border</U></TT>
+<BLOCKQUOTE>
+Indique si un cadre doit être tracé autour de la cellule (0 : non, 1 : oui).
+<BR>
+Valeur par défaut : 0.
+</BLOCKQUOTE>
+<TT><U>ln</U></TT>
+<BLOCKQUOTE>
+Indique si la position courante se décale à droite (0) ou passe à la ligne (1). Mettre 1
+est équivalent à appeler la méthode Ln() juste après Cell().
+<BR>
+Valeur par défaut : 0.
+</BLOCKQUOTE>
+<H4>Exemple</H4>
+<TABLE WIDTH="100%" BGCOLOR="#E0E0E0"><TR><TD>
+<PRE>
+//Sélection de la police
+$pdf->SetFont('Arial','B',16);
+//Décalage de 8 cm à droite
+$pdf->Cell(80);
+//Impression dans une cellule 15*10 mm encadrée et retour à la ligne
+$pdf->Cell(15,10,'Titre',1,1);
+</PRE>
+</TD></TR></TABLE>
+<H4>Voir</H4>
+<A HREF="setfont.htm">SetFont()</A>,
+<A HREF="setlinewidth.htm">SetLineWidth()</A>,
+<A HREF="ln.htm">Ln()</A>.
+<BR>
+<BR>
+<HR>
+<DIV ALIGN="CENTER"><A HREF="index.htm">Index</A></DIV>
+</BODY>
+</HTML>

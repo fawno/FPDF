@@ -1,0 +1,156 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1"> 
+<TITLE>Tutoriel de FPDF</TITLE>
+</HEAD>
+<BODY>
+<H2>Tutoriel</H2>
+<H4>Exemple minimal</H4>
+Voici pour commencer l'exemple classique :
+<BR>
+<BR>
+<TABLE WIDTH="100%" BGCOLOR="#E0E0E0"><TR><TD>
+<PRE>
+&lt;?php
+require('fpdf.php');
+$pdf=new FPDF();
+$pdf->Open();
+$pdf->AddPage();
+$pdf->SetFont('Arial','B',16);
+$pdf->Cell(20,10,'Hello World !');
+$pdf->Output();
+?&gt;
+</PRE>
+</TD></TR></TABLE>
+<BR>
+Le constructeur <A HREF="fpdf.htm">FPDF</A> est utilisé ici avec les valeurs par défaut.
+Les pages sont en portrait et l'unité de mesure
+est le millimètre. On aurait pu l'indiquer explicitement par :
+<BR>
+<BR>
+<DIV STYLE="background-color=#E0E0E0">
+<TT>$pdf=new FPDF('P','mm');</TT>
+</DIV>
+<BR>
+Il est possible de passer en paysage (L) et d'utiliser d'autres unités de mesure
+(pt, cm, in).
+<BR>
+<BR>
+<A HREF="open.htm">Open()</A> commence le document PDF. Il n'y a pour l'instant encore aucune
+page, c'est pourquoi il faut en ajouter une avec <A HREF="addpage.htm">AddPage()</A>. L'origine
+est en haut à gauche et la position courante est placée par défaut à 1 cm des bords; on peut
+changer ces marges par <A HREF="setmargins.htm">SetMargins()</A>.
+<BR>
+<BR>
+Avant d'imprimer du texte, il est impératif de définir la police, sinon le document serait
+invalide. On choisit de l'Arial gras en taille 16 :
+<BR>
+<BR>
+<DIV STYLE="background-color=#E0E0E0">
+<TT>$pdf->SetFont('Arial','B',16);</TT>
+</DIV>
+<BR>
+On aurait pu spécifier de l'italique avec I ou une police sans style avec une chaîne vide.
+A noter que la taille de la police est ici donnée en points, pas en millimètres (ou autre
+unité choisie); c'est la seule exception. Les autres polices disponibles sont Times, Courier,
+Symbol et ZapfDingbats.
+<BR>
+<BR>
+On imprime ensuite une cellule grâce à <A HREF="cell.htm">Cell()</A>. Une cellule est une zone
+rectangulaire, éventuellement encadrée, qui contient du texte. Elle est imprimée à la
+position courante. On spécifie ses dimensions, le texte, si elle doit être entourée, et
+si la position courante doit être déplacée à droite ou doit au contraire aller à la ligne
+suivante. On aurait encadré le texte comme ceci :
+<BR>
+<BR>
+<DIV STYLE="background-color=#E0E0E0">
+<TT>$pdf->Cell(20,10,'Hello World !',1);</TT>
+</DIV>
+<BR>
+Si on veut ajouter une nouvelle cellule à droite et retourner à la ligne, on fait :
+<BR>
+<BR>
+<DIV STYLE="background-color=#E0E0E0">
+<TT>$pdf->Cell(20,10,'Powered by FPDF.',0,1);</TT>
+</DIV>
+<BR>
+Remarque : le retour à la ligne peut également s'effectuer grâce à la méthode <A HREF="ln.htm">
+Ln()</A>. Cette dernière permet de préciser la hauteur du saut de ligne.
+<BR>
+<BR>
+Enfin, le document est terminé et envoyé au navigateur grâce à
+<A HREF="output.htm">Output()</A>. On aurait pu le sauvegarder dans un fichier en passant le
+nom souhaité.
+<H4>Exemple plus élaboré</H4>
+Voici un exemple de deux pages avec en-tête et pied de page.
+<BR>
+<BR>
+<TABLE WIDTH="100%" BGCOLOR="#E0E0E0"><TR><TD>
+<PRE>
+&lt;?php
+require('fpdf.php');
+class PDF extends FPDF
+{
+
+//Constructeur (obligatoire pour PHP3)
+function PDF()
+{
+    $this->FPDF();
+}
+
+//En-tête
+function Header()
+{
+    //Police Arial gras 15
+    $this->SetFont('Arial','B',15);
+    //Décalage à droite
+    $this->Cell(80);
+    //Titre
+    $this->Cell(30,10,'Titre');
+    //Saut de ligne
+    $this->Ln(20);
+}
+
+//Pied de page
+function Footer()
+{
+    //Police Arial italique 8
+    $this->SetFont('Arial','I',8);
+    //Positionnement à 1,5 cm du bas
+    $this->SetY(-15);
+    //Décalage à droite
+    $this->Cell(80);
+    //Numéro de page
+    $this->Cell(30,10,'Page '.$this->PageNo());
+}
+}
+
+//Instanciation de la classe dérivée
+$pdf=new PDF();
+$pdf->Open();
+$pdf->AddPage();
+$pdf->SetFont('Times','',12);
+for($i=1;$i&lt;=40;$i++)
+    $pdf->Cell(50,10,'Impression de la ligne numéro '.$i,0,1);
+$pdf->Output();
+?&gt;
+</PRE>
+</TD></TR></TABLE>
+<BR>
+Cet exemple exploite les méthode <A HREF="header.htm">Header()</A> et
+<A HREF="footer.htm">Footer()</A> pour traiter les en-têtes et pieds de page. Leur
+implémentation dans la classe FPDF est vide, aussi devez-vous dériver la classe et les
+redéfinir.
+<BR>
+<BR>
+Une autre fonctionnalité est ici utilisée : le saut de page automatique. Lorsqu'une cellule
+descend trop bas (à 2 centimètres du bas de la page par défaut), un saut de page est effectué
+et la police est restaurée. Bien que l'en-tête et le pied de page spécifient leur propre
+police (Arial), le corps de la page continue en Times. Le seuil de déclenchement du saut de
+page se règle avec <A HREF="setautopagebreak.htm">SetAutoPageBreak()</A>.
+<BR>
+<BR>
+A noter l'utilisation de la méthode <A HREF="sety.htm">SetY()</A> qui permet de se positionner
+de manière absolue dans la page, à partir du haut ou du bas.
+</BODY>
+</HTML>

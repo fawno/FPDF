@@ -1,0 +1,49 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1"> 
+<TITLE>Manuel de r&eacute;f&eacute;rence de FPDF</TITLE>
+</HEAD>
+<BODY>
+<H2>Header</H2>
+<TT>Header()</TT>
+<H4>Description</H4>
+Cette méthode permet de définir l'en-tête de page. Elle est appelée automatiquement par
+AddPage() et ne devrait donc pas être appelée explicitement par l'application.
+L'implémentation de Header() dans FPDF est vide, donc vous devez dériver la classe et
+redéfinir la méthode si vous voulez un traitement particulier pour vos en-têtes.
+<H4>Exemple</H4>
+<TABLE WIDTH="100%" BGCOLOR="#E0E0E0"><TR><TD>
+<PRE>
+class PDF extends FPDF
+{
+
+//Constructeur (obligatoire pour PHP3)
+function PDF()
+{
+    $this->FPDF();
+}
+
+//En-tête
+function Header()
+{
+    //Police Arial gras 15
+    $this->SetFont('Arial','B',15);
+    //Décalage
+    $this->Cell(80);
+    //Titre
+    $this->Cell(30,10,'Titre');
+    //Saut de ligne
+    $this->Ln(20);
+}
+
+}
+</PRE>
+</TD></TR></TABLE>
+<H4>Voir</H4>
+<A HREF="footer.htm">Footer()</A>.
+<BR>
+<BR>
+<HR>
+<DIV ALIGN="CENTER"><A HREF="index.htm">Index</A></DIV>
+</BODY>
+</HTML>
