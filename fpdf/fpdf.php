@@ -1,14 +1,14 @@
 <?php
 /****************************************************************************
 * Software: FPDF                                                            *
-* Version : 1.41                                                            *
-* Date:     2002/03/13                                                      *
+* Version : 1.5                                                             *
+* Date :    2002/05/28                                                      *
 * Author:   Olivier PLATHEY                                                 *
 * License:  Freeware                                                        *
 *                                                                           *
 * You may use and modify this software as you wish.                         *
 ****************************************************************************/
-define('FPDF_VERSION','1.41');
+define('FPDF_VERSION','1.5');
 
 class FPDF
 {
@@ -26,20 +26,27 @@ var $OrientationChanges; //array indicating orientation changes
 var $fwPt,$fhPt;         //dimensions of page format in points
 var $fw,$fh;             //dimensions of page format in user unit
 var $wPt,$hPt;           //current dimensions of page in points
+var $k;                  //scale factor (number of points in user unit)
 var $w,$h;               //current dimensions of page in user unit
 var $lMargin;            //left margin
 var $tMargin;            //top margin
+var $rMargin;            //right margin
 var $bMargin;            //page break margin
 var $cMargin;            //cell margin
 var $x,$y;               //current position in user unit for cell positionning
 var $lasth;              //height of last cell printed
-var $k;                  //scale factor (number of points in user unit)
 var $LineWidth;          //line width in user unit
-var $fontnames;          //array of Postscript (Type1) font names
+var $CoreFonts;          //array of core font names
 var $fonts;              //array of used fonts
+var $FontFiles;          //array of font files
+var $diffs;              //array of encoding differences
 var $images;             //array of used images
+var $PageLinks;          //array of links in pages
+var $links;              //array of internal links
 var $FontFamily;         //current font family
 var $FontStyle;          //current font style
+var $underline;          //underlining flag
+var $CurrentFont;        //current font info
 var $FontSizePt;         //current font size in points
 var $FontSize;           //current font size in user unit
 var $DrawColor;          //commands for drawing color
@@ -50,7 +57,8 @@ var $ws;                 //word spacing
 var $AutoPageBreak;      //automatic page breaking
 var $PageBreakTrigger;   //threshold used to trigger page breaks
 var $InFooter;           //flag set when processing footer
-var $DisplayMode;        //display mode
+var $ZoomMode;           //zoom display mode
+var $LayoutMode;         //layout display mode
 var $title;              //title
 var $subject;            //subject
 var $author;             //author
@@ -73,31 +81,34 @@ function FPDF($orientation='P',$unit='mm',$format='A4')
 	$this->OrientationChanges=array();
 	$this->state=0;
 	$this->fonts=array();
+	$this->FontFiles=array();
+	$this->diffs=array();
 	$this->images=array();
 	$this->InFooter=false;
 	$this->FontFamily='';
 	$this->FontStyle='';
 	$this->FontSizePt=12;
+	$this->underline=false;
 	$this->DrawColor='0 G';
 	$this->FillColor='0 g';
 	$this->TextColor='0 g';
 	$this->ColorFlag=false;
 	$this->ws=0;
 	//Font names
-	$this->fontnames['courier']='Courier';
-	$this->fontnames['courierB']='Courier-Bold';
-	$this->fontnames['courierI']='Courier-Oblique';
-	$this->fontnames['courierBI']='Courier-BoldOblique';
-	$this->fontnames['helvetica']='Helvetica';
-	$this->fontnames['helveticaB']='Helvetica-Bold';
-	$this->fontnames['helveticaI']='Helvetica-Oblique';
-	$this->fontnames['helveticaBI']='Helvetica-BoldOblique';
-	$this->fontnames['times']='Times-Roman';
-	$this->fontnames['timesB']='Times-Bold';
-	$this->fontnames['timesI']='Times-Italic';
-	$this->fontnames['timesBI']='Times-BoldItalic';
-	$this->fontnames['symbol']='Symbol';
-	$this->fontnames['zapfdingbats']='ZapfDingbats';
+	$this->CoreFonts['courier']='Courier';
+	$this->CoreFonts['courierB']='Courier-Bold';
+	$this->CoreFonts['courierI']='Courier-Oblique';
+	$this->CoreFonts['courierBI']='Courier-BoldOblique';
+	$this->CoreFonts['helvetica']='Helvetica';
+	$this->CoreFonts['helveticaB']='Helvetica-Bold';
+	$this->CoreFonts['helveticaI']='Helvetica-Oblique';
+	$this->CoreFonts['helveticaBI']='Helvetica-BoldOblique';
+	$this->CoreFonts['times']='Times-Roman';
+	$this->CoreFonts['timesB']='Times-Bold';
+	$this->CoreFonts['timesI']='Times-Italic';
+	$this->CoreFonts['timesBI']='Times-BoldItalic';
+	$this->CoreFonts['symbol']='Symbol';
+	$this->CoreFonts['zapfdingbats']='ZapfDingbats';
 	//Scale factor
 	if($unit=='pt')
 		$this->k=1;
@@ -167,19 +178,38 @@ function FPDF($orientation='P',$unit='mm',$format='A4')
 	$this->SetDisplayMode('fullwidth');
 	//Compression
 	$this->SetCompression(true);
+	//Links
+	$this->links=array();
 }
 
-function SetMargins($left,$top)
+function SetMargins($left,$top,$right=-1)
 {
-	//Set left and top margins
+	//Set left, top and right margins
 	$this->lMargin=$left;
 	$this->tMargin=$top;
+	if($right==-1)
+		$right=$left;
+	$this->rMargin=$right;
 }
 
 function SetLeftMargin($margin)
 {
 	//Set left margin
 	$this->lMargin=$margin;
+	if($this->page>0 and $this->x<$margin)
+		$this->x=$margin;
+}
+
+function SetTopMargin($margin)
+{
+	//Set top margin
+	$this->tMargin=$margin;
+}
+
+function SetRightMargin($margin)
+{
+	//Set right margin
+	$this->rMargin=$margin;
 }
 
 function SetAutoPageBreak($auto,$margin=0)
@@ -190,15 +220,19 @@ function SetAutoPageBreak($auto,$margin=0)
 	$this->PageBreakTrigger=$this->h-$margin;
 }
 
-function SetDisplayMode($mode,$z=100)
+function SetDisplayMode($zoom,$layout='continuous')
 {
 	//Set display mode in viewer
-	if($mode=='fullpage' or $mode=='fullwidth' or $mode=='real' or $mode=='default')
-		$this->DisplayMode=$mode;
-	elseif($mode=='zoom')
-		$this->DisplayMode=$z;
+	if($zoom=='fullpage' or $zoom=='fullwidth' or $zoom=='real' or $zoom=='default' or !is_string($zoom))
+		$this->ZoomMode=$zoom;
+	elseif($zoom=='zoom')
+		$this->ZoomMode=$layout;
 	else
-		$this->Error('Incorrect display mode: '.$mode);
+		$this->Error('Incorrect zoom display mode: '.$zoom);
+	if($layout=='single' or $layout=='continuous' or $layout=='two' or $layout=='default')
+		$this->LayoutMode=$layout;
+	elseif($zoom!='zoom')
+		$this->Error('Incorrect layout display mode: '.$layout);
 }
 
 function SetCompression($compress)
@@ -261,8 +295,8 @@ function Open()
 function Close()
 {
 	//Terminate document
-	if($page=$this->page==0)
-		$this->Error('Document contains no page');
+	if($this->page==0)
+		$this->AddPage();
 	//Page footer
 	$this->InFooter=true;
 	$this->Footer();
@@ -277,7 +311,7 @@ function AddPage($orientation='')
 {
 	//Start a new page
 	$family=$this->FontFamily;
-	$style=$this->FontStyle;
+	$style=$this->FontStyle.($this->underline ? 'U' : '');
 	$size=$this->FontSizePt;
 	$lw=$this->LineWidth;
 	$dc=$this->DrawColor;
@@ -298,13 +332,16 @@ function AddPage($orientation='')
 	//Set line cap style to square
 	$this->_out('2 J');
 	//Set line width
+	$this->LineWidth=$lw;
 	$this->_out($lw.' w');
 	//Set font
 	if($family)
 		$this->SetFont($family,$style,$size);
 	//Set colors
+	$this->DrawColor=$dc;
 	if($dc!='0 G')
 		$this->_out($dc);
+	$this->FillColor=$fc;
 	if($fc!='0 g')
 		$this->_out($fc);
 	$this->TextColor=$tc;
@@ -387,13 +424,12 @@ function SetTextColor($r,$g=-1,$b=-1)
 function GetStringWidth($s)
 {
 	//Get width of a string in the current font
-	global $fpdf_charwidths;
-
-	$cw=&$fpdf_charwidths[$this->FontFamily.$this->FontStyle];
+	$s=(string)$s;
+	$cw=&$this->CurrentFont['cw'];
 	$w=0;
 	$l=strlen($s);
 	for($i=0;$i<$l;$i++)
-		$w+=$cw[$s[$i]];
+		$w+=$cw[$s{$i}];
 	return $w*$this->FontSize/1000;
 }
 
@@ -423,17 +459,142 @@ function Rect($x,$y,$w,$h,$style='')
 	$this->_out($x.' -'.$y.' '.$w.' -'.$h.' re '.$op);
 }
 
+function AddFont($family,$style='',$file='')
+{
+	//Add a TrueType font
+	$family=strtolower($family);
+	$style=strtoupper($style);
+	if($style=='IB')
+		$style='BI';
+	if(isset($this->fonts[$family.$style]))
+		$this->Error('Font already added: '.$family.' '.$style);
+	if($file=='')
+		$file=str_replace(' ','',$family).strtolower($style).'.php';
+	if(defined('FPDF_FONTPATH'))
+		$file=FPDF_FONTPATH.$file;
+	include($file);
+	if(!isset($name))
+		$this->Error('Could not include font definition file');
+	$i=count($this->fonts)+1;
+	$this->fonts[$family.$style]=array('i'=>$i,'type'=>$type,'name'=>$name,'desc'=>$desc,'up'=>$up,'ut'=>$ut,'cw'=>$cw,'enc'=>$enc,'file'=>$file);
+	if($diff)
+	{
+		//Search existing encodings
+		$d=0;
+		$nb=count($this->diffs);
+		for($i=1;$i<=$nb;$i++)
+			if($this->diffs[$i]==$diff)
+			{
+				$d=$i;
+				break;
+			}
+		if($d==0)
+		{
+			$d=$nb+1;
+			$this->diffs[$d]=$diff;
+		}
+		$this->fonts[$family.$style]['diff']=$d;
+	}
+	if($file)
+		$this->FontFiles[$file]=array('originalsize'=>$originalsize);
+}
+
 function SetFont($family,$style='',$size=0)
 {
 	//Select a font; size given in points
-	if(!$this->_setfont($family,$style,$size))
-		$this->Error('Incorrect font family or style: '.$family.' '.$style);
+	global $fpdf_charwidths;
+
+	$family=strtolower($family);
+	if($family=='')
+		$family=$this->FontFamily;
+	if($family=='arial')
+		$family='helvetica';
+	if($family=='symbol' or $family=='zapfdingbats')
+		$style='';
+	$style=strtoupper($style);
+	if(is_int(strpos($style,'U')))
+	{
+		$this->underline=true;
+		$style=str_replace('U','',$style);
+	}
+	else
+		$this->underline=false;
+	if($style=='IB')
+		$style='BI';
+	if($size==0)
+		$size=$this->FontSizePt;
+	//Test if font is already selected
+	if($this->FontFamily==$family and $this->FontStyle==$style and $this->FontSizePt==$size)
+		return;
+	//Test if used for the first time
+	$fontkey=$family.$style;
+	if(!isset($this->fonts[$fontkey]))
+	{
+		//Check if one of the core fonts
+		if(isset($this->CoreFonts[$fontkey]))
+		{
+			if(!isset($fpdf_charwidths[$fontkey]))
+			{
+				//Load metric file
+				$file=$family;
+				if($family=='times' or $family=='helvetica')
+					$file.=strtolower($style);
+				$file.='.php';
+				if(defined('FPDF_FONTPATH'))
+					$file=FPDF_FONTPATH.$file;
+				include($file);
+				if(!isset($fpdf_charwidths[$fontkey]))
+					$this->Error('Could not include font metric file');
+			}
+			$i=count($this->fonts)+1;
+			$this->fonts[$fontkey]=array('i'=>$i,'type'=>'core','name'=>$this->CoreFonts[$fontkey],'up'=>-100,'ut'=>50,'cw'=>$fpdf_charwidths[$fontkey]);
+		}
+		else
+			$this->Error('Undefined font: '.$family.' '.$style);
+	}
+	//Select it
+	$this->FontFamily=$family;
+	$this->FontStyle=$style;
+	$this->FontSizePt=$size;
+	$this->FontSize=round($size/$this->k,2);
+	$this->CurrentFont=&$this->fonts[$fontkey];
+	if($this->page>0)
+		$this->_out('BT /F'.$this->CurrentFont['i'].' '.$this->FontSize.' Tf ET');
 }
 
 function SetFontSize($size)
 {
 	//Set font size in points
-	$this->_setfontsize($size);
+	if($this->FontSizePt==$size)
+		return;
+	$this->FontSizePt=$size;
+	$this->FontSize=round($size/$this->k,2);
+	if($this->page>0)
+		$this->_out('BT /F'.$this->CurrentFont['i'].' '.$this->FontSize.' Tf ET');
+}
+
+function AddLink()
+{
+	//Create a new internal link
+	$n=count($this->links)+1;
+	$this->links[$n]=array(0,0);
+	return $n;
+}
+
+function SetLink($link,$y=0,$page=-1)
+{
+	//Set destination of internal link
+	if($y==-1)
+		$y=$this->y;
+	if($page==-1)
+		$page=$this->page;
+	$this->links[$link]=array($page,$this->hPt-$y*$this->k);
+}
+
+function Link($x,$y,$w,$h,$link)
+{
+	//Put a link on the page
+	$this->PageLinks[$this->page][]=array($x*$this->k,$this->hPt-$y*$this->k,$w*$this->k,$h*$this->k,$link);
 }
 
 function Text($x,$y,$txt)
@@ -441,6 +602,8 @@ function Text($x,$y,$txt)
 	//Output a string
 	$txt=str_replace(')','\\)',str_replace('(','\\(',str_replace('\\','\\\\',$txt)));
 	$s='BT '.$x.' -'.$y.' Td ('.$txt.') Tj ET';
+	if($this->underline and $txt!='')
+		$s.=' '.$this->_dounderline($x,$y,$txt);
 	if($this->ColorFlag)
 		$s='q '.$this->TextColor.' '.$s.' Q';
 	$this->_out($s);
@@ -452,7 +615,7 @@ function AcceptPageBreak()
 	return $this->AutoPageBreak;
 }
 
-function Cell($w,$h=0,$txt='',$border=0,$ln=0,$align='',$fill=0)
+function Cell($w,$h=0,$txt='',$border=0,$ln=0,$align='',$fill=0,$link='')
 {
 	//Output a cell
 	if($this->y+$h>$this->PageBreakTrigger and !$this->InFooter and $this->AcceptPageBreak())
@@ -460,14 +623,20 @@ function Cell($w,$h=0,$txt='',$border=0,$ln=0,$align='',$fill=0)
 		$x=$this->x;
 		$ws=$this->ws;
 		if($ws>0)
+		{
+			$this->ws=0;
 			$this->_out('0 Tw');
+		}
 		$this->AddPage($this->CurOrientation);
 		$this->x=$x;
 		if($ws>0)
+		{
+			$this->ws=$ws;
 			$this->_out($ws.' Tw');
+		}
 	}
 	if($w==0)
-		$w=$this->w-$this->lMargin-$this->x;
+		$w=$this->w-$this->rMargin-$this->x;
 	$s='';
 	if($fill==1 or $border==1)
 	{
@@ -502,8 +671,12 @@ function Cell($w,$h=0,$txt='',$border=0,$ln=0,$align='',$fill=0)
 		if($this->ColorFlag)
 			$s.='q '.$this->TextColor.' ';
 		$s.='BT '.($this->x+$dx).' -'.($this->y+.5*$h+.3*$this->FontSize).' Td ('.$txt.') Tj ET';
+		if($this->underline)
+			$s.=' '.$this->_dounderline($this->x+$dx,$this->y+.5*$h+.3*$this->FontSize,$txt);
 		if($this->ColorFlag)
 			$s.=' Q';
+		if($link)
+			$this->Link($this->x+$this->cMargin,$this->y+.5*$h-.5*$this->FontSize,$this->GetStringWidth($txt),$this->FontSize,$link);
 	}
 	if($s)
 		$this->_out($s);
@@ -522,16 +695,33 @@ function Cell($w,$h=0,$txt='',$border=0,$ln=0,$align='',$fill=0)
 function MultiCell($w,$h,$txt,$border=0,$align='J',$fill=0)
 {
 	//Output text with automatic or explicit line breaks
-	global $fpdf_charwidths;
-
-	$cw=&$fpdf_charwidths[$this->FontFamily.$this->FontStyle];
+	$cw=&$this->CurrentFont['cw'];
 	if($w==0)
-		$w=$this->w-$this->lMargin-$this->x;
+		$w=$this->w-$this->rMargin-$this->x;
 	$wmax=($w-2*$this->cMargin)*1000/$this->FontSize;
 	$s=str_replace("\r",'',$txt);
 	$nb=strlen($s);
 	if($nb>0 and $s[$nb-1]=="\n")
 		$nb--;
+	$b=0;
+	if($border)
+	{
+		if($border==1)
+		{
+			$border='LTRB';
+			$b='LRT';
+			$b2='LR';
+		}
+		else
+		{
+			$b2='';
+			if(is_int(strpos($border,'L')))
+				$b2.='L';
+			if(is_int(strpos($border,'R')))
+				$b2.='R';
+			$b=is_int(strpos($border,'T')) ? $b2.'T' : $b2;
+		}
+	}
 	$sep=-1;
 	$i=0;
 	$j=0;
@@ -545,26 +735,20 @@ function MultiCell($w,$h,$txt,$border=0,$align='J',$fill=0)
 		if($c=="\n")
 		{
 			//Explicit line break
-			if($align=='J')
+			if($this->ws>0)
 			{
 				$this->ws=0;
 				$this->_out('0 Tw');
 			}
-			$this->Cell($w,$h,substr($s,$j,$i-$j),0,2,$align,$fill);
+			$this->Cell($w,$h,substr($s,$j,$i-$j),$b,2,$align,$fill);
 			$i++;
 			$sep=-1;
 			$j=$i;
 			$l=0;
 			$ns=0;
-			if($border)
-			{
-				$x=$this->x;
-				$y=$this->y-$h;
-				if($nl==1)
-					$this->_out($x.' -'.$y.' m '.($x+$w).' -'.$y.' l');
-				$this->_out($x.' -'.$y.' m '.$x.' -'.$this->y.' l '.($x+$w).' -'.$y.' m '.($x+$w).' -'.$this->y.' l S');
-			}
 			$nl++;
+			if($border and $nl==2)
+				$b=$b2;
 			continue;
 		}
 		if($c==' ')
@@ -581,12 +765,12 @@ function MultiCell($w,$h,$txt,$border=0,$align='J',$fill=0)
 			{
 				if($i==$j)
 					$i++;
-				if($align=='J')
+				if($this->ws>0)
 				{
 					$this->ws=0;
 					$this->_out('0 Tw');
 				}
-				$this->Cell($w,$h,substr($s,$j,$i-$j),0,2,$align,$fill);
+				$this->Cell($w,$h,substr($s,$j,$i-$j),$b,2,$align,$fill);
 			}
 			else
 			{
@@ -595,20 +779,105 @@ function MultiCell($w,$h,$txt,$border=0,$align='J',$fill=0)
 					$this->ws=($ns>1) ? round(($wmax-$ls)/1000*$this->FontSize/($ns-1),3) : 0;
 					$this->_out($this->ws.' Tw');
 				}
-				$this->Cell($w,$h,substr($s,$j,$sep-$j),0,2,$align,$fill);
+				$this->Cell($w,$h,substr($s,$j,$sep-$j),$b,2,$align,$fill);
 				$i=$sep+1;
 			}
 			$sep=-1;
 			$j=$i;
 			$l=0;
 			$ns=0;
-			if($border)
+			$nl++;
+			if($border and $nl==2)
+				$b=$b2;
+		}
+		else
+			$i++;
+	}
+	//Last chunk
+	if($this->ws>0)
+	{
+		$this->ws=0;
+		$this->_out('0 Tw');
+	}
+	if($border and is_int(strpos($border,'B')))
+		$b.='B';
+	$this->Cell($w,$h,substr($s,$j,$i),$b,2,$align,$fill);
+	$this->x=$this->lMargin;
+}
+
+function Write($h,$txt,$link='')
+{
+	//Output text in flowing mode
+	$cw=&$this->CurrentFont['cw'];
+	$w=$this->w-$this->rMargin-$this->x;
+	$wmax=($w-2*$this->cMargin)*1000/$this->FontSize;
+	$s=str_replace("\r",'',$txt);
+	$nb=strlen($s);
+	$sep=-1;
+	$i=0;
+	$j=0;
+	$l=0;
+	$nl=1;
+	while($i<$nb)
+	{
+		//Get next character
+		$c=$s{$i};
+		if($c=="\n")
+		{
+			//Explicit line break
+			$this->Cell($w,$h,substr($s,$j,$i-$j),0,2,'',0,$link);
+			$i++;
+			$sep=-1;
+			$j=$i;
+			$l=0;
+			if($nl==1)
 			{
-				$x=$this->x;
-				$y=$this->y-$h;
-				if($nl==1)
-					$this->_out($x.' -'.$y.' m '.($x+$w).' -'.$y.' l');
-				$this->_out($x.' -'.$y.' m '.$x.' -'.$this->y.' l '.($x+$w).' -'.$y.' m '.($x+$w).' -'.$this->y.' l S');
+				$this->x=$this->lMargin;
+				$w=$this->w-$this->rMargin-$this->x;
+				$wmax=($w-2*$this->cMargin)*1000/$this->FontSize;
+			}
+			$nl++;
+			continue;
+		}
+		if($c==' ')
+		{
+			$sep=$i;
+			$ls=$l;
+		}
+		$l+=$cw[$c];
+		if($l>$wmax)
+		{
+			//Automatic line break
+			if($sep==-1)
+			{
+				if($this->x>$this->lMargin)
+				{
+					//Move to next line
+					$this->x=$this->lMargin;
+					$this->y+=$h;
+					$w=$this->w-$this->rMargin-$this->x;
+					$wmax=($w-2*$this->cMargin)*1000/$this->FontSize;
+					$i++;
+					$nl++;
+					continue;
+				}
+				if($i==$j)
+					$i++;
+				$this->Cell($w,$h,substr($s,$j,$i-$j),0,2,'',0,$link);
+			}
+			else
+			{
+				$this->Cell($w,$h,substr($s,$j,$sep-$j),0,2,'',0,$link);
+				$i=$sep+1;
+			}
+			$sep=-1;
+			$j=$i;
+			$l=0;
+			if($nl==1)
+			{
+				$this->x=$this->lMargin;
+				$w=$this->w-$this->rMargin-$this->x;
+				$wmax=($w-2*$this->cMargin)*1000/$this->FontSize;
 			}
 			$nl++;
 		}
@@ -616,24 +885,14 @@ function MultiCell($w,$h,$txt,$border=0,$align='J',$fill=0)
 			$i++;
 	}
 	//Last chunk
-	if($align=='J')
+	if($i!=$j)
 	{
-		$this->ws=0;
-		$this->_out('0 Tw');
+		$w=round($l/1000*$this->FontSize,2);
+		$this->Cell($w,$h,substr($s,$j,$i),0,0,'',0,$link);
 	}
-	$this->Cell($w,$h,substr($s,$j,$i),0,2,$align,$fill);
-	if($border)
-	{
-		$x=$this->x;
-		$y=$this->y-$h;
-		if($nl==1)
-			$this->_out($x.' -'.$y.' m '.($x+$w).' -'.$y.' l');
-		$this->_out($x.' -'.$y.' m '.$x.' -'.$this->y.' l '.($x+$w).' -'.$this->y.' l '.($x+$w).' -'.$y.' l S');
-	}
-	$this->x=$this->lMargin;
 }
 
-function Image($file,$x,$y,$w,$h=0,$type='')
+function Image($file,$x,$y,$w,$h=0,$type='',$link='')
 {
 	//Put an image on the page
 	if(!isset($this->images[$file]))
@@ -667,6 +926,8 @@ function Image($file,$x,$y,$w,$h=0,$type='')
 	if($h==0)
 		$h=round($w*$info['h']/$info['w'],2);
 	$this->_out('q '.$w.' 0 0 '.$h.' '.$x.' -'.($y+$h).' cm /I'.$info['n'].' Do Q');
+	if($link)
+		$this->Link($x,$y,$w,$h,$link);
 }
 
 function Ln($h='')
@@ -803,6 +1064,23 @@ function _enddoc()
 		if(isset($this->OrientationChanges[$n]))
 			$this->_out('/MediaBox [0 0 '.$hPt.' '.$wPt.']');
 		$this->_out('/Resources 2 0 R');
+		if(isset($this->PageLinks[$n]))
+		{
+			$annots='/Annots [';
+			foreach($this->PageLinks[$n] as $pl)
+			{
+				$rect=round($pl[0],2).' '.round($pl[1],2).' '.round($pl[0]+$pl[2],2).' '.round($pl[1]-$pl[3],2);
+				$annots.='<</Type /Annot /Subtype /Link /Rect ['.$rect.'] /Border [0 0 0] ';
+				if(is_string($pl[4]))
+					$annots.='/A <</S /URI /URI ('.$pl[4].')>>>>';
+				else
+				{
+					$l=$this->links[$pl[4]];
+					$annots.='/Dest ['.(1+2*$l[0]).' 0 R /XYZ 0 '.$l[1].' null]>>';
+				}
+			}
+			$this->_out($annots.']');
+		}
 		$this->_out('/Contents '.($this->n+1).' 0 R>>');
 		$this->_out('endobj');
 		//Page content
@@ -815,17 +1093,89 @@ function _enddoc()
 	}
 	//Fonts
 	$nf=$this->n;
-	reset($this->fonts);
-	while(list($name)=each($this->fonts))
+	foreach($this->diffs as $diff)
 	{
+		//Encodings
 		$this->_newobj();
+		$this->_out('<</Type /Encoding /BaseEncoding /WinAnsiEncoding /Differences ['.$diff.']>>');
+		$this->_out('endobj');
+	}
+	foreach($this->FontFiles as $file=>$info)
+	{
+		//Font file embedding
+		$this->_newobj();
+		$this->FontFiles[$file]['n']=$this->n;
+		if(defined('FPDF_FONTPATH'))
+			$file=FPDF_FONTPATH.$file;
+		$size=filesize($file);
+		if(!$size)
+			$this->Error('Font file not found');
+		$this->_out('<</Length '.$size);
+		if(substr($file,-2)=='.z')
+			$this->_out('/Filter /FlateDecode');
+		$this->_out('/Length1 '.$info['originalsize']);
+		$this->_out('>>');
+		$this->_out('stream');
+		$f=fopen($file,'rb');
+		$this->_out(fread($f,$size));
+		fclose($f);
+		$this->_out('endstream');
+		$this->_out('endobj');
+	}
+	foreach($this->fonts as $k=>$font)
+	{
+		//Font objects
+		$this->_newobj();
+		$this->fonts[$k]['n']=$this->n;
+		$name=$font['name'];
 		$this->_out('<</Type /Font');
-		$this->_out('/Subtype /Type1');
 		$this->_out('/BaseFont /'.$name);
-		if($name!='Symbol' and $name!='ZapfDingbats')
-			$this->_out('/Encoding /WinAnsiEncoding');
+		if($font['type']=='core')
+		{
+			//Standard font
+			$this->_out('/Subtype /Type1');
+			if($name!='Symbol' and $name!='ZapfDingbats')
+				$this->_out('/Encoding /WinAnsiEncoding');
+		}
+		else
+		{
+			//TrueType
+			$this->_out('/Subtype /TrueType');
+			$this->_out('/FirstChar 32');
+			$this->_out('/LastChar 255');
+			$this->_out('/Widths '.($this->n+1).' 0 R');
+			$this->_out('/FontDescriptor '.($this->n+2).' 0 R');
+			if($font['enc'])
+			{
+				if(isset($font['diff']))
+					$this->_out('/Encoding '.($nf+$font['diff']).' 0 R');
+				else
+					$this->_out('/Encoding /WinAnsiEncoding');
+			}
+		}
 		$this->_out('>>');
 		$this->_out('endobj');
+		if($font['type']!='core')
+		{
+			//Widths
+			$this->_newobj();
+			$cw=&$font['cw'];
+			$s='[';
+			for($i=32;$i<=255;$i++)
+				$s.=$cw[chr($i)].' ';
+			$this->_out($s.']');
+			$this->_out('endobj');
+			//Descriptor
+			$this->_newobj();
+			$s='<</Type /FontDescriptor /FontName /'.$name;
+			foreach($font['desc'] as $k=>$v)
+				$s.=' /'.$k.' '.$v;
+			$file=$font['file'];
+			if($file)
+				$s.=' /FontFile2 '.$this->FontFiles[$file]['n'].' 0 R';
+			$this->_out($s.'>>');
+			$this->_out('endobj');
+		}
 	}
 	//Images
 	$ni=$this->n;
@@ -885,8 +1235,8 @@ function _enddoc()
 	$this->_out('2 0 obj');
 	$this->_out('<</ProcSet [/PDF /Text /ImageB /ImageC /ImageI]');
 	$this->_out('/Font <<');
-	for($i=1;$i<=count($this->fonts);$i++)
-		$this->_out('/F'.$i.' '.($nf+$i).' 0 R');
+	foreach($this->fonts as $font)
+		$this->_out('/F'.$font['i'].' '.$font['n'].' 0 R');
 	$this->_out('>>');
 	if(count($this->images))
 	{
@@ -921,14 +1271,20 @@ function _enddoc()
 	//Catalog
 	$this->_newobj();
 	$this->_out('<</Type /Catalog');
-	if($this->DisplayMode=='fullpage')
+	if($this->ZoomMode=='fullpage')
 		$this->_out('/OpenAction [3 0 R /Fit]');
-	elseif($this->DisplayMode=='fullwidth')
+	elseif($this->ZoomMode=='fullwidth')
 		$this->_out('/OpenAction [3 0 R /FitH null]');
-	elseif($this->DisplayMode=='real')
+	elseif($this->ZoomMode=='real')
 		$this->_out('/OpenAction [3 0 R /XYZ null null 1]');
-	else
-		$this->_out('/OpenAction [3 0 R /XYZ null null '.($this->DisplayMode/100).']');
+	elseif(!is_string($this->ZoomMode))
+		$this->_out('/OpenAction [3 0 R /XYZ null null '.($this->ZoomMode/100).']');
+	if($this->LayoutMode=='single')
+		$this->_out('/PageLayout /SinglePage');
+	elseif($this->LayoutMode=='continuous')
+		$this->_out('/PageLayout /OneColumn');
+	elseif($this->LayoutMode=='two')
+		$this->_out('/PageLayout /TwoColumnLeft');
 	$this->_out('/Pages 1 0 R>>');
 	$this->_out('endobj');
 	//Cross-ref
@@ -1005,69 +1361,13 @@ function _newobj()
 	$this->_out($this->n.' 0 obj');
 }
 
-function _setfont($family,$style,$size)
+function _dounderline($x,$y,$txt)
 {
-	global $fpdf_charwidths;
-
-	$family=strtolower($family);
-	if($family=='')
-		$family=$this->FontFamily;
-	if($family=='arial')
-		$family='helvetica';
-	if($family=='symbol' or $family=='zapfdingbats')
-		$style='';
-	$style=strtoupper($style);
-	if($style=='IB')
-		$style='BI';
-	if($size==0)
-		$size=$this->FontSizePt;
-	//Test if font is already selected
-	if($this->FontFamily==$family and $this->FontStyle==$style and $this->FontSizePt==$size)
-		return true;
-	//Retrieve Type1 font name
-	if(!isset($this->fontnames[$family.$style]))
-		return false;
-	$fontname=$this->fontnames[$family.$style];
-	//Test if used for the first time
-	if(!isset($this->fonts[$fontname]))
-	{
-		$n=count($this->fonts);
-		$this->fonts[$fontname]=$n+1;
-		if(!isset($fpdf_charwidths[$family.$style]))
-		{
-			//include metric file
-			$file=$family;
-			if($family=='times' or $family=='helvetica')
-				$file.=strtolower($style);
-			$file.='.php';
-			if(defined('FPDF_FONTPATH'))
-				$file=FPDF_FONTPATH.$file;
-			include($file);
-			if(!isset($fpdf_charwidths[$family.$style]))
-				$this->Error('Could not include font metric file');
-		}
-	}
-	//Select it
-	$this->FontFamily=$family;
-	$this->FontStyle=$style;
-	$this->FontSizePt=$size;
-	$this->FontSize=round($size/$this->k,2);
-	if($this->page>0)
-		$this->_out('BT /F'.$this->fonts[$fontname].' '.$this->FontSize.' Tf ET');
-	return true;
-}
-
-function _setfontsize($size)
-{
-	//Test if size already selected
-	if($this->FontSizePt==$size)
-		return;
-	//Select it
-	$fontname=$this->fontnames[$this->FontFamily.$this->FontStyle];
-	$this->FontSizePt=$size;
-	$this->FontSize=round($size/$this->k,2);
-	if($this->page>0)
-		$this->_out('BT /F'.$this->fonts[$fontname].' '.$this->FontSize.' Tf ET');
+	//Underline text
+	$up=$this->CurrentFont['up'];
+	$ut=$this->CurrentFont['ut'];
+	$w=$this->GetStringWidth($txt)+$this->ws*substr_count($txt,' ');
+	return $x.' -'.($y-$up/1000*$this->FontSize).' '.$w.' -'.($ut/1000*$this->FontSize).' re f';
 }
 
 function _parsejpg($file)

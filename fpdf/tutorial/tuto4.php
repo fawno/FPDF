@@ -5,7 +5,7 @@ require('../fpdf.php');
 class PDF extends FPDF
 {
 //Current column
-var $col;
+var $col=0;
 //Ordinate of column start
 var $y0;
 
@@ -91,12 +91,12 @@ function ChapterBody($fichier)
 	//Mention
 	$this->SetFont('','I');
 	$this->Cell(0,5,'(end of excerpt)');
+	//Go back to first column
+	$this->SetCol(0);
 }
 
 function PrintChapter($num,$title,$file)
 {
-	//Go to first column
-	$this->SetCol(0);
 	//Add chapter
 	$this->AddPage();
 	$this->ChapterTitle($num,$title);

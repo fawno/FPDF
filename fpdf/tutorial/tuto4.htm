@@ -18,7 +18,7 @@ require('fpdf.php');<BR>
 class PDF extends FPDF<BR>
 {<BR>
 //Current column<BR>
-var $col;<BR>
+var $col=0;<BR>
 //Ordinate of column start<BR>
 var $y0;<BR>
 <BR>
@@ -104,12 +104,12 @@ function ChapterBody($fichier)<BR>
 &nbsp;&nbsp;&nbsp;&nbsp;//Mention<BR>
 &nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;SetFont('','I');<BR>
 &nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;Cell(0,5,'(end of excerpt)');<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;//Go back to first column<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;SetCol(0);<BR>
 }<BR>
 <BR>
 function PrintChapter($num,$title,$file)<BR>
 {<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;//Go to first column<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;SetCol(0);<BR>
 &nbsp;&nbsp;&nbsp;&nbsp;//Add chapter<BR>
 &nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;AddPage();<BR>
 &nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;ChapterTitle($num,$title);<BR>
@@ -132,7 +132,7 @@ $pdf-&gt;Output();<BR>
 <!--
 if(document.location.href.indexOf('http:')==0)
 {
-document.write("<A HREF='tuto4.php' CLASS='demo'>[Demo]</A><BR><BR>");
+document.write("<A HREF='tuto4.php' TARGET='_blank' CLASS='demo'>[Demo]</A><BR><BR>");
 }
 //-->
 </SCRIPT>

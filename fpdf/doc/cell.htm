@@ -6,19 +6,21 @@
 </HEAD>
 <BODY>
 <H2>Cell</H2>
-<TT>Cell(<B>double</B> w [, <B>double</B> h [, <B>string</B> txt [, <B>mixed</B> border [, <B>int</B> ln [, <B>string</B> align [, <B>int</B> fill]]]]]])</TT>
+<TT>Cell(<B>float</B> w [, <B>float</B> h [, <B>string</B> txt [, <B>mixed</B> border [, <B>int</B> ln [, <B>string</B> align [, <B>int</B> fill [, <B>mixed</B> link]]]]]]])</TT>
+<H4>Version</H4>
+1.0
 <H4>Description</H4>
 Prints a cell (rectangular area) with optional borders, background color and character string.
 The upper-left corner of the cell corresponds to the current position. The text can be aligned
-or centered. After the call, the current position moves to the right or to the next line.
+or centered. After the call, the current position moves to the right or to the next line. It is
+possible to put a link on the text.
 <BR>
 If automatic page breaking is enabled and the cell goes beyond the limit, a page break is
 done before outputting.
 <H4>Parameters</H4>
 <TT><U>w</U></TT>
 <BLOCKQUOTE>
-Cell width. If <TT>0</TT>, the cell extends up to the right margin (the right margin equals
-the left one).
+Cell width. If <TT>0</TT>, the cell extends up to the right margin.
 </BLOCKQUOTE>
 <TT><U>h</U></TT>
 <BLOCKQUOTE>
@@ -71,6 +73,10 @@ Allows to center or align the text. Possible values are:
 Indicates if the cell background must be painted (<TT>1</TT>) or transparent (<TT>0</TT>).
 Default value: <TT>0</TT>.
 </BLOCKQUOTE>
+<TT><U>link</U></TT>
+<BLOCKQUOTE>
+URL or identifier returned by AddLink().
+</BLOCKQUOTE>
 <H4>Example</H4>
 <TABLE WIDTH="100%" BGCOLOR="#E0E0E0"><TR><TD>
 <TT>
@@ -88,8 +94,10 @@ $pdf-&gt;Cell(20,10,'Title',1,1,'C');
 <A HREF="setfillcolor.htm">SetFillColor()</A>,
 <A HREF="settextcolor.htm">SetTextColor()</A>,
 <A HREF="setlinewidth.htm">SetLineWidth()</A>,
+<A HREF="addlink.htm">AddLink()</A>,
 <A HREF="ln.htm">Ln()</A>,
 <A HREF="multicell.htm">MultiCell()</A>,
+<A HREF="write.htm">Write()</A>,
 <A HREF="setautopagebreak.htm">SetAutoPageBreak()</A>.
 <H6></H6>
 <HR>
