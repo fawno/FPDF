@@ -1,14 +1,14 @@
 <?php
 /****************************************************************************
-* Logiciel : classe FPDF                                                    *
-* Version :  1.01                                                           *
-* Date :     03/10/2001                                                     *
+* Logiciel : FPDF                                                           *
+* Version :  1.1                                                            *
+* Date :     07/10/2001                                                     *
 * Licence :  Freeware                                                       *
 * Auteur :   Olivier PLATHEY                                                *
 *                                                                           *
-* Vous pouvez utiliser et modifier ce logiciel comme bon vous semble.       *
+* Vous pouvez utiliser et modifier ce logiciel comme vous le souhaitez.     *
 ****************************************************************************/
-define('FPDF_VERSION','1.01');
+define('FPDF_VERSION','1.1');
 
 class FPDF
 {
@@ -26,6 +26,7 @@ var $lasth;             //height of last cell printed
 var $k;                 //scale factor (number of points in user unit)
 var $fontnames;         //array of Postscript (Type1) font names
 var $fonts;             //array of used fonts
+var $images;            //array of used images
 var $FontFamily;        //current font family
 var $FontStyle;         //current font style
 var $FontSizePt;        //current font size in points
@@ -47,6 +48,7 @@ function FPDF($orientation='P',$unit='mm')
 	$this->n=1;
 	$this->buffer='';
 	$this->fonts=array();
+	$this->images=array();
 	$this->InFooter=false;
 	$this->DocOpen=false;
 	$this->FontStyle='';
@@ -121,7 +123,7 @@ function SetAutoPageBreak($auto,$margin=0)
 function Error($msg)
 {
 	//Fatal error
-	die($msg);
+	die('<B>FPDF error : </B>'.$msg);
 }
 
 function Open()
@@ -254,6 +256,37 @@ function Cell($w,$h=0,$txt='',$border=0,$ln=0)
 		$this->x+=$w;
 }
 
+function Image($file,$x,$y,$w,$h=0,$type='')
+{
+	//Put an image on the page
+	if(!isset($this->images[$file]))
+	{
+		//First use of image, get info
+		if($type=='')
+		{
+			$pos=strrpos($file,'.');
+			if(!$pos)
+				$this->Error('Image file has no extension and no type was specified : '.$file);
+			$type=substr($file,$pos+1);
+		}
+		$type=strtolower($type);
+		if($type=='jpg' or $type=='jpeg')
+			$info=$this->_parsejpg($file);
+		elseif($type=='png')
+			$info=$this->_parsepng($file);
+		else
+			$this->Error('Unsupported image file type : '.$type);
+		$info['n']=count($this->images)+1;
+		$this->images[$file]=$info;
+	}
+	else
+		$info=$this->images[$file];
+	//Automatic height calculus
+	if($h==0)
+		$h=(double)sprintf('%.2f',$w*$info['h']/$info['w']);
+	$this->_out('q '.$w.' 0 0 '.$h.' '.$x.' -'.($y+$h).' cm /I'.$info['n'].' Do Q');
+}
+
 function Ln($h='')
 {
 	//Line feed; default value is last cell height
@@ -326,6 +359,45 @@ function _enddoc()
 		$this->_out('/Encoding /WinAnsiEncoding >>');
 		$this->_out('endobj');
 	}
+	//Images
+	$ni=$this->n;
+	reset($this->images);
+	while(list($file,$info)=each($this->images))
+	{
+		$this->_newobj();
+		$this->_out('<< /Type /XObject');
+		$this->_out('/Subtype /Image');
+		$this->_out('/Width '.$info['w']);
+		$this->_out('/Height '.$info['h']);
+		if($info['cs']=='Indexed')
+			$this->_out('/ColorSpace [/Indexed /DeviceRGB '.(strlen($info['pal'])/3-1).' '.($this->n+1).' 0 R]');
+		else
+			$this->_out('/ColorSpace /'.$info['cs']);
+		$this->_out('/BitsPerComponent '.$info['bpc']);
+		$this->_out('/Filter /'.$info['f']);
+		if(isset($info['trns']) and is_array($info['trns']))
+		{
+			$trns='';
+			for($i=0;$i<count($info['trns']);$i++)
+				$trns.=$info['trns'][$i].' '.$info['trns'][$i].' ';
+			$this->_out('/Mask ['.$trns.']');
+		}
+		$this->_out('/Length '.strlen($info['data']).' >>');
+		$this->_out('stream');
+		$this->_out($info['data']);
+		$this->_out('endstream');
+		$this->_out('endobj');
+		//Palette
+		if($info['cs']=='Indexed')
+		{
+			$this->_newobj();
+			$this->_out('<< /Length '.strlen($info['pal']).' >>');
+			$this->_out('stream');
+			$this->_out($info['pal']);
+			$this->_out('endstream');
+			$this->_out('endobj');
+		}
+	}
 	//Pages root
 	$this->offsets[1]=strlen($this->buffer);
 	$this->_out('1 0 obj');
@@ -336,10 +408,20 @@ function _enddoc()
 	$this->_out($kids.']');
 	$this->_out('/Count '.$this->page);
 	$this->_out('/MediaBox [0 0 '.$this->w.' '.$this->h.']');
-	$this->_out('/Resources << /ProcSet [/PDF /Text]');
+	$this->_out('/Resources << /ProcSet [/PDF /Text /ImageC]');
 	$this->_out('/Font <<');
 	for($i=1;$i<=count($this->fonts);$i++)
 		$this->_out('/F'.$i.' '.($nf+$i).' 0 R');
+	$this->_out('>>');
+	$this->_out('/XObject <<');
+	$nbpal=0;
+	reset($this->images);
+	while(list(,$info)=each($this->images))
+	{
+		$this->_out('/I'.$info['n'].' '.($ni+$info['n']+$nbpal).' 0 R');
+		if($info['cs']=='Indexed')
+			$nbpal++;
+	}
 	$this->_out('>> >> >>');
 	$this->_out('endobj');
 	//Info
@@ -457,6 +539,144 @@ function _setfontsize($size)
 	$this->_out('BT /F'.$this->fonts[$fontname].' '.$this->FontSize.' Tf ET');
 }
 
+function _parsejpg($file)
+{
+	//Extract info from a JPEG file
+	$a=GetImageSize($file);
+	if(!$a)
+		$this->Error('Missing or incorrect image file :'.$file);
+	if($a[2]!=2)
+		$this->Error('Not a JPEG file : '.$file);
+	if(!isset($a['channels']) or $a['channels']==3)
+		$colspace='DeviceRGB';
+	elseif($a['channels']==4)
+		$colspace='DeviceCMYK';
+	else
+		$colspace='DeviceGray';
+	$bpc=isset($a['bits']) ? $a['bits'] : 8;
+	//Read whole file
+	$f=fopen($file,'rb');
+	$data=fread($f,filesize($file));
+	fclose($f);
+	return array('w'=>$a[0],'h'=>$a[1],'cs'=>$colspace,'bpc'=>$bpc,'f'=>'DCTDecode','data'=>$data);
+}
+
+function _parsepng($file)
+{
+	//Extract info from a PNG file
+	$f=fopen($file,'rb');
+	if(!$f)
+		$this->Error('Can\'t open image file : '.$file);
+	//Check signature
+	if(fread($f,8)!=chr(137).'PNG'.chr(13).chr(10).chr(26).chr(10))
+		$this->Error('Not a PNG file : '.$file);
+	//Read header chunk
+	fread($f,4);
+	if(fread($f,4)!='IHDR')
+		$this->Error('Incorrect PNG file : '.$file);
+	$w=$this->_freadint($f);
+	$h=$this->_freadint($f);
+	$bpc=ord(fread($f,1));
+	if($bpc>8)
+		$this->Error('16-bit depth not supported : '.$file);
+	$ct=ord(fread($f,1));
+	if($ct==0)
+	{
+		$colspace='DeviceGray';
+		$r=($w*$bpc)%8;
+		$wb=$r ? ($w*$bpc-$r)/8+1 : ($w*$bpc)/8;
+	}
+	elseif($ct==2)
+	{
+		$colspace='DeviceRGB';
+		$wb=3*$w;
+	}
+	elseif($ct==3)
+	{
+		$colspace='Indexed';
+		$r=($w*$bpc)%8;
+		$wb=$r ? ($w*$bpc-$r)/8+1 : ($w*$bpc)/8;
+	}
+	else
+		$this->Error('Alpha channel not supported : '.$file);
+	if(ord(fread($f,1))!=0)
+		$this->Error('Unknown compression method : '.$file);
+	if(ord(fread($f,1))!=0)
+		$this->Error('Unknown filter method : '.$file);
+	if(ord(fread($f,1))!=0)
+		$this->Error('Interlacing not supported : '.$file);
+	fread($f,4);
+	//Scan chunks looking for palette, transparency and image data
+	$pal='';
+	$trns='';
+	$data='';
+	do
+	{
+		$n=$this->_freadint($f);
+		$type=fread($f,4);
+		if($type=='PLTE')
+		{
+			//Read palette
+			$pal=fread($f,$n);
+			fread($f,4);
+		}
+		elseif($type=='tRNS')
+		{
+			//Read transparency info
+			$t=fread($f,$n);
+			if($ct==0)
+				$trns=array(substr($t,1,1));
+			elseif($ct==2)
+				$trns=array(substr($t,1,1),substr($t,3,1),substr($t,5,1));
+			else
+			{
+				$pos=strpos($t,chr(0));
+				if(!is_string($pos))
+					$trns=array($pos);
+			}
+			fread($f,4);
+		}
+		elseif($type=='IDAT')
+		{
+			//Read image data block
+			$data.=fread($f,$n);
+			fread($f,4);
+		}
+		else
+			fread($f,$n+4);
+	}
+	while($n);
+	if($colspace=='Indexed' and empty($pal))
+		$this->Error('Missing palette in '.$file);
+	fclose($f);
+	//Remove predictor tags
+	if(!function_exists('gzuncompress'))
+		$this->Error('PHP4 and Zlib extension needed for PNG support');
+	$data2=gzuncompress($data);
+	unset($data);
+	$data3='';
+	for($i=0;$i<$h;$i++)
+	{
+		if(substr($data2,$i*($wb+1),1)!=chr(0))
+			$this->Error('PNG predictors not supported : '.$file);
+		$data3.=substr($data2,$i*($wb+1)+1,$wb);
+	}
+	unset($data2);
+	$data=gzcompress($data3);
+	unset($data3);
+	return array('w'=>$w,'h'=>$h,'cs'=>$colspace,'bpc'=>$bpc,'f'=>'FlateDecode','pal'=>$pal,'trns'=>$trns,'data'=>$data);
+}
+
+function _freadint($f)
+{
+	//Read a 4-byte integer from file
+	$i=ord(fread($f,1))<<24;
+	$i+=ord(fread($f,1))<<16;
+	$i+=ord(fread($f,1))<<8;
+	$i+=ord(fread($f,1));
+	return $i;
+}
+
 function _out($s)
 {
 	//Add a line to the document
@@ -466,7 +686,7 @@ function _out($s)
 }
 
 //Handle silly IE contype request
-if($HTTP_ENV_VARS['HTTP_USER_AGENT']=='contype')
+if(isset($HTTP_ENV_VARS['HTTP_USER_AGENT']) and $HTTP_ENV_VARS['HTTP_USER_AGENT']=='contype')
 {
 	Header('Content-Type: application/pdf');
 	exit;
