@@ -1,14 +1,14 @@
 <?php
 /****************************************************************************
 * Logiciel : classe FPDF                                                    *
-* Version :  1.0                                                            *
-* Date :     17/09/2001                                                     *
+* Version :  1.01                                                           *
+* Date :     03/10/2001                                                     *
 * Licence :  Freeware                                                       *
 * Auteur :   Olivier PLATHEY                                                *
 *                                                                           *
 * Vous pouvez utiliser et modifier ce logiciel comme bon vous semble.       *
 ****************************************************************************/
-define('FPDF_VERSION','1.0');
+define('FPDF_VERSION','1.01');
 
 class FPDF
 {
@@ -173,7 +173,7 @@ function AddPage()
 	//Page header
 	$this->Header();
 	//Restore font
-	if($page>0 and $this->FontFamily!='')
+	if($page>0 and $family!='')
 		$this->SetFont($family,$style,$size);
 }
 
