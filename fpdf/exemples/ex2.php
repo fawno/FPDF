@@ -1,10 +1,8 @@
 <?php
-//Exemple de 2 pages avec en-tête et pied de page
 require('fpdf.php');
 
 class PDF extends FPDF
 {
-
 //Constructeur (obligatoire pour PHP3)
 function PDF()
 {
@@ -14,6 +12,8 @@ function PDF()
 //En-tête
 function Header()
 {
+    //Logo
+    $this->Image("logo_pb.png",10,8,33);
     //Police Arial gras 15
     $this->SetFont('Arial','B',15);
     //Décalage à droite

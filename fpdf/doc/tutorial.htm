@@ -2,6 +2,7 @@
 <HEAD>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1"> 
 <TITLE>Tutoriel de FPDF</TITLE>
+<LINK TYPE="text/css" REL="stylesheet" HREF="../fpdf.css">
 </HEAD>
 <BODY>
 <H2>Tutoriel</H2>
@@ -17,7 +18,7 @@ $pdf=new FPDF();
 $pdf->Open();
 $pdf->AddPage();
 $pdf->SetFont('Arial','B',16);
-$pdf->Cell(20,10,'Hello World !');
+$pdf->Cell(40,10,'Hello World !');
 $pdf->Output();
 ?&gt;
 </PRE>
@@ -58,40 +59,41 @@ Symbol et ZapfDingbats.
 <BR>
 On imprime ensuite une cellule grâce à <A HREF="cell.htm">Cell()</A>. Une cellule est une zone
 rectangulaire, éventuellement encadrée, qui contient du texte. Elle est imprimée à la
-position courante. On spécifie ses dimensions, le texte, si elle doit être entourée, et
-si la position courante doit être déplacée à droite ou doit au contraire aller à la ligne
-suivante. On aurait encadré le texte comme ceci :
+position courante. On spécifie ses dimensions, le texte (centré ou aligné), si elle doit être
+entourée, et si la position courante doit être déplacée à droite ou doit au contraire aller
+à la ligne suivante. On aurait encadré le texte comme ceci :
 <BR>
 <BR>
 <DIV STYLE="background-color=#E0E0E0">
-<TT>$pdf->Cell(20,10,'Hello World !',1);</TT>
+<TT>$pdf->Cell(40,10,'Hello World !',1);</TT>
 </DIV>
 <BR>
-Si on veut ajouter une nouvelle cellule à droite et retourner à la ligne, on fait :
+Si on veut ajouter une nouvelle cellule à droite avec du texte centré et retourner à la ligne,
+on fait :
 <BR>
 <BR>
 <DIV STYLE="background-color=#E0E0E0">
-<TT>$pdf->Cell(20,10,'Powered by FPDF.',0,1);</TT>
+<TT>$pdf->Cell(60,10,'Powered by FPDF.',0,1,'C');</TT>
 </DIV>
 <BR>
 Remarque : le retour à la ligne peut également s'effectuer grâce à la méthode <A HREF="ln.htm">
-Ln()</A>. Cette dernière permet de préciser la hauteur du saut de ligne.
+Ln()</A>. Cette dernière permet de préciser en plus la hauteur du saut de ligne.
 <BR>
 <BR>
 Enfin, le document est terminé et envoyé au navigateur grâce à
 <A HREF="output.htm">Output()</A>. On aurait pu le sauvegarder dans un fichier en passant le
 nom souhaité.
 <H4>Exemple plus élaboré</H4>
-Voici un exemple de deux pages avec en-tête et pied de page.
+Voici un exemple de deux pages avec en-tête, pied de page et logo :
 <BR>
 <BR>
 <TABLE WIDTH="100%" BGCOLOR="#E0E0E0"><TR><TD>
 <PRE>
 &lt;?php
 require('fpdf.php');
+
 class PDF extends FPDF
 {
-
 //Constructeur (obligatoire pour PHP3)
 function PDF()
 {
@@ -101,6 +103,8 @@ function PDF()
 //En-tête
 function Header()
 {
+    //Logo
+    $this->Image("logo_pb.png",10,8,33);
     //Police Arial gras 15
     $this->SetFont('Arial','B',15);
     //Décalage à droite
@@ -140,7 +144,8 @@ $pdf->Output();
 Cet exemple exploite les méthode <A HREF="header.htm">Header()</A> et
 <A HREF="footer.htm">Footer()</A> pour traiter les en-têtes et pieds de page. Leur
 implémentation dans la classe FPDF est vide, aussi devez-vous dériver la classe et les
-redéfinir.
+redéfinir. Le logo est imprimé grâce à la méthode <A HREF="image.htm">Image()</A> en
+précisant le coin supérieur gauche et la largeur.
 <BR>
 <BR>
 Une autre fonctionnalité est ici utilisée : le saut de page automatique. Lorsqu'une cellule
@@ -152,5 +157,9 @@ page se règle avec <A HREF="setautopagebreak.htm">SetAutoPageBreak()</A>.
 <BR>
 A noter l'utilisation de la méthode <A HREF="sety.htm">SetY()</A> qui permet de se positionner
 de manière absolue dans la page, à partir du haut ou du bas.
+<BR>
+<BR>
+<B>Note : </B>à partir de la version 1.2, il peut être nécessaire de définir la constante
+FPDF_FONTPATH au début des scripts. Lisez bien le fichier install.txt fourni avec l'archive.
 </BODY>
 </HTML>
