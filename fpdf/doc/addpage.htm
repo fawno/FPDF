@@ -1,0 +1,29 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1"> 
+<TITLE>Manuel de r&eacute;f&eacute;rence de FPDF</TITLE>
+</HEAD>
+<BODY>
+<H2>AddPage</H2>
+<TT>AddPage()</TT>
+<H4>Description</H4>
+Ajoute une nouvelle page au document. Si une page était en cours, la méthode Footer() est
+appelée pour traiter le pied de page. Puis la page est ajoutée, la position courante
+mise en haut à gauche en fonction des marges gauche et haute, et Header() est appelée
+pour afficher l'en-tête.
+<BR>
+La police qui était en cours au moment de l'appel est automatiquement restaurée. Il n'est
+donc pas nécessaire d'appeler à nouveau SetFont() si vous souhaitez continuer avec la même
+police.
+<BR>
+L'origine est en haut à gauche et les ordonnées croissantes vont vers le bas.
+<H4>Voir</H4>
+<A HREF="header.htm">Header()</A>,
+<A HREF="footer.htm">Footer()</A>,
+<A HREF="setfont.htm">SetFont()</A>.
+<BR>
+<BR>
+<HR>
+<DIV ALIGN="CENTER"><A HREF="index.htm">Index</A></DIV>
+</BODY>
+</HTML>
