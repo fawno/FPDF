@@ -9,38 +9,30 @@
 Let's start with the classic example:
 <BR>
 <BR>
-<TABLE WIDTH="100%" BGCOLOR="#E0E0E0"><TR><TD>
-<TT>
-&lt;?php<BR>
-require('fpdf.php');<BR>
-<BR>
-$pdf=new FPDF();<BR>
-$pdf-&gt;Open();<BR>
-$pdf-&gt;AddPage();<BR>
-$pdf-&gt;SetFont('Arial','B',16);<BR>
-$pdf-&gt;Cell(40,10,'Hello World!');<BR>
-$pdf-&gt;Output();<BR>
-?&gt;
-</TT>
-</TD></TR></TABLE><BR>
+<TABLE WIDTH="100%" STYLE="color:#4040C0; border-style:ridge" BORDERCOLORLIGHT="#B0B0E0" BORDERCOLORDARK="#000000" BORDER="2" CELLPADDING=6 CELLSPACING=0 BGCOLOR="#F0F5FF"><TR><TD style="border-width:0px">
+<NOBR><code><font color="#000000">
+&lt;?php<br>define<font class="kw">(</font><font class="str">'FPDF_FONTPATH'</font><font class="kw">,</font><font class="str">'font/'</font><font class="kw">);<br>require(</font><font class="str">'fpdf.php'</font><font class="kw">);<br><br></font>$pdf<font class="kw">=new&nbsp;</font>FPDF<font class="kw">();<br></font>$pdf<font class="kw">-&gt;</font>Open<font class="kw">();<br></font>$pdf<font class="kw">-&gt;</font>AddPage<font class="kw">();<br></font>$pdf<font class="kw">-&gt;</font>SetFont<font class="kw">(</font><font class="str">'Arial'</font><font class="kw">,</font><font class="str">'B'</font><font class="kw">,</font>16<font class="kw">);<br></font>$pdf<font class="kw">-&gt;</font>Cell<font class="kw">(</font>40<font class="kw">,</font>10<font class="kw">,</font><font class="str">'Hello World!'</font><font class="kw">);<br></font>$pdf<font class="kw">-&gt;</font>Output<font class="kw">();<br></font>?&gt;
+</font>
+</code></NOBR></TD></TR></TABLE><P></P>
 <SCRIPT>
 <!--
 if(document.location.href.indexOf('http:')==0)
 {
-document.write("<A HREF='tuto1.php' TARGET='_blank' CLASS='demo'>[Demo]</A><BR><BR>");
+document.write("<P CLASS='demo'><A HREF='tuto1.php' TARGET='_blank' CLASS='demo'>[Demo]</A></P>");
 }
 //-->
 </SCRIPT>
-After including the library file, we create an FPDF object.
-The <A HREF='../doc/fpdf.htm'>FPDF()</A> constructor is used here with the default values. Pages are in A4 portrait and
+The first line defines where the font directory resides, relative to the current directory.<BR>
+Then, after including the library file, we create an FPDF object.
+The <A HREF='../doc/fpdf.htm'>FPDF()</A> constructor is used here with the default values: pages are in A4 portrait and
 the measure unit is millimeter. It could have been specified explicitly with:
 <BR>
 <BR>
-<TABLE WIDTH="100%" BGCOLOR="#E0E0E0"><TR><TD>
-<TT>
-$pdf=new FPDF('P','mm','A4');
-</TT>
-</TD></TR></TABLE><BR>
+<TABLE WIDTH="100%" STYLE="color:#4040C0; border-style:ridge" BORDERCOLORLIGHT="#B0B0E0" BORDERCOLORDARK="#000000" BORDER="2" CELLPADDING=6 CELLSPACING=0 BGCOLOR="#F0F5FF"><TR><TD style="border-width:0px">
+<NOBR><code><font color="#000000">
+$pdf<font class="kw">=new&nbsp;</font>FPDF<font class="kw">(</font><font class="str">'P'</font><font class="kw">,</font><font class="str">'mm'</font><font class="kw">,</font><font class="str">'A4'</font><font class="kw">);</font><br>
+</font>
+</code></NOBR></TD></TR></TABLE><P></P>
 It is possible to use landscape (<TT>L</TT>), other page formats (such as <TT>Letter</TT> and
 <TT>Legal</TT>) and measure units (<TT>pt</TT>, <TT>cm</TT>, <TT>in</TT>).
 <BR>
@@ -54,11 +46,11 @@ Before we can print text, it is mandatory to select a font with <A HREF='../doc/
 document would be invalid. We choose Arial bold 16:
 <BR>
 <BR>
-<TABLE WIDTH="100%" BGCOLOR="#E0E0E0"><TR><TD>
-<TT>
-$pdf-&gt;SetFont('Arial','B',16);
-</TT>
-</TD></TR></TABLE><BR>
+<TABLE WIDTH="100%" STYLE="color:#4040C0; border-style:ridge" BORDERCOLORLIGHT="#B0B0E0" BORDERCOLORDARK="#000000" BORDER="2" CELLPADDING=6 CELLSPACING=0 BGCOLOR="#F0F5FF"><TR><TD style="border-width:0px">
+<NOBR><code><font color="#000000">
+$pdf<font class="kw">-&gt;</font>SetFont<font class="kw">(</font><font class="str">'Arial'</font><font class="kw">,</font><font class="str">'B'</font><font class="kw">,</font>16<font class="kw">);</font><br>
+</font>
+</code></NOBR></TD></TR></TABLE><P></P>
 We could have specified italics with I, underlined with U or a regular font with an empty string
 (or any combination). Note that the font size is given in points, not millimeters (or another
 user unit); it is the only exception. The other standard fonts are Times, Courier, Symbol and
@@ -71,19 +63,19 @@ its text (centered or aligned), if borders should be drawn, and where the curren
 moves after it (to the right, below or to the beginning of the next line). To add a frame, we would do this:
 <BR>
 <BR>
-<TABLE WIDTH="100%" BGCOLOR="#E0E0E0"><TR><TD>
-<TT>
-$pdf-&gt;Cell(40,10,'Hello World !',1);
-</TT>
-</TD></TR></TABLE><BR>
+<TABLE WIDTH="100%" STYLE="color:#4040C0; border-style:ridge" BORDERCOLORLIGHT="#B0B0E0" BORDERCOLORDARK="#000000" BORDER="2" CELLPADDING=6 CELLSPACING=0 BGCOLOR="#F0F5FF"><TR><TD style="border-width:0px">
+<NOBR><code><font color="#000000">
+$pdf<font class="kw">-&gt;</font>Cell<font class="kw">(</font>40<font class="kw">,</font>10<font class="kw">,</font><font class="str">'Hello World !'</font><font class="kw">,</font>1<font class="kw">);</font><br>
+</font>
+</code></NOBR></TD></TR></TABLE><P></P>
 To add a new cell next to it with centered text and go to the next line, we would do:
 <BR>
 <BR>
-<TABLE WIDTH="100%" BGCOLOR="#E0E0E0"><TR><TD>
-<TT>
-$pdf-&gt;Cell(60,10,'Powered by FPDF.',0,1,'C');
-</TT>
-</TD></TR></TABLE><BR>
+<TABLE WIDTH="100%" STYLE="color:#4040C0; border-style:ridge" BORDERCOLORLIGHT="#B0B0E0" BORDERCOLORDARK="#000000" BORDER="2" CELLPADDING=6 CELLSPACING=0 BGCOLOR="#F0F5FF"><TR><TD style="border-width:0px">
+<NOBR><code><font color="#000000">
+$pdf<font class="kw">-&gt;</font>Cell<font class="kw">(</font>60<font class="kw">,</font>10<font class="kw">,</font><font class="str">'Powered by FPDF.'</font><font class="kw">,</font>0<font class="kw">,</font>1<font class="kw">,</font><font class="str">'C'</font><font class="kw">);</font><br>
+</font>
+</code></NOBR></TD></TR></TABLE><P></P>
 Remark : the line break can also be done with <A HREF='../doc/ln.htm'>Ln()</A>. This method allows to specify
 in addition the height of the break.
 <BR>

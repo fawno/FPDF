@@ -11,26 +11,30 @@
 <B>3.</B> <A HREF='#3'>I try to generate a PDF and IE displays a blank page. What happens?</A><BR>
 <B>4.</B> <A HREF='#4'>I send parameters using the POST method and the values don't appear in the PDF.</A><BR>
 <B>5.</B> <A HREF='#5'>When I use a PHP session, IE doesn't display my PDF any more but asks me to download it.</A><BR>
-<B>6.</B> <A HREF='#6'>I try to display a PDF and Acrobat says "There was an error opening this document. There was a problem reading this document (110)".</A><BR>
-<B>7.</B> <A HREF='#7'>I try to put a PNG in a PDF and Acrobat says "There was an error processing a page. A drawing error occurred".</A><BR>
-<B>8.</B> <A HREF='#8'>I'd like to put my image in real size in the PDF. How can I convert pixels to mm?</A><BR>
-<B>9.</B> <A HREF='#9'>I can't make line breaks work. I put \n in the string printed by MultiCell but it doesn't work.</A><BR>
-<B>10.</B> <A HREF='#10'>I try to put the Euro symbol but it doesn't work.</A><BR>
-<B>11.</B> <A HREF='#11'>I draw a frame with very precise dimensions, but when printed I notice some differences.</A><BR>
-<B>12.</B> <A HREF='#12'>I'd like to use the whole surface of the page, but when printed I always have some margins. How can I get rid of them?</A><BR>
-<B>13.</B> <A HREF='#13'>What's the limit of the file sizes I can generate with FPDF?</A><BR>
-<B>14.</B> <A HREF='#14'>Can I modify a PDF with FPDF?</A><BR>
-<B>15.</B> <A HREF='#15'>I'd like to make a search engine in PHP and index PDF files. Can I do it with FPDF?</A><BR>
-<B>16.</B> <A HREF='#16'>Can I convert an HTML page to PDF with FPDF?</A><BR>
-<B>17.</B> <A HREF='#17'>Can I concatenate PDF files with FPDF?</A><BR>
-<B>18.</B> <A HREF='#18'>How can I activate the protections on a PDF? I'd like to prevent people from copying the text or modifying the document.</A><BR>
+<B>6.</B> <A HREF='#6'>When I'm on SSL, IE can't open the PDF.</A><BR>
+<B>7.</B> <A HREF='#7'>When I execute a script I get the message "FPDF error: Don't alter the locale before including class file".</A><BR>
+<B>8.</B> <A HREF='#8'>I try to put a PNG and Acrobat says "There was an error processing a page. A drawing error occurred".</A><BR>
+<B>9.</B> <A HREF='#9'>I try to put an image and Acrobat says "There was an error processing a page. Wrong operand type".</A><BR>
+<B>10.</B> <A HREF='#10'>I'd like to put my image in real size in the PDF. How can I convert pixels to mm?</A><BR>
+<B>11.</B> <A HREF='#11'>I encounter the following error when I try to generate a PDF: Warning: Cannot add header information - headers already sent by (output started at script.php:X)</A><BR>
+<B>12.</B> <A HREF='#12'>I try to display a variable in the Header method but nothing prints.</A><BR>
+<B>13.</B> <A HREF='#13'>I defined the Header and Footer methods in my PDF class but nothing appears.</A><BR>
+<B>14.</B> <A HREF='#14'>I can't make line breaks work. I put \n in the string printed by MultiCell but it doesn't work.</A><BR>
+<B>15.</B> <A HREF='#15'>I try to put the euro symbol but it doesn't work.</A><BR>
+<B>16.</B> <A HREF='#16'>I draw a frame with very precise dimensions, but when printed I notice some differences.</A><BR>
+<B>17.</B> <A HREF='#17'>I'd like to use the whole surface of the page, but when printed I always have some margins. How can I get rid of them?</A><BR>
+<B>18.</B> <A HREF='#18'>What's the limit of the file sizes I can generate with FPDF?</A><BR>
+<B>19.</B> <A HREF='#19'>Can I modify a PDF with FPDF?</A><BR>
+<B>20.</B> <A HREF='#20'>I'd like to make a search engine in PHP and index PDF files. Can I do it with FPDF?</A><BR>
+<B>21.</B> <A HREF='#21'>Can I convert an HTML page to PDF with FPDF?</A><BR>
+<B>22.</B> <A HREF='#22'>Can I concatenate PDF files with FPDF?</A><BR>
 <BR><BR>
-<A NAME='1'></A><B>1.</B> <FONT CLASS='st'>What's exactly the license of FPDF? Are there any usage restrictions?</FONT>
-<P>FPDF is Freeware (it is stated at the beginning of the source file). There is no usage
+<P><A NAME='1'></A><B>1.</B> <FONT CLASS='st'>What's exactly the license of FPDF? Are there any usage restrictions?</FONT></P>
+FPDF is Freeware (it is stated at the beginning of the source file). There is no usage
 restriction. You may embed it freely in your application (commercial or not), with or
-without modification.</P>
-<A NAME='2'></A><B>2.</B> <FONT CLASS='st'>When I try to create a PDF, a lot of weird characters show on the screen. Why?</FONT>
-<P>These "weird" characters are in fact the actual content of your PDF. This behaviour is a bug of
+without modification.
+<P><A NAME='2'></A><B>2.</B> <FONT CLASS='st'>When I try to create a PDF, a lot of weird characters show on the screen. Why?</FONT></P>
+These "weird" characters are in fact the actual content of your PDF. This behaviour is a bug of
 IE. When it first receives an HTML page, then a PDF from the same URL, it displays it directly
 without launching Acrobat. This happens frequently during the development stage: on the least
 script error, an HTML page is sent, and after correction, the PDF arrives.
@@ -39,20 +43,20 @@ To solve the problem, simply quit and restart IE. You can also go to another URL
 back.
 <BR>
 To avoid this kind of inconvenience during the development, you can generate the PDF directly
-to a file and open it through the explorer.</P>
-<A NAME='3'></A><B>3.</B> <FONT CLASS='st'>I try to generate a PDF and IE displays a blank page. What happens?</FONT>
-<P>First of all, check that you send nothing to the browser after the PDF (not even a space or a
+to a file and open it through the explorer.
+<P><A NAME='3'></A><B>3.</B> <FONT CLASS='st'>I try to generate a PDF and IE displays a blank page. What happens?</FONT></P>
+First of all, check that you send nothing to the browser after the PDF (not even a space or a
 carriage return). You can put an exit statement just after the call to the Output() method to
 be sure.
 <BR>
 If it still doesn't work, it means you're a victim of the "blank page syndrome". IE used in
 conjunction with the Acrobat plug-in suffers from numerous bugs, in all versions. You should
 test your application with as many IE versions as possible (at least if you're on the Internet).
-The problem occurs mostly with the POST method, so it is advised to avoid it (all the more that
-it causes other problems, see the next question). The GET works better but may fail when the URL
-becomes too long: don't use a query string with more than 45 characters. However, a trick exists
-to exceed this limit: end the URL with .pdf, which deceives IE. If you use a formular, you can
-add a hidden field at the last position:
+The problem occurs mostly with the POST method, so it is strongly advised to avoid it (all the
+more that it causes other problems, see the next question). The GET works better but may fail
+when the URL becomes too long: don't use a query string with more than 45 characters. However, a
+tip exists to exceed this limit: end the URL with .pdf, which tricks IE. If you use a form, you
+can add a hidden field at the last position:
 <BR>
 <BR>
 <TABLE WIDTH="100%" BGCOLOR="#E0E0E0"><TR><TD>
@@ -106,7 +110,7 @@ if(substr($f,0,3)!='tmp' or strpos($f,'/') or strpos($f,'\\'))<BR>
 if(!file_exists($f))<BR>
 &nbsp;&nbsp;&nbsp;&nbsp;die('File does not exist');<BR>
 //Handle special IE request if needed<BR>
-if($HTTP_ENV_VARS['USER_AGENT']=='contype')<BR>
+if($HTTP_SERVER_VARS['HTTP_USER_AGENT']=='contype')<BR>
 {<BR>
 &nbsp;&nbsp;&nbsp;&nbsp;Header('Content-Type: application/pdf');<BR>
 &nbsp;&nbsp;&nbsp;&nbsp;exit;<BR>
@@ -166,12 +170,12 @@ directory. You may call it where you want, for instance in the script which gene
 <BR>
 <BR>
 Remark: it is necessary to open the PDF in a new window, as you can't go backwards due to the
-redirection.</P>
-<A NAME='4'></A><B>4.</B> <FONT CLASS='st'>I send parameters using the POST method and the values don't appear in the PDF.</FONT>
-<P>It's a problem affecting some versions of IE (especially the first 5.5). See the previous
-question for the ways to work around it.</P>
-<A NAME='5'></A><B>5.</B> <FONT CLASS='st'>When I use a PHP session, IE doesn't display my PDF any more but asks me to download it.</FONT>
-<P>It's a problem affecting some versions of IE. To work around it, add the following line before
+redirection.
+<P><A NAME='4'></A><B>4.</B> <FONT CLASS='st'>I send parameters using the POST method and the values don't appear in the PDF.</FONT></P>
+It's a problem affecting some versions of IE (especially the first 5.5). See the previous
+question for the ways to work around it.
+<P><A NAME='5'></A><B>5.</B> <FONT CLASS='st'>When I use a PHP session, IE doesn't display my PDF any more but asks me to download it.</FONT></P>
+It's a problem affecting some versions of IE. To work around it, add the following line before
 session_start():
 <BR>
 <BR>
@@ -180,45 +184,64 @@ session_start():
 session_cache_limiter('private');
 </TT>
 </TD></TR></TABLE><BR>
-or do a redirection as explained in question 3.</P>
-<A NAME='6'></A><B>6.</B> <FONT CLASS='st'>I try to display a PDF and Acrobat says "There was an error opening this document. There was a problem reading this document (110)".</FONT>
-<P>This is a locale-related problem. The decimal separator is configured as a comma whereas the
-dot is necessary to produce valid PDF files. To use the correct setting, add the following line:
+or do a redirection as explained in question 3.
+<P><A NAME='6'></A><B>6.</B> <FONT CLASS='st'>When I'm on SSL, IE can't open the PDF.</FONT></P>
+The problem may be fixed by adding this line:<BR>
+<BR>
+<TABLE WIDTH="100%" BGCOLOR="#E0E0E0"><TR><TD>
+<TT>
+Header('Pragma: public');
+</TT>
+</TD></TR></TABLE><BR>
+
+<P><A NAME='7'></A><B>7.</B> <FONT CLASS='st'>When I execute a script I get the message "FPDF error: Don't alter the locale before including class file".</FONT></P>
+When the decimal separator is configured as a comma before including a file, there is a
+<A HREF="http://bugs.php.net/bug.php?id=17105" TARGET="_blank">bug</A> in PHP and decimal numbers
+get truncated. Therefore you shouldn't make a call to setlocale() before including the class.
+On Unix, you shouldn't set the LC_ALL environment variable neither, for it is equivalent to a
+setlocale() call.
+<P><A NAME='8'></A><B>8.</B> <FONT CLASS='st'>I try to put a PNG and Acrobat says "There was an error processing a page. A drawing error occurred".</FONT></P>
+Acrobat 5 has a bug and is unable to display transparent monochrome images (i.e. with 1 bit per
+pixel). Remove transparency or save your image in 16 colors (4 bits per pixel) or more.
+<P><A NAME='9'></A><B>9.</B> <FONT CLASS='st'>I try to put an image and Acrobat says "There was an error processing a page. Wrong operand type".</FONT></P>
+You have to give at least one dimension; height and width can't be both equal to zero.
+<P><A NAME='10'></A><B>10.</B> <FONT CLASS='st'>I'd like to put my image in real size in the PDF. How can I convert pixels to mm?</FONT></P>
+An image has no "real size". The dimension it is given in the document is arbitrary. Except if
+you want to impose a particular resolution (for instance 72dpi, which is the one typically used
+on screen display), in which case the ratio between the pixel width and the resolution gives the
+dimension.
+<P><A NAME='11'></A><B>11.</B> <FONT CLASS='st'>I encounter the following error when I try to generate a PDF: Warning: Cannot add header information - headers already sent by (output started at script.php:X)</FONT></P>
+You must send nothing to the browser except the PDF itself: no HTML, no space, no carriage return,
+neither before nor after. The script outputs something at line X.
+<P><A NAME='12'></A><B>12.</B> <FONT CLASS='st'>I try to display a variable in the Header method but nothing prints.</FONT></P>
+You have to use the <TT>global</TT> keyword, for instance:
 <BR>
 <BR>
 <TABLE WIDTH="100%" BGCOLOR="#E0E0E0"><TR><TD>
 <TT>
-setlocale('LC_NUMERIC','C');
+function Header()<BR>
+{<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;global $title;<BR>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;SetFont('Arial','B',15);<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;Cell(0,10,$title,1,1,'C');<BR>
+}
 </TT>
 </TD></TR></TABLE><BR>
-or, depending on your system configuration:
-<BR>
+
+<P><A NAME='13'></A><B>13.</B> <FONT CLASS='st'>I defined the Header and Footer methods in my PDF class but nothing appears.</FONT></P>
+You have to create an object from the PDF class, not FPDF:<BR>
 <BR>
 <TABLE WIDTH="100%" BGCOLOR="#E0E0E0"><TR><TD>
 <TT>
-setlocale('LC_NUMERIC','en');
+$pdf=new PDF();
 </TT>
 </TD></TR></TABLE><BR>
-or
-<BR>
-<BR>
-<TABLE WIDTH="100%" BGCOLOR="#E0E0E0"><TR><TD>
-<TT>
-setlocale('LC_NUMERIC','en_US');
-</TT>
-</TD></TR></TABLE><BR>
-</P>
-<A NAME='7'></A><B>7.</B> <FONT CLASS='st'>I try to put a PNG in a PDF and Acrobat says "There was an error processing a page. A drawing error occurred".</FONT>
-<P>Acrobat 5 has a bug and is unable to display transparent monochrome images (i.e. with 1 bit per
-pixel). Remove transparency or save your image in 16 colors (4 bits per pixel) or more.</P>
-<A NAME='8'></A><B>8.</B> <FONT CLASS='st'>I'd like to put my image in real size in the PDF. How can I convert pixels to mm?</FONT>
-<P>An image has no "real size". The dimension it is given in the document is arbitrary. Except if
-you want to impose a particular resolution (for instance 300 dpi), in which case the ratio
-between the pixel width and the resolution gives the dimension.</P>
-<A NAME='9'></A><B>9.</B> <FONT CLASS='st'>I can't make line breaks work. I put \n in the string printed by MultiCell but it doesn't work.</FONT>
-<P>You have to enclose your string with double quotes, not single ones.</P>
-<A NAME='10'></A><B>10.</B> <FONT CLASS='st'>I try to put the Euro symbol but it doesn't work.</FONT>
-<P>The standard fonts have the Euro character at position 128. You can define a constant like this
+
+<P><A NAME='14'></A><B>14.</B> <FONT CLASS='st'>I can't make line breaks work. I put \n in the string printed by MultiCell but it doesn't work.</FONT></P>
+You have to enclose your string with double quotes, not single ones.
+<P><A NAME='15'></A><B>15.</B> <FONT CLASS='st'>I try to put the euro symbol but it doesn't work.</FONT></P>
+The standard fonts have the euro character at position 128. You can define a constant like this
 for convenience:
 <BR>
 <BR>
@@ -227,14 +250,14 @@ for convenience:
 define('EURO',chr(128));
 </TT>
 </TD></TR></TABLE><BR>
-</P>
-<A NAME='11'></A><B>11.</B> <FONT CLASS='st'>I draw a frame with very precise dimensions, but when printed I notice some differences.</FONT>
-<P>To respect dimensions, you have to uncheck the option "Fit to page" in the print dialog box.</P>
-<A NAME='12'></A><B>12.</B> <FONT CLASS='st'>I'd like to use the whole surface of the page, but when printed I always have some margins. How can I get rid of them?</FONT>
-<P>All printers have physical margins (different depending on the model), it is therefore impossible
-to remove them and print on the totality of the paper.</P>
-<A NAME='13'></A><B>13.</B> <FONT CLASS='st'>What's the limit of the file sizes I can generate with FPDF?</FONT>
-<P>There is no particular limit. There are some constraints however:
+Note: Acrobat 4 or higher is required to display euro.
+<P><A NAME='16'></A><B>16.</B> <FONT CLASS='st'>I draw a frame with very precise dimensions, but when printed I notice some differences.</FONT></P>
+To respect dimensions, you have to uncheck the option "Fit to page" in the print dialog box.
+<P><A NAME='17'></A><B>17.</B> <FONT CLASS='st'>I'd like to use the whole surface of the page, but when printed I always have some margins. How can I get rid of them?</FONT></P>
+All printers have physical margins (different depending on the model), it is therefore impossible
+to remove them and print on the totality of the paper.
+<P><A NAME='18'></A><B>18.</B> <FONT CLASS='st'>What's the limit of the file sizes I can generate with FPDF?</FONT></P>
+There is no particular limit. There are some constraints however:
 <BR>
 <BR>
 - The maximum memory size allocated to PHP scripts defaults to 8MB. For very big documents,
@@ -252,27 +275,21 @@ generate them in a file, and to send some data to the browser from time to time 
 page 1, page 2... with flush() to force the output). When the document is finished, you can send
 a redirection on it with JavaScript or create a link.
 <BR>
-Remark: even when the browser goes in time-out, the script generally continues to run on the
-server.</P>
-<A NAME='14'></A><B>14.</B> <FONT CLASS='st'>Can I modify a PDF with FPDF?</FONT>
-<P>No. There will be (I hope) a version in the future which will allow to import the content of a
-PDF and add elements to it.</P>
-<A NAME='15'></A><B>15.</B> <FONT CLASS='st'>I'd like to make a search engine in PHP and index PDF files. Can I do it with FPDF?</FONT>
-<P>No. But a C utility does exist, pdftotext, which is able to extract the textual content from a
-PDF. It is provided with the Xpdf package.
+Remark: even when the browser goes in time-out, the script may continue to run on the server.
+<P><A NAME='19'></A><B>19.</B> <FONT CLASS='st'>Can I modify a PDF with FPDF?</FONT></P>
+No.
+<P><A NAME='20'></A><B>20.</B> <FONT CLASS='st'>I'd like to make a search engine in PHP and index PDF files. Can I do it with FPDF?</FONT></P>
+No. But a GPL C utility does exist, pdftotext, which is able to extract the textual content from
+a PDF. It is provided with the Xpdf package:<BR>
 <BR>
+<A HREF="http://www.foolabs.com/xpdf/" TARGET="_blank">http://www.foolabs.com/xpdf/</A>
+<P><A NAME='21'></A><B>21.</B> <FONT CLASS='st'>Can I convert an HTML page to PDF with FPDF?</FONT></P>
+No. But a GPL C utility does exist, htmldoc, which allows to do it and gives good results:<BR>
 <BR>
-<A HREF="http://www.foolabs.com/xpdf/" TARGET="_blank">http://www.foolabs.com/xpdf/</A></P>
-<A NAME='16'></A><B>16.</B> <FONT CLASS='st'>Can I convert an HTML page to PDF with FPDF?</FONT>
-<P>No. But a C utility does exist, htmldoc, which allows to do it and gives good results.
+<A HREF="http://www.easysw.com/htmldoc/" TARGET="_blank">http://www.easysw.com/htmldoc/</A>
+<P><A NAME='22'></A><B>22.</B> <FONT CLASS='st'>Can I concatenate PDF files with FPDF?</FONT></P>
+No. But a free C utility exists to perform this task:<BR>
 <BR>
-<BR>
-<A HREF="http://www.easysw.com/htmldoc/" TARGET="_blank">http://www.easysw.com/htmldoc/</A></P>
-<A NAME='17'></A><B>17.</B> <FONT CLASS='st'>Can I concatenate PDF files with FPDF?</FONT>
-<P>No.</P>
-<A NAME='18'></A><B>18.</B> <FONT CLASS='st'>How can I activate the protections on a PDF? I'd like to prevent people from copying the text or modifying the document.</FONT>
-<P>You can't for the moment. Protecting a PDF requires to crypt it, and the algorithm used (RC4) is
-theoretically not free (even if this issue seems to be a little fuzzy and the algorithm might be
-tolerated for a non-commercial usage).</P>
+<A HREF="http://thierry.schmit.free.fr/dev/mbtPdfAsm/enMbtPdfAsm2.html" TARGET="_blank">http://thierry.schmit.free.fr/dev/mbtPdfAsm/enMbtPdfAsm2.html</A>
 </BODY>
 </HTML>

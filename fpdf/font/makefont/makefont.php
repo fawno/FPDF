@@ -1,8 +1,8 @@
 <?php
 /****************************************************************************
 * Utility to generate font definition files                                 *
-* Version: 1.01                                                             *
-* Date:    2002/07/06                                                       *
+* Version: 1.11                                                             *
+* Date:    2002-11-02                                                       *
 ****************************************************************************/
 
 function ReadMap($enc)
@@ -34,11 +34,12 @@ function ReadAFM($file,&$map)
 		die('File not found');
 	$widths=array();
 	$fm=array();
-	$fix=array('Zdot'=>'Zdotaccent','zdot'=>'zdotaccent','Odblacute'=>'Ohungarumlaut',
-		'odblacute'=>'ohungarumlaut','Udblacute'=>'Uhungarumlaut','udblacute'=>'uhungarumlaut',
-		'Scedilla'=>'Scommaaccent','scedilla'=>'scommaaccent','Tcedilla'=>'Tcommaaccent',
-		'tcedilla'=>'tcommaaccent','Dslash'=>'Dcroat','dslash'=>'dcroat','Dmacron'=>'Dcroat',
-		'dmacron'=>'dcroat');
+	$fix=array('Edot'=>'Edotaccent','edot'=>'edotaccent','Idot'=>'Idotaccent','Zdot'=>'Zdotaccent','zdot'=>'zdotaccent',
+		'Odblacute'=>'Ohungarumlaut','odblacute'=>'ohungarumlaut','Udblacute'=>'Uhungarumlaut','udblacute'=>'uhungarumlaut',
+		'Gcedilla'=>'Gcommaaccent','gcedilla'=>'gcommaaccent','Kcedilla'=>'Kcommaaccent','kcedilla'=>'kcommaaccent',
+		'Lcedilla'=>'Lcommaaccent','lcedilla'=>'lcommaaccent','Ncedilla'=>'Ncommaaccent','ncedilla'=>'ncommaaccent',
+		'Rcedilla'=>'Rcommaaccent','rcedilla'=>'rcommaaccent','Scedilla'=>'Scommaaccent','scedilla'=>'scommaaccent',
+		'Tcedilla'=>'Tcommaaccent','tcedilla'=>'tcommaaccent','Dslash'=>'Dcroat','dslash'=>'dcroat','Dmacron'=>'Dcroat','dmacron'=>'dcroat');
 	foreach($a as $l)
 	{
 		$e=explode(' ',chop($l));
@@ -226,13 +227,66 @@ function SaveToFile($file,$s,$mode='t')
 	fclose($f);
 }
 
+function ReadShort($f)
+{
+	$a=unpack('n1n',fread($f,2));
+	return $a['n'];
+}
+
+function ReadLong($f)
+{
+	$a=unpack('N1N',fread($f,4));
+	return $a['N'];
+}
+
+function CheckTTF($file)
+{
+	//Check if font license allows embedding
+	$f=fopen($file,'rb');
+	if(!$f)
+		die('<B>Error:</B> Can\'t open '.$file);
+	//Extract number of tables
+	fseek($f,4,SEEK_CUR);
+	$nb=ReadShort($f);
+	fseek($f,6,SEEK_CUR);
+	//Seek OS/2 table
+	$found=false;
+	for($i=0;$i<$nb;$i++)
+	{
+		if(fread($f,4)=='OS/2')
+		{
+			$found=true;
+			break;
+		}
+		fseek($f,12,SEEK_CUR);
+	}
+	if(!$found)
+	{
+		fclose($f);
+		return;
+	}
+	fseek($f,4,SEEK_CUR);
+	$offset=ReadLong($f);
+	fseek($f,$offset,SEEK_SET);
+	//Extract fsType flags
+	fseek($f,8,SEEK_CUR);
+	$fsType=ReadShort($f);
+	$rl=($fsType & 0x02)!=0;
+	$pp=($fsType & 0x04)!=0;
+	$e=($fsType & 0x08)!=0;
+	fclose($f);
+	if($rl and !$pp and !$e)
+		echo '<B>Warning:</B> font license does not allow embedding';
+}
+
 /****************************************************************************
 * $fontfile: path to TTF file (or empty string if not to be embedded)       *
 * $afmfile:  path to AFM file                                               *
-* $enc:      desired font encoding (or empty string for symbolic fonts)     *
+* $enc:      font encoding (or empty string for symbolic fonts)             *
 * $patch:    optional patch for encoding                                    *
+* $type :    font type if $fontfile is empty                                *
 ****************************************************************************/
-function MakeFont($fontfile,$afmfile,$enc='cp1252',$patch=array())
+function MakeFont($fontfile,$afmfile,$enc='cp1252',$patch=array(),$type='TrueType')
 {
 	//Generate a font definition file
 	set_magic_quotes_runtime(0);
@@ -252,8 +306,25 @@ function MakeFont($fontfile,$afmfile,$enc='cp1252',$patch=array())
 	else
 		$diff='';
 	$fd=MakeFontDescriptor($fm,empty($map));
+	//Find font type
+	if($fontfile)
+	{
+		$ext=strtolower(substr($fontfile,-3));
+		if($ext=='ttf')
+			$type='TrueType';
+		elseif($ext=='pfb')
+			$type='Type1';
+		else
+			die('<B>Error:</B> unrecognized font file extension: '.$ext);
+	}
+	else
+	{
+		if($type!='TrueType' and $type!='Type1')
+			die('<B>Error:</B> incorrect font type: '.$type);
+	}
+	//Start generation
 	$s='<?php'."\n";
-	$s.='$type=\'TrueType'."';\n";
+	$s.='$type=\''.$type."';\n";
 	$s.='$name=\''.$fm['FontName']."';\n";
 	$s.='$desc='.$fd.";\n";
 	if(!isset($fm['UnderlinePosition']))
@@ -272,22 +343,45 @@ function MakeFont($fontfile,$afmfile,$enc='cp1252',$patch=array())
 		//Embedded font
 		if(!file_exists($fontfile))
 			die('<B>Error:</B> font file not found: '.$fontfile);
+		if($type=='TrueType')
+			CheckTTF($fontfile);
+		$f=fopen($fontfile,'rb');
+		if(!$f)
+			die('<B>Error:</B> Can\'t open '.$fontfile);
+		$file=fread($f,filesize($fontfile));
+		fclose($f);
+		if($type=='Type1')
+		{
+			//Find first two sections and discard third one
+			$pos=strpos($file,'eexec');
+			if(!$pos)
+				die('<B>Error:</B> font file does not seem to be valid Type1');
+			$size1=$pos+6;
+			$pos=strpos($file,'00000000');
+			if(!$pos)
+				die('<B>Error:</B> font file does not seem to be valid Type1');
+			$size2=$pos-$size1;
+			$file=substr($file,0,$size1+$size2);
+		}
 		if(function_exists('gzcompress'))
 		{
-			$f=fopen($fontfile,'rb');
-			$ttf=fread($f,filesize($fontfile));
-			fclose($f);
 			$cmp=$basename.'.z';
-			SaveToFile($cmp,gzcompress($ttf),'b');
+			SaveToFile($cmp,gzcompress($file),'b');
 			$s.='$file=\''.$cmp."';\n";
 			echo 'Font file compressed ('.$cmp.')<BR>';
 		}
 		else
 		{
-			echo '<B>Notice:</B> font file could not be compressed (gzcompress not available)<BR>';
 			$s.='$file=\''.basename($fontfile)."';\n";
+			echo '<B>Notice:</B> font file could not be compressed (gzcompress not available)<BR>';
 		}
-		$s.='$originalsize='.filesize($fontfile).";\n";
+		if($type=='Type1')
+		{
+			$s.='$size1='.$size1.";\n";
+			$s.='$size2='.$size2.";\n";
+		}
+		else
+			$s.='$originalsize='.filesize($fontfile).";\n";
 	}
 	else
 	{

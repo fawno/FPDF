@@ -1,4 +1,4 @@
-The FPDF library is made of the following elements:
+The FPDF library is made up of the following elements:
 
 - the main file, fpdf.php, which contains the class
 - the font metric files (located in the font directory of this archive)
@@ -21,5 +21,9 @@ FPDF error: Could not include font metric file
 
 If so, check if you have correctly defined the constant.
 
-Remark: you can also define it directly at the beginning of fpdf.php. But in case of version
-upgrade, don't forget to put it back!
+Remarks:
+
+- You can also define FPDF_FONTPATH directly at the beginning of fpdf.php
+- Only the files corresponding to the fonts actually used are necessary
+
+The tutorials provided in this package are ready to be executed.
