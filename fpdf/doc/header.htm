@@ -16,26 +16,17 @@ you have to subclass it and override the method if you want a specific processin
 <TT>
 class PDF extends FPDF<BR>
 {<BR>
-<BR>
-//Constructor (mandatory for PHP3)<BR>
-function PDF()<BR>
-{<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;$this->FPDF();<BR>
-}<BR>
-<BR>
-//Header<BR>
 function Header()<BR>
 {<BR>
 &nbsp;&nbsp;&nbsp;&nbsp;//Select Arial bold 15<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;$this->SetFont('Arial','B',15);<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;SetFont('Arial','B',15);<BR>
 &nbsp;&nbsp;&nbsp;&nbsp;//Move to the right<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;$this->Cell(80);<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;Cell(80);<BR>
 &nbsp;&nbsp;&nbsp;&nbsp;//Framed title<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;$this->Cell(30,10,'Title',1,0,'C');<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;Cell(30,10,'Title',1,0,'C');<BR>
 &nbsp;&nbsp;&nbsp;&nbsp;//Line break<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;$this->Ln(20);<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;Ln(20);<BR>
 }<BR>
-<BR>
 }
 </TT>
 </TD></TR></TABLE><BR>

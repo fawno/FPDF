@@ -17,12 +17,6 @@ require('fpdf.php');<BR>
 <BR>
 class PDF extends FPDF<BR>
 {<BR>
-<BR>
-function PDF()<BR>
-{<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;FPDF();<BR>
-}<BR>
-<BR>
 function Header()<BR>
 {<BR>
 &nbsp;&nbsp;&nbsp;&nbsp;global $title;<BR>
@@ -108,7 +102,7 @@ $pdf-&gt;Output();<BR>
 <!--
 if(document.location.href.indexOf('http:')==0)
 {
-document.write("<A HREF='tuto3.php'>[Demo]</A><BR><BR>");
+document.write("<A HREF='tuto3.php' CLASS='demo'>[Demo]</A><BR><BR>");
 }
 //-->
 </SCRIPT>

@@ -1,16 +1,22 @@
 <HTML>
 <HEAD>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
-<TITLE>Footer</TITLE>
+<TITLE>AliasNbPages</TITLE>
 <LINK TYPE="text/css" REL="stylesheet" HREF="../fpdf.css">
 </HEAD>
 <BODY>
-<H2>Footer</H2>
-<TT>Footer()</TT>
+<H2>AliasNbPages</H2>
+<TT>AliasNbPages([<B>string</B> alias])</TT>
+<H4>Version</H4>
+1.4
 <H4>Description</H4>
-This method is used to render the page footer. It is automatically called by AddPage() and
-Close() and should not be called directly by the application. The implementation in FPDF is
-empty, so you have to subclass it and override the method if you want a specific processing.
+Defines an alias for the total number of pages. It will be substituted as the document is
+closed.
+<H4>Parameters</H4>
+<TT><U>alias</U></TT>
+<BLOCKQUOTE>
+The alias. Default value: <TT>{nb}</TT>.
+</BLOCKQUOTE>
 <H4>Example</H4>
 <TABLE WIDTH="100%" BGCOLOR="#E0E0E0"><TR><TD>
 <TT>
@@ -22,14 +28,18 @@ function Footer()<BR>
 &nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;SetY(-15);<BR>
 &nbsp;&nbsp;&nbsp;&nbsp;//Select Arial italic 8<BR>
 &nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;SetFont('Arial','I',8);<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;//Print centered page number<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;Cell(0,10,'Page '.$this-&gt;PageNo(),0,0,'C');<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;//Print current and total page numbers<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;Cell(0,10,'Page '.$this-&gt;PageNo().'/{nb}',0,0,'C');<BR>
 }<BR>
-}
+}<BR>
+<BR>
+$pdf=new PDF();<BR>
+$pdf-&gt;AliasNbPages();
 </TT>
 </TD></TR></TABLE><BR>
 <H4>See also</H4>
-<A HREF="header.htm">Header()</A>.
+<A HREF="pageno.htm">PageNo()</A>,
+<A HREF="footer.htm">Footer()</A>.
 <H6></H6>
 <HR>
 <DIV ALIGN="CENTER"><A HREF="index.htm">Index</A></DIV>

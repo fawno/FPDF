@@ -6,13 +6,11 @@
 </HEAD>
 <BODY>
 <H2>Cell</H2>
-<TT>Cell(<B>double</B> w [, <B>double</B> h [, <B>string</B> txt [, <B>int</B> border [, <B>int</B> ln [, <B>string</B> align [, <B>int</B> fill]]]]]])</TT>
+<TT>Cell(<B>double</B> w [, <B>double</B> h [, <B>string</B> txt [, <B>mixed</B> border [, <B>int</B> ln [, <B>string</B> align [, <B>int</B> fill]]]]]])</TT>
 <H4>Description</H4>
-Prints a cell (rectangular area) with an optional border and a character string. The upper-left
-corner of the cell corresponds to the current position. The text can be aligned or centered.
-After the call, the current position moves to the right or to the next line.
-<BR>
-The string uses the Windows character set (Cp1252, Western-European).
+Prints a cell (rectangular area) with optional borders, background color and character string.
+The upper-left corner of the cell corresponds to the current position. The text can be aligned
+or centered. After the call, the current position moves to the right or to the next line.
 <BR>
 If automatic page breaking is enabled and the cell goes beyond the limit, a page break is
 done before outputting.
@@ -34,13 +32,29 @@ Default value: empty string.
 </BLOCKQUOTE>
 <TT><U>border</U></TT>
 <BLOCKQUOTE>
-Indicates if a border must be drawn around the cell (<TT>0</TT>: no, <TT>1</TT>: yes).
+Indicates if borders must be drawn around the cell. The value can be either a number:
+<UL>
+<LI><TT>0</TT>: no border
+<LI><TT>1</TT>: frame
+</UL>
+or a string containing some or all of the following characters (in any order):
+<UL>
+<LI><TT>L</TT>: left
+<LI><TT>T</TT>: top
+<LI><TT>R</TT>: right
+<LI><TT>B</TT>: bottom
+</UL>
 Default value: <TT>0</TT>.
 </BLOCKQUOTE>
 <TT><U>ln</U></TT>
 <BLOCKQUOTE>
-Indicates if the current position must go to the right (<TT>0</TT>) or to the beginning of the next
-line (<TT>1</TT>). Putting <TT>1</TT> is equivalent to calling Ln() just after Cell().
+Indicates where the current position should go after the call. Possible values are:
+<UL>
+<LI><TT>0</TT>: to the right
+<LI><TT>1</TT>: to the beginning of the next line
+<LI><TT>2</TT>: below
+</UL>
+Putting <TT>1</TT> is equivalent to putting <TT>0</TT> and calling Ln() just after.
 Default value: <TT>0</TT>.
 </BLOCKQUOTE>
 <TT><U>align</U></TT>
@@ -61,11 +75,11 @@ Default value: <TT>0</TT>.
 <TABLE WIDTH="100%" BGCOLOR="#E0E0E0"><TR><TD>
 <TT>
 //Set font<BR>
-$pdf->SetFont('Arial','B',16);<BR>
+$pdf-&gt;SetFont('Arial','B',16);<BR>
 //Move to 8 cm to the right<BR>
-$pdf->Cell(80);<BR>
+$pdf-&gt;Cell(80);<BR>
 //Centered text in a framed 20*10 mm cell and line break<BR>
-$pdf->Cell(20,10,'Title',1,1,'C');
+$pdf-&gt;Cell(20,10,'Title',1,1,'C');
 </TT>
 </TD></TR></TABLE><BR>
 <H4>See also</H4>

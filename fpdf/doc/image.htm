@@ -10,8 +10,9 @@
 <H4>Version</H4>
 1.1
 <H4>Description</H4>
-Prints an image in the page. The upper-left corner and the width must be specified; the height
-may be given or automatically calculated to keep the image proportions.
+Prints an image in the page. The upper-left corner and at least one of the dimensions must be
+specified; the height or the width can be calculated automatically in order to keep the image
+proportions.
 <BR>
 <BR>
 Supported formats are JPEG and PNG.
@@ -57,7 +58,8 @@ Ordinate of the upper-left corner.
 </BLOCKQUOTE>
 <TT><U>w</U></TT>
 <BLOCKQUOTE>
-Width of the image in the page.
+Width of the image in the page. If equal to zero, it is automatically calculated to keep the
+original proportions.
 </BLOCKQUOTE>
 <TT><U>h</U></TT>
 <BLOCKQUOTE>
