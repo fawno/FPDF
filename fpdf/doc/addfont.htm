@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML>
 <HEAD>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
@@ -13,9 +14,8 @@
 Imports a TrueType or Type1 font and makes it available. It is necessary to generate a font
 definition file first with the makefont.php utility.
 <BR>
-The definition file (and the font file itself when embedding) must be present either in the
-current directory or in the one indicated by <TT>FPDF_FONTPATH</TT> if the constant is defined.
-If it could not be found, the error "Could not include font definition file" is generated.
+The definition file (and the font file itself when embedding) must be present in the font directory.
+If it is not found, the error "Could not include font definition file" is generated.
 <H4 CLASS='st'>Parameters</H4>
 <TT><U>family</U></TT>
 <BLOCKQUOTE>
@@ -55,8 +55,7 @@ $pdf-&gt;AddFont('Comic','I','comici.php');
 </TD></TR></TABLE><BR>
 <H4 CLASS='st'>See also</H4>
 <A HREF="setfont.htm">SetFont()</A>.
-<H6></H6>
-<HR>
+<HR STYLE="margin-top:1.2em">
 <DIV ALIGN="CENTER"><A HREF="index.htm">Index</A></DIV>
 </BODY>
 </HTML>

@@ -1,5 +1,4 @@
 <?php
-define('FPDF_FONTPATH','../font/');
 require('../fpdf.php');
 
 class PDF extends FPDF
@@ -71,17 +70,17 @@ function ChapterTitle($num,$label)
 	//Title
 	$this->SetFont('Arial','',12);
 	$this->SetFillColor(200,220,255);
-	$this->Cell(0,6,"Chapter  $num : $label",0,1,'L',1);
+	$this->Cell(0,6,"Chapter $num : $label",0,1,'L',1);
 	$this->Ln(4);
 	//Save ordinate
 	$this->y0=$this->GetY();
 }
 
-function ChapterBody($fichier)
+function ChapterBody($file)
 {
 	//Read text file
-	$f=fopen($fichier,'r');
-	$txt=fread($f,filesize($fichier));
+	$f=fopen($file,'r');
+	$txt=fread($f,filesize($file));
 	fclose($f);
 	//Font
 	$this->SetFont('Times','',12);

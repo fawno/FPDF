@@ -6,6 +6,14 @@
 </HEAD>
 <BODY>
 <H2>History</H2>
+<B>v1.53</B> (2004-12-31)
+<BLOCKQUOTE>
+- When the font subdirectory is in the same directory as fpdf.php, it is no longer necessary to define the FPDF_FONTPATH constant.<BR>
+- The array $HTTP_SERVER_VARS is no longer used. It could cause trouble on PHP5-based configurations with the register_long_arrays option disabled.<BR>
+- Fixed a problem related to Type1 font embedding which caused trouble to some PDF processors.<BR>
+- The file name sent to the browser could not contain a space character.<BR>
+- The Cell() method could not print the number 0 (you had to pass the string '0').<BR>
+</BLOCKQUOTE>
 <B>v1.52</B> (2003-12-30)
 <BLOCKQUOTE>
 - Image() now displays the image at 72 dpi if no dimension is given.<BR>

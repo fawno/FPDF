@@ -1,11 +1,19 @@
-<HTML>
-<HEAD>
-<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
-<TITLE>Adding new fonts and encoding support</TITLE>
-<LINK TYPE="text/css" REL="stylesheet" HREF="../fpdf.css">
-</HEAD>
-<BODY>
-<H2>Adding new fonts and encoding support</H2>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Adding new fonts and encoding support</title>
+<link type="text/css" rel="stylesheet" href="../fpdf.css">
+<style type="text/css">
+#euro {margin-left:15px; margin-top:1.4em; margin-bottom:1.4em; border-style:outset}
+#euro TH {text-align:left; padding-top:2px; padding-bottom:2px; background:#E0EBFF}
+#euro TH, #euro TD {padding-left:10px; padding-right:10px; border-width:1px 0px 0px 1px}
+tr.alt0 {background:#FFFFEE}
+tr.alt1 {background:#FFFFDF}
+</style>
+</head>
+<body>
+<h1>Adding new fonts and encoding support</h1>
 This tutorial explains how to use TrueType or Type1 fonts so that you are not limited to the standard
 fonts any more. The other interest is that you can choose the font encoding, which allows you to
 use other languages than the Western ones (the standard fonts having too few available characters).
@@ -27,53 +35,52 @@ Adding a new font requires three steps for TrueTypes:
 For Type1, the first one is theoretically not necessary because the AFM file is usually shipped
 with the font. In case you have only a metric file in PFM format, use the convertor available
 <A HREF="http://www.fpdf.org/fr/dl.php?id=34">here</A>.
-<H4 CLASS='st'>Generation of the metric file</H4>
+<H3 CLASS='st'>Generation of the metric file</H3>
 The first step for a TrueType consists in generating the AFM file. A utility exists to do this
 task: <A HREF="http://ttf2pt1.sourceforge.net" TARGET="_blank">ttf2pt1</A>. The Windows binary
 is available <A HREF="http://www.fpdf.org/fr/dl.php?id=22">here</A>. The command line to use is
 the following:
 <BR>
 <BR>
-<TT>ttf2pt1 -a font.ttf font</TT>
+<KBD>ttf2pt1 -a font.ttf font</KBD>
 <BR>
 <BR>
 For example, for Comic Sans MS Regular:
 <BR>
 <BR>
-<TT>ttf2pt1 -a c:\windows\fonts\comic.ttf comic</TT>
+<KBD>ttf2pt1 -a c:\windows\fonts\comic.ttf comic</KBD>
 <BR>
 <BR>
 Two files are created; the one we are interested in is comic.afm.
-<H4 CLASS='st'>Generation of the font definition file</H4>
+<H3 CLASS='st'>Generation of the font definition file</H3>
 The second step consists in generating a PHP file containing all the information needed by FPDF;
 in addition, the font file is compressed. To do this, a helper script is provided in the font/makefont/
 directory of the package: makefont.php. It contains the following function:
 <BR>
 <BR>
-<TT>MakeFont(<B>string</B> fontfile, <B>string</B> afmfile [, <B>string</B> enc [, <B>array</B> patch [, <B>string</B> type]]])</TT>
-<BR>
-<BR>
-<TT><U>fontfile</U></TT>
-<BLOCKQUOTE>
-Path to the .ttf or .pfb file.
-</BLOCKQUOTE>
-<TT><U>afmfile</U></TT>
-<BLOCKQUOTE>
-Path to the .afm file.
-</BLOCKQUOTE>
-<TT><U>enc</U></TT>
-<BLOCKQUOTE>
-Name of the encoding to use. Default value: <TT>cp1252</TT>.
-</BLOCKQUOTE>
-<TT><U>patch</U></TT>
-<BLOCKQUOTE>
-Optional modification of the encoding. Empty by default.
-</BLOCKQUOTE>
-<TT><U>type</U></TT>
-<BLOCKQUOTE>
-Type of the font (<TT>TrueType</TT> or <TT>Type1</TT>). Default value: <TT>TrueType</TT>.
-</BLOCKQUOTE>
-<BR>
+<CODE>MakeFont(<B>string</B> fontfile, <B>string</B> afmfile [, <B>string</B> enc [, <B>array</B> patch [, <B>string</B> type]]])</CODE>
+<DL CLASS="param" STYLE="margin-bottom:2em">
+<DT><CODE>fontfile</CODE></DT>
+<DD>
+<P>Path to the .ttf or .pfb file.</P>
+</DD>
+<DT><CODE>afmfile</CODE></DT>
+<DD>
+<P>Path to the .afm file.</P>
+</DD>
+<DT><CODE>enc</CODE></DT>
+<DD>
+<P>Name of the encoding to use. Default value: <CODE>cp1252</CODE>.</P>
+</DD>
+<DT><CODE>patch</CODE></DT>
+<DD>
+<P>Optional modification of the encoding. Empty by default.</P>
+</DD>
+<DT><CODE>type</CODE></DT>
+<DD>
+<P>Type of the font (<CODE>TrueType</CODE> or <CODE>Type1</CODE>). Default value: <CODE>TrueType</CODE>.</P>
+</DD>
+</DL>
 The first parameter is the name of the font file. The extension must be either .ttf or .pfb and
 determines the font type. If you own a Type1 font in ASCII format (.pfa), you can convert it to
 binary format with <A HREF="http://www.lcdf.org/~eddietwo/type/#t1utils" TARGET="_blank">t1utils</A>.
@@ -82,7 +89,7 @@ If you don't want to embed the font, pass an empty string. In this case, type is
 <TT>type</TT> parameter.
 <BR>
 Note: in the case of a font with the same name as a standard one, for instance arial.ttf, it is
-mandatory to embed. If you don't, Acrobat will use its own font.
+recommended to embed. If you don't, some versions of Acrobat will use their own fonts.
 <BR>
 <BR>
 The AFM file is the one previously generated.
@@ -136,66 +143,59 @@ After you have called the function (create a new file for this and include makef
 simply add the call directly inside), a .php file is created, with the same name as the .afm one.
 You may rename it if you wish. If the case of embedding, the font file is compressed and gives a
 second file with .z as extension (except if the compression function is not available, it
-requires Zlib). You may rename it too, but in this case you have to alter the variable <TT>$file</TT>
+requires zlib). You may rename it too, but in this case you have to alter the variable <TT>$file</TT>
 in the .php file accordingly.
 <BR>
 <BR>
 Example:
-<BR>
-<BR>
-<TT>MakeFont('c:\\windows\\fonts\\comic.ttf','comic.afm','cp1252');</TT>
-<BR>
-<BR>
+<div class="source">
+<pre><code>MakeFont<span class="kw">(</span><span class="str">'c:\\windows\\fonts\\comic.ttf'</span><span class="kw">,</span><span class="str">'comic.afm'</span><span class="kw">,</span><span class="str">'cp1252'</span><span class="kw">);
+</span></code></pre>
+</div>
 which gives the files comic.php and comic.z.
 <BR>
 <BR>
-Then you have to copy the generated file(s) either in the directory of the script which will use
-the font, or in the directory given by FPDF_FONTPATH if the constant is defined. If the font file
+Then you have to copy the generated file(s) to the font directory. If the font file
 could not be compressed, copy the .ttf or .pfb instead of the .z.
-<H4 CLASS='st'>Declaration of the font in the script</H4>
-The last step is the most simple. You just need to call the <A HREF='../doc/addfont.htm'>AddFont()</A> method. For instance:
 <BR>
 <BR>
-<TABLE WIDTH="100%" STYLE="color:#4040C0; border-style:ridge" BORDERCOLORLIGHT="#B0B0E0" BORDERCOLORDARK="#000000" BORDER="2" CELLPADDING=6 CELLSPACING=0 BGCOLOR="#F0F5FF"><TR><TD style="border-width:0px">
-<NOBR><code><font color="#000000">
-$pdf<font class="kw">-&gt;</font>AddFont<font class="kw">(</font><font class="str">'Comic'</font><font class="kw">,</font><font class="str">''</font><font class="kw">,</font><font class="str">'comic.php'</font><font class="kw">);</font><br>
-</font>
-</code></NOBR></TD></TR></TABLE><P></P>
+Remark: for TTF fonts, you can generate the files online <A HREF="http://fpdf.fruit-lab.de" TARGET="_blank">here</A>
+instead of doing it manually.
+<H3 CLASS='st'>Declaration of the font in the script</H3>
+The last step is the most simple. You just need to call the <a href='../doc/addfont.htm'>AddFont()</a> method. For instance:
+<div class="source">
+<pre><code>$pdf<span class="kw">-&gt;</span>AddFont<span class="kw">(</span><span class="str">'Comic'</span><span class="kw">,</span><span class="str">''</span><span class="kw">,</span><span class="str">'comic.php'</span><span class="kw">);
+</span></code></pre>
+</div>
 or simply:
-<BR>
-<BR>
-<TABLE WIDTH="100%" STYLE="color:#4040C0; border-style:ridge" BORDERCOLORLIGHT="#B0B0E0" BORDERCOLORDARK="#000000" BORDER="2" CELLPADDING=6 CELLSPACING=0 BGCOLOR="#F0F5FF"><TR><TD style="border-width:0px">
-<NOBR><code><font color="#000000">
-$pdf<font class="kw">-&gt;</font>AddFont<font class="kw">(</font><font class="str">'Comic'</font><font class="kw">);</font><br>
-</font>
-</code></NOBR></TD></TR></TABLE><P></P>
+<div class="source">
+<pre><code>$pdf<span class="kw">-&gt;</span>AddFont<span class="kw">(</span><span class="str">'Comic'</span><span class="kw">);
+</span></code></pre>
+</div>
 And the font is now available (in regular and underlined styles), usable like the others. If we
 had worked with Comic Sans MS Bold (comicbd.ttf), we would have put:
-<BR>
-<BR>
-<TABLE WIDTH="100%" STYLE="color:#4040C0; border-style:ridge" BORDERCOLORLIGHT="#B0B0E0" BORDERCOLORDARK="#000000" BORDER="2" CELLPADDING=6 CELLSPACING=0 BGCOLOR="#F0F5FF"><TR><TD style="border-width:0px">
-<NOBR><code><font color="#000000">
-$pdf<font class="kw">-&gt;</font>AddFont<font class="kw">(</font><font class="str">'Comic'</font><font class="kw">,</font><font class="str">'B'</font><font class="kw">,</font><font class="str">'comicbd.php'</font><font class="kw">);</font><br>
-</font>
-</code></NOBR></TD></TR></TABLE><P></P>
-<H4 CLASS='st'>Example</H4>
+<div class="source">
+<pre><code>$pdf<span class="kw">-&gt;</span>AddFont<span class="kw">(</span><span class="str">'Comic'</span><span class="kw">,</span><span class="str">'B'</span><span class="kw">,</span><span class="str">'comicbd.php'</span><span class="kw">);
+</span></code></pre>
+</div>
+<H3 CLASS='st'>Example</H3>
 Let's now see a small complete example. The font used is Calligrapher, available at
 <A HREF="http://www.abstractfonts.com/fonts/" TARGET="_blank">www.abstractfonts.com</A> (a site
 offering numerous free TrueType fonts). The first step is the generation of the AFM file:
 <BR>
 <BR>
-<TT>ttf2pt1 -a calligra.ttf calligra</TT>
+<KBD>ttf2pt1 -a calligra.ttf calligra</KBD>
 <BR>
 <BR>
 which gives calligra.afm (and calligra.t1a that we can delete). Then we generate the definition
 file:
-<BR>
-<BR>
-<TABLE WIDTH="100%" STYLE="color:#4040C0; border-style:ridge" BORDERCOLORLIGHT="#B0B0E0" BORDERCOLORDARK="#000000" BORDER="2" CELLPADDING=6 CELLSPACING=0 BGCOLOR="#F0F5FF"><TR><TD style="border-width:0px">
-<NOBR><code><font color="#000000">
-&lt;?php<br><font class="kw">require(</font><font class="str">'../font/makefont/makefont.php'</font><font class="kw">);<br><br></font>MakeFont<font class="kw">(</font><font class="str">'calligra.ttf'</font><font class="kw">,</font><font class="str">'calligra.afm'</font><font class="kw">);<br></font>?&gt;
-</font>
-</code></NOBR></TD></TR></TABLE><P></P>
+<div class="source">
+<pre><code>&lt;?php
+<span class="kw">require(</span><span class="str">'font/makefont/makefont.php'</span><span class="kw">);
+
+</span>MakeFont<span class="kw">(</span><span class="str">'calligra.ttf'</span><span class="kw">,</span><span class="str">'calligra.afm'</span><span class="kw">);
+</span>?&gt;</code></pre>
+</div>
 The function call gives the following report:
 <BR>
 <BR>
@@ -209,56 +209,52 @@ Font definition file generated (calligra.php)<BR>
 The euro character is not present in the font (it is too old). Three other characters are missing
 too, but we are not interested in them anyway.
 <BR>
-We can now copy the two files in the font directory and write the script:
-<BR>
-<BR>
-<TABLE WIDTH="100%" STYLE="color:#4040C0; border-style:ridge" BORDERCOLORLIGHT="#B0B0E0" BORDERCOLORDARK="#000000" BORDER="2" CELLPADDING=6 CELLSPACING=0 BGCOLOR="#F0F5FF"><TR><TD style="border-width:0px">
-<NOBR><code><font color="#000000">
-&lt;?php<br>define<font class="kw">(</font><font class="str">'FPDF_FONTPATH'</font><font class="kw">,</font><font class="str">'font/'</font><font class="kw">);<br>require(</font><font class="str">'fpdf.php'</font><font class="kw">);<br><br></font>$pdf<font class="kw">=new </font>FPDF<font class="kw">();<br></font>$pdf<font class="kw">-&gt;</font>AddFont<font class="kw">(</font><font class="str">'Calligrapher'</font><font class="kw">,</font><font class="str">''</font><font class="kw">,</font><font class="str">'calligra.php'</font><font class="kw">);<br></font>$pdf<font class="kw">-&gt;</font>AddPage<font class="kw">();<br></font>$pdf<font class="kw">-&gt;</font>SetFont<font class="kw">(</font><font class="str">'Calligrapher'</font><font class="kw">,</font><font class="str">''</font><font class="kw">,</font>35<font class="kw">);<br></font>$pdf<font class="kw">-&gt;</font>Cell<font class="kw">(</font>0<font class="kw">,</font>10<font class="kw">,</font><font class="str">'Enjoy new fonts with FPDF!'</font><font class="kw">);<br></font>$pdf<font class="kw">-&gt;</font>Output<font class="kw">();<br></font>?&gt;
-</font>
-</code></NOBR></TD></TR></TABLE><P></P>
-<SCRIPT>
+We can now copy the two files to the font directory and write the script:
+<div class="source">
+<pre><code>&lt;?php
+<span class="kw">require(</span><span class="str">'fpdf.php'</span><span class="kw">);
+
+</span>$pdf<span class="kw">=new </span>FPDF<span class="kw">();
+</span>$pdf<span class="kw">-&gt;</span>AddFont<span class="kw">(</span><span class="str">'Calligrapher'</span><span class="kw">,</span><span class="str">''</span><span class="kw">,</span><span class="str">'calligra.php'</span><span class="kw">);
+</span>$pdf<span class="kw">-&gt;</span>AddPage<span class="kw">();
+</span>$pdf<span class="kw">-&gt;</span>SetFont<span class="kw">(</span><span class="str">'Calligrapher'</span><span class="kw">,</span><span class="str">''</span><span class="kw">,</span>35<span class="kw">);
+</span>$pdf<span class="kw">-&gt;</span>Cell<span class="kw">(</span>0<span class="kw">,</span>10<span class="kw">,</span><span class="str">'Enjoy new fonts with FPDF!'</span><span class="kw">);
+</span>$pdf<span class="kw">-&gt;</span>Output<span class="kw">();
+</span>?&gt;</code></pre>
+</div>
+<script type="text/javascript">
 <!--
 if(document.location.href.indexOf('http:')==0)
 {
-document.write("<P CLASS='demo'><A HREF='tuto7.php' TARGET='_blank' CLASS='demo'>[Demo]</A></P>");
+document.write("<p class='demo'><a href='tuto7.php' target='_blank' class='demo'>[Demo]<\/a><\/p>");
 }
 //-->
-</SCRIPT>
-<H4 CLASS='st'>About the euro symbol</H4>
+</script>
+<H3 CLASS='st'>About the euro symbol</H3>
 The euro character is not present in all encodings, and is not always placed at the same position:
-<BR>
-<BR>
-<STYLE>
-TH {text-align:left; background:#E0EBFF}
-TH, TD {padding-left:10px; padding-right:10px; border-bottom-width:0px; border-left-width:1px; border-right-width:0px; border-top-width:1px}
-TR.alt0 {background:#FFFFEE}
-TR.alt1 {background:#FFFFDF}
-</STYLE>
-<TABLE STYLE="margin-left:15px; border-style:outset" BORDER="2" CELLSPACING="0" CELLPADDING="2" BGCOLOR2="#FFFFEE">
-<TR><TH CLASS="st">Encoding</TH><TH CLASS="st">Position</TH></TR>
-<TR CLASS="alt0"><TD>cp1250</TD><TD>128<BR></TD></TR>
-<TR CLASS="alt1"><TD>cp1251</TD><TD>136<BR></TD></TR>
-<TR CLASS="alt0"><TD>cp1252</TD><TD>128<BR></TD></TR>
-<TR CLASS="alt1"><TD>cp1253</TD><TD>128<BR></TD></TR>
-<TR CLASS="alt0"><TD>cp1254</TD><TD>128<BR></TD></TR>
-<TR CLASS="alt1"><TD>cp1255</TD><TD>128<BR></TD></TR>
-<TR CLASS="alt0"><TD>cp1257</TD><TD>128<BR></TD></TR>
-<TR CLASS="alt1"><TD>cp1258</TD><TD>128<BR></TD></TR>
-<TR CLASS="alt0"><TD>cp874</TD><TD>128<BR></TD></TR>
-<TR CLASS="alt1"><TD>ISO-8859-1</TD><TD>absent<BR></TD></TR>
-<TR CLASS="alt0"><TD>ISO-8859-2</TD><TD>absent<BR></TD></TR>
-<TR CLASS="alt1"><TD>ISO-8859-4</TD><TD>absent<BR></TD></TR>
-<TR CLASS="alt0"><TD>ISO-8859-5</TD><TD>absent<BR></TD></TR>
-<TR CLASS="alt1"><TD>ISO-8859-7</TD><TD>absent<BR></TD></TR>
-<TR CLASS="alt0"><TD>ISO-8859-9</TD><TD>absent<BR></TD></TR>
-<TR CLASS="alt1"><TD>ISO-8859-11</TD><TD>absent<BR></TD></TR>
-<TR CLASS="alt0"><TD>ISO-8859-15</TD><TD>164<BR></TD></TR>
-<TR CLASS="alt1"><TD>ISO-8859-16</TD><TD>164<BR></TD></TR>
-<TR CLASS="alt0"><TD>KOI8-R</TD><TD>absent<BR></TD></TR>
-<TR CLASS="alt1"><TD>KOI8-U</TD><TD>absent<BR></TD></TR>
+<TABLE ID="euro" BORDER="2" CELLSPACING="0">
+<TR CLASS="st"><TH>Encoding</TH><TH>Position</TH></TR>
+<TR CLASS="alt0"><TD>cp1250</TD><TD>128</TD></TR>
+<TR CLASS="alt1"><TD>cp1251</TD><TD>136</TD></TR>
+<TR CLASS="alt0"><TD>cp1252</TD><TD>128</TD></TR>
+<TR CLASS="alt1"><TD>cp1253</TD><TD>128</TD></TR>
+<TR CLASS="alt0"><TD>cp1254</TD><TD>128</TD></TR>
+<TR CLASS="alt1"><TD>cp1255</TD><TD>128</TD></TR>
+<TR CLASS="alt0"><TD>cp1257</TD><TD>128</TD></TR>
+<TR CLASS="alt1"><TD>cp1258</TD><TD>128</TD></TR>
+<TR CLASS="alt0"><TD>cp874</TD><TD>128</TD></TR>
+<TR CLASS="alt1"><TD>ISO-8859-1</TD><TD>absent</TD></TR>
+<TR CLASS="alt0"><TD>ISO-8859-2</TD><TD>absent</TD></TR>
+<TR CLASS="alt1"><TD>ISO-8859-4</TD><TD>absent</TD></TR>
+<TR CLASS="alt0"><TD>ISO-8859-5</TD><TD>absent</TD></TR>
+<TR CLASS="alt1"><TD>ISO-8859-7</TD><TD>absent</TD></TR>
+<TR CLASS="alt0"><TD>ISO-8859-9</TD><TD>absent</TD></TR>
+<TR CLASS="alt1"><TD>ISO-8859-11</TD><TD>absent</TD></TR>
+<TR CLASS="alt0"><TD>ISO-8859-15</TD><TD>164</TD></TR>
+<TR CLASS="alt1"><TD>ISO-8859-16</TD><TD>164</TD></TR>
+<TR CLASS="alt0"><TD>KOI8-R</TD><TD>absent</TD></TR>
+<TR CLASS="alt1"><TD>KOI8-U</TD><TD>absent</TD></TR>
 </TABLE>
-<BR>
 ISO-8859-1 is widespread but does not include the euro sign. If you need it, the simplest thing
 to do is using cp1252 or ISO-8859-15 instead, which are nearly identical but contain the precious
 symbol.
@@ -266,7 +262,7 @@ symbol.
 As for ISO-8859-2, it is possible to use ISO-8859-16 instead, but it contains many differences.
 It is therefore simpler to patch the encoding to add the symbol to it, as explained above. The
 same is true for the other encodings.
-<H4 CLASS='st'>Font synthesis under Windows</H4>
+<H3 CLASS='st'>Font synthesis under Windows</H3>
 When a TrueType font is not available in a given style, Windows is able to synthesize it from the
 regular version. For instance, there is no Comic Sans MS Italic, but it can be built from Comic
 Sans MS Regular. This feature can be used in a PDF file, but unfortunately requires that the
@@ -284,16 +280,13 @@ For instance, for the file comici.php:
 <BR>
 <BR>
 It can then be used normally:
-<BR>
-<BR>
-<TABLE WIDTH="100%" STYLE="color:#4040C0; border-style:ridge" BORDERCOLORLIGHT="#B0B0E0" BORDERCOLORDARK="#000000" BORDER="2" CELLPADDING=6 CELLSPACING=0 BGCOLOR="#F0F5FF"><TR><TD style="border-width:0px">
-<NOBR><code><font color="#000000">
-$pdf<font class="kw">-&gt;</font>AddFont<font class="kw">(</font><font class="str">'Comic'</font><font class="kw">,</font><font class="str">'I'</font><font class="kw">,</font><font class="str">'comici.php'</font><font class="kw">);</font><br>
-</font>
-</code></NOBR></TD></TR></TABLE><P></P>
-<H4 CLASS='st'>Reducing the size of TrueType fonts</H4>
+<div class="source">
+<pre><code>$pdf<span class="kw">-&gt;</span>AddFont<span class="kw">(</span><span class="str">'Comic'</span><span class="kw">,</span><span class="str">'I'</span><span class="kw">,</span><span class="str">'comici.php'</span><span class="kw">);
+</span></code></pre>
+</div>
+<H3 CLASS='st'>Reducing the size of TrueType fonts</H3>
 Font files are often quite voluminous (more than 100, even 200KB); this is due to the fact that
-they contain the characters corresponding to many encodings. Zlib compression reduces them but
+they contain the characters corresponding to many encodings. zlib compression reduces them but
 they remain fairly big. A technique exists to reduce them further. It consists in converting the
 font to the Type1 format with ttf2pt1 by specifying the encoding you are interested in; all other
 characters will be discarded.
@@ -302,7 +295,7 @@ For instance, the arial.ttf font shipped with Windows 98 is 267KB (it contains 1
 After compression it gives 147. Let's convert it to Type1 by keeping only cp1250 characters:
 <BR>
 <BR>
-<TT>ttf2pt1 -b -L cp1250.map c:\windows\fonts\arial.ttf arial</TT>
+<KBD>ttf2pt1 -b -L cp1250.map c:\windows\fonts\arial.ttf arial</KBD>
 <BR>
 <BR>
 The .map files are located in the font/makefont/ directory of the package. The command produces
@@ -312,5 +305,5 @@ arial.pfb and arial.afm. The arial.pfb file is only 35KB, and 30KB after compres
 It is possible to go even further. If you are interested only by a subset of the encoding (you
 probably don't need all 217 characters), you can open the .map file and remove the lines you are
 not interested in. This will reduce the file size accordingly.
-</BODY>
-</HTML>
+</body>
+</html>
