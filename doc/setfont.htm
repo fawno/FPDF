@@ -6,12 +6,15 @@
 </HEAD>
 <BODY>
 <H2>SetFont</H2>
-<TT>SetFont(<B>string</B> family [, <B>string</B> style [, <B>double</B> size]])</TT>
+<TT>SetFont(<B>string</B> family [, <B>string</B> style [, <B>float</B> size]])</TT>
+<H4>Version</H4>
+1.0
 <H4>Description</H4>
 Sets the font used to print character strings. It is mandatory to call this method
 at least once before printing text or the resulting document would not be valid.
 <BR>
-The character set used is Windows-1252 (Western-European).
+The font can be either a standard one or a font added via the AddFont() method. Standard fonts
+use Windows encoding cp1252 (Western Europe).
 <BR>
 The method can be called before the first page is created and the font is retained from page
 to page.
@@ -19,7 +22,7 @@ to page.
 If you just wish to change the current font size, it is simpler to call SetFontSize().
 <BR>
 <BR>
-<B>Note: </B>for the method to work, the font metric files must be accessible. There are three
+<B>Note: </B>for the standard fonts, the font metric files must be accessible. There are three
 possibilities for this:
 <BR>
 <BR>
@@ -44,13 +47,14 @@ font metric file" is generated.
 <H4>Parameters</H4>
 <TT><U>family</U></TT>
 <BLOCKQUOTE>
-Family font. Possible values are (case insensitive):
+Family font. It can be either a name defined by AddFont() or one of the standard families (case
+insensitive):
 <UL>
 <LI><TT>Courier</TT> (fixed-width)
 <LI><TT>Helvetica<TT> or </TT>Arial</TT> (synonymous; sans serif)
 <LI><TT>Times</TT> (serif)
-<LI><TT>Symbol</TT> (symbols)
-<LI><TT>ZapfDingbats</TT> (symbols)
+<LI><TT>Symbol</TT> (symbolic)
+<LI><TT>ZapfDingbats</TT> (symbolic)
 </UL>
 It is also possible to pass an empty string. In that case, the current family is retained.
 </BLOCKQUOTE>
@@ -58,12 +62,13 @@ It is also possible to pass an empty string. In that case, the current family is
 <BLOCKQUOTE>
 Font style. Possible values are (case insensitive):
 <UL>
-<LI>empty string: normal
+<LI>empty string: regular
 <LI><TT>B</TT>: bold
 <LI><TT>I</TT>: italic
-<LI><TT>BI</TT> or <TT>IB</TT>: bold italic
+<LI><TT>U</TT>: underline
 </UL>
-The default value is normal. Style does not apply to <TT>Symbol</TT> and <TT>ZapfDingbats</TT>.
+or any combination. The default value is regular.
+Bold and italic styles do not apply to <TT>Symbol</TT> and <TT>ZapfDingbats</TT>.
 </BLOCKQUOTE>
 <TT><U>size</U></TT>
 <BLOCKQUOTE>
@@ -75,20 +80,22 @@ the document, the value taken is 12.
 <H4>Example</H4>
 <TABLE WIDTH="100%" BGCOLOR="#E0E0E0"><TR><TD>
 <TT>
-//Times normal 12<BR>
+//Times regular 12<BR>
 $pdf-&gt;SetFont('Times');<BR>
 //Arial bold 14<BR>
 $pdf-&gt;SetFont('Arial','B',14);<BR>
 //Removes bold<BR>
 $pdf-&gt;SetFont('');<BR>
-//Times normal 14<BR>
-$pdf-&gt;SetFont('Times');
+//Times bold, italic and underlined 14<BR>
+$pdf-&gt;SetFont('Times','BIU');
 </TT>
 </TD></TR></TABLE><BR>
 <H4>See also</H4>
+<A HREF="addfont.htm">AddFont()</A>,
 <A HREF="setfontsize.htm">SetFontSize()</A>,
 <A HREF="cell.htm">Cell()</A>,
-<A HREF="multicell.htm">MultiCell()</A>.
+<A HREF="multicell.htm">MultiCell()</A>,
+<A HREF="write.htm">Write()</A>.
 <H6></H6>
 <HR>
 <DIV ALIGN="CENTER"><A HREF="index.htm">Index</A></DIV>

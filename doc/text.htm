@@ -6,11 +6,13 @@
 </HEAD>
 <BODY>
 <H2>Text</H2>
-<TT>Text(<B>double</B> x, <B>double</B> y, <B>string</B> txt)</TT>
+<TT>Text(<B>float</B> x, <B>float</B> y, <B>string</B> txt)</TT>
+<H4>Version</H4>
+1.0
 <H4>Description</H4>
 Prints a character string. The origin is on the left of the first charcter, on the baseline.
-This method allows to place a string precisely on the page, but it is simpler to use Cell()
-which is the standard way to print text.
+This method allows to place a string precisely on the page, but it is usually easier to use
+Cell(), MultiCell() or Write() which are the standard methods to print text.
 <H4>Parameters</H4>
 <TT><U>x</U></TT>
 <BLOCKQUOTE>
@@ -27,7 +29,9 @@ String to print.
 <H4>See also</H4>
 <A HREF="setfont.htm">SetFont()</A>,
 <A HREF="settextcolor.htm">SetTextColor()</A>,
-<A HREF="cell.htm">Cell()</A>.
+<A HREF="cell.htm">Cell()</A>,
+<A HREF="multicell.htm">MultiCell()</A>,
+<A HREF="write.htm">Write()</A>.
 <H6></H6>
 <HR>
 <DIV ALIGN="CENTER"><A HREF="index.htm">Index</A></DIV>
