@@ -1,14 +1,14 @@
 <?php
 /****************************************************************************
 * Software : FPDF                                                           *
-* Version :  1.3                                                            *
-* Date :     2001/12/03                                                     *
+* Version :  1.31                                                           *
+* Date :     2002/01/12                                                     *
 * License :  Freeware                                                       *
 * Author :   Olivier PLATHEY                                                *
 *                                                                           *
 * You may use and modify this software as you wish.                         *
 ****************************************************************************/
-define('FPDF_VERSION','1.3');
+define('FPDF_VERSION','1.31');
 
 class FPDF
 {
@@ -532,7 +532,7 @@ function Output($file='',$download=false)
 		//Send to browser
 		Header('Content-Type: application/pdf');
 		Header('Content-Length: '.strlen($this->buffer));
-		Header('Expires: 0');
+		Header('Content-disposition: inline; filename=doc.pdf');
 		echo $this->buffer;
 	}
 	else
@@ -545,8 +545,7 @@ function Output($file='',$download=false)
 			else
 				Header('Content-Type: application/octet-stream');
 			Header('Content-Length: '.strlen($this->buffer));
-			Header('Content-Disposition: attachment; filename='.$file);
-			Header('Expires: 0');
+			Header('Content-disposition: attachment; filename='.$file);
 			echo $this->buffer;
 		}
 		else
@@ -638,7 +637,7 @@ function _enddoc()
 	$this->_out($kids.']');
 	$this->_out('/Count '.$this->page);
 	$this->_out('/MediaBox [0 0 '.$this->wPt.' '.$this->hPt.']');
-	$this->_out('/Resources << /ProcSet [/PDF /Text /ImageC]');
+	$this->_out('/Resources << /ProcSet [/PDF /Text /ImageB /ImageC /ImageI]');
 	$this->_out('/Font <<');
 	for($i=1;$i<=count($this->fonts);$i++)
 		$this->_out('/F'.$i.' '.($nf+$i).' 0 R');
@@ -854,7 +853,6 @@ function _multicell($w,$h,$txt,$border,$align,$fill,&$cw)
 			$ns=0;
 			if($border)
 			{
-				$x=$this->x;
 				$y=$this->y-$h;
 				if($nl==1)
 					$this->_out($x.' -'.$y.' m '.($x+$w).' -'.$y.' l');
@@ -901,7 +899,6 @@ function _multicell($w,$h,$txt,$border,$align,$fill,&$cw)
 			$ns=0;
 			if($border)
 			{
-				$x=$this->x;
 				$y=$this->y-$h;
 				if($nl==1)
 					$this->_out($x.' -'.$y.' m '.($x+$w).' -'.$y.' l');
@@ -921,7 +918,6 @@ function _multicell($w,$h,$txt,$border,$align,$fill,&$cw)
 	$this->Cell($w,$h,substr($s,$j,$i),0,1,$align,$fill);
 	if($border)
 	{
-		$x=$this->x;
 		$y=$this->y-$h;
 		if($nl==1)
 			$this->_out($x.' -'.$y.' m '.($x+$w).' -'.$y.' l');
