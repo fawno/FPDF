@@ -1,9 +1,9 @@
 <?php
-/****************************************************************************
-* Utility to generate font definition files                                 *
-* Version: 1.11                                                             *
-* Date:    2002-11-02                                                       *
-****************************************************************************/
+/*******************************************************************************
+* Utility to generate font definition files                                    *
+* Version: 1.12                                                                *
+* Date:    2003-12-30                                                          *
+*******************************************************************************/
 
 function ReadMap($enc)
 {
@@ -15,10 +15,13 @@ function ReadMap($enc)
 	$cc2gn=array();
 	foreach($a as $l)
 	{
-		$e=explode(' ',chop($l));
-		$cc=hexdec(substr($e[0],1));
-		$gn=$e[2];
-		$cc2gn[$cc]=$gn;
+		if($l{0}=='!')
+		{
+			$e=preg_split('/[ \\t]+/',chop($l));
+			$cc=hexdec(substr($e[0],1));
+			$gn=$e[2];
+			$cc2gn[$cc]=$gn;
+		}
 	}
 	for($i=0;$i<=255;$i++)
 		if(!isset($cc2gn[$i]))
@@ -39,7 +42,9 @@ function ReadAFM($file,&$map)
 		'Gcedilla'=>'Gcommaaccent','gcedilla'=>'gcommaaccent','Kcedilla'=>'Kcommaaccent','kcedilla'=>'kcommaaccent',
 		'Lcedilla'=>'Lcommaaccent','lcedilla'=>'lcommaaccent','Ncedilla'=>'Ncommaaccent','ncedilla'=>'ncommaaccent',
 		'Rcedilla'=>'Rcommaaccent','rcedilla'=>'rcommaaccent','Scedilla'=>'Scommaaccent','scedilla'=>'scommaaccent',
-		'Tcedilla'=>'Tcommaaccent','tcedilla'=>'tcommaaccent','Dslash'=>'Dcroat','dslash'=>'dcroat','Dmacron'=>'Dcroat','dmacron'=>'dcroat');
+		'Tcedilla'=>'Tcommaaccent','tcedilla'=>'tcommaaccent','Dslash'=>'Dcroat','dslash'=>'dcroat','Dmacron'=>'Dcroat','dmacron'=>'dcroat',
+		'combininggraveaccent'=>'gravecomb','combininghookabove'=>'hookabovecomb','combiningtildeaccent'=>'tildecomb',
+		'combiningacuteaccent'=>'acutecomb','combiningdotbelow'=>'dotbelowcomb','dongsign'=>'dong');
 	foreach($a as $l)
 	{
 		$e=explode(' ',chop($l));
@@ -189,13 +194,13 @@ function MakeWidthArray($fm)
 			$s.="'".chr($i)."'";
 		else
 			$s.="chr($i)";
-		$s.="=>".$fm['Widths'][$i];
+		$s.='=>'.$fm['Widths'][$i];
 		if($i<255)
-			$s.=",";
+			$s.=',';
 		if(($i+1)%22==0)
 			$s.="\n\t";
 	}
-	$s.=")";
+	$s.=')';
 	return $s;
 }
 
@@ -279,13 +284,13 @@ function CheckTTF($file)
 		echo '<B>Warning:</B> font license does not allow embedding';
 }
 
-/****************************************************************************
-* $fontfile: path to TTF file (or empty string if not to be embedded)       *
-* $afmfile:  path to AFM file                                               *
-* $enc:      font encoding (or empty string for symbolic fonts)             *
-* $patch:    optional patch for encoding                                    *
-* $type :    font type if $fontfile is empty                                *
-****************************************************************************/
+/*******************************************************************************
+* $fontfile: path to TTF file (or empty string if not to be embedded)          *
+* $afmfile:  path to AFM file                                                  *
+* $enc:      font encoding (or empty string for symbolic fonts)                *
+* $patch:    optional patch for encoding                                       *
+* $type :    font type if $fontfile is empty                                   *
+*******************************************************************************/
 function MakeFont($fontfile,$afmfile,$enc='cp1252',$patch=array(),$type='TrueType')
 {
 	//Generate a font definition file

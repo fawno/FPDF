@@ -87,7 +87,6 @@ function FancyTable($header,$data)
 }
 
 $pdf=new PDF();
-$pdf->Open();
 //Column titles
 $header=array('Country','Capital','Area (sq km)','Pop. (thousands)');
 //Data loading

@@ -104,7 +104,6 @@ on text, such as <A HREF="http://www.fpdf.org">www.fpdf.org</A>,
 or on an image: click on the logo.';
 
 $pdf=new PDF();
-$pdf->Open();
 //First page
 $pdf->AddPage();
 $pdf->SetFont('Arial','',20);

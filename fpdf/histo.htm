@@ -6,7 +6,20 @@
 </HEAD>
 <BODY>
 <H2>History</H2>
-<B>v1.51</B> (2002/08/03)
+<B>v1.52</B> (2003-12-30)
+<BLOCKQUOTE>
+- Image() now displays the image at 72 dpi if no dimension is given.<BR>
+- Output() takes a string as second parameter to indicate destination.<BR>
+- Open() is now called automatically by AddPage().<BR>
+- Inserting remote JPEG images doesn't generate an error any longer.<BR>
+- Decimal separator is forced to dot in the constructor.<BR>
+- Added several encodings (Turkish, Thai, Hebrew, Ukrainian and Vietnamese).<BR>
+- The last line of a right-aligned MultiCell() was not correctly aligned if it was terminated by a carriage return.<BR>
+- No more error message about already sent headers when outputting the PDF to the standard output from the command line.<BR>
+- The underlining was going too far for text containing characters \, ( or ).<BR>
+- $HTTP_ENV_VARS has been replaced by $HTTP_SERVER_VARS.<BR>
+</BLOCKQUOTE>
+<B>v1.51</B> (2002-08-03)
 <BLOCKQUOTE>
 - Type1 font support.<BR>
 - Added Baltic encoding.<BR>
@@ -17,7 +30,7 @@
 - Transparent PNG images in grayscale or true color mode were incorrectly handled.<BR>
 - Adding new fonts now works correctly even with the magic_quotes_runtime option set to on.<BR>
 </BLOCKQUOTE>
-<B>v1.5</B> (2002/05/28)
+<B>v1.5</B> (2002-05-28)
 <BLOCKQUOTE>
 - TrueType font (AddFont()) and encoding support (Western and Eastern Europe, Cyrillic and Greek).<BR>
 - Added Write() method.<BR>
@@ -28,11 +41,11 @@
 - The border parameter of MultiCell() now lets choose borders to draw as Cell().<BR>
 - When a document contains no page, Close() now calls AddPage() instead of causing a fatal error.<BR>
 </BLOCKQUOTE>
-<B>v1.41</B> (2002/03/13)
+<B>v1.41</B> (2002-03-13)
 <BLOCKQUOTE>
 - Fixed SetDisplayMode() which no longer worked (the PDF viewer used its default display).<BR>
 </BLOCKQUOTE>
-<B>v1.4</B> (2002/03/02)
+<B>v1.4</B> (2002-03-02)
 <BLOCKQUOTE>
 - PHP3 is no longer supported.<BR>
 - Page compression (SetCompression()).<BR>
@@ -44,13 +57,13 @@
 - Ability to include an image by specifying height only (width is calculated automatically).<BR>
 - Fixed a bug: when a justified line triggered a page break, the footer inherited the corresponding word spacing.<BR>
 </BLOCKQUOTE>
-<B>v1.31</B> (2002/01/12)
+<B>v1.31</B> (2002-01-12)
 <BLOCKQUOTE>
 - Fixed a bug in drawing frame with MultiCell(): the last line always started from the left margin.<BR>
 - Removed Expires HTTP header (gives trouble in some situations).<BR>
 - Added Content-disposition HTTP header (seems to help in some situations).<BR>
 </BLOCKQUOTE>
-<B>v1.3</B> (2001/12/03)
+<B>v1.3</B> (2001-12-03)
 <BLOCKQUOTE>
 - Line break and text justification support (MultiCell()).<BR>
 - Color support (SetDrawColor(), SetFillColor(), SetTextColor()). Possibility to draw filled rectangles and paint cell background.<BR>
@@ -59,7 +72,7 @@
 - Added SetXY() method.<BR>
 - Fixed a passing by reference done in a deprecated manner for PHP4.<BR>
 </BLOCKQUOTE>
-<B>v1.2</B> (2001/11/11)
+<B>v1.2</B> (2001-11-11)
 <BLOCKQUOTE>
 - Added font metric files and GetStringWidth() method.<BR>
 - Centering and right-aligning text in cells.<BR>
@@ -69,20 +82,20 @@
 - Added SetX() and GetX() methods.<BR>
 - During automatic page break, current abscissa is now retained.<BR>
 </BLOCKQUOTE>
-<B>v1.11</B> (2001/10/20)
+<B>v1.11</B> (2001-10-20)
 <BLOCKQUOTE>
 - PNG support doesn't require PHP4/Zlib any more. Data are now put directly into PDF without any decompression/recompression stage.<BR>
 - Image insertion now works correctly even with magic_quotes_runtime option set to on.<BR>
 </BLOCKQUOTE>
-<B>v1.1</B> (2001/10/07)
+<B>v1.1</B> (2001-10-07)
 <BLOCKQUOTE>
 - JPEG and PNG image support.<BR>
 </BLOCKQUOTE>
-<B>v1.01</B> (2001/10/03)
+<B>v1.01</B> (2001-10-03)
 <BLOCKQUOTE>
 - Fixed a bug involving page break: in case when Header() doesn't specify a font, the one from previous page was not restored and produced an incorrect document.<BR>
 </BLOCKQUOTE>
-<B>v1.0</B> (2001/09/17)
+<B>v1.0</B> (2001-09-17)
 <BLOCKQUOTE>
 - First version.<BR>
 </BLOCKQUOTE>

@@ -33,7 +33,6 @@ function Footer()
 
 //Instanciation of inherited class
 $pdf=new PDF();
-$pdf->Open();
 $pdf->AliasNbPages();
 $pdf->AddPage();
 $pdf->SetFont('Times','',12);
