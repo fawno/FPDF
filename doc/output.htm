@@ -1,20 +1,31 @@
 <HTML>
 <HEAD>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1"> 
-<TITLE>Manuel de r&eacute;f&eacute;rence de FPDF</TITLE>
+<TITLE>Output</TITLE>
+<LINK TYPE="text/css" REL="stylesheet" HREF="../fpdf.css">
 </HEAD>
 <BODY>
 <H2>Output</H2>
-<TT>Output([<B>string</B> file])</TT>
+<TT>Output([<B>string</B> file [, <B>boolean</B> download]])</TT>
 <H4>Description</H4>
-Sauve le document PDF dans un fichier ou l'envoie au navigateur. Dans ce dernier cas, les
-en-têtes HTTP sont d'abord émis.
+Sauve le document PDF dans un fichier local ou l'envoie au navigateur. Dans ce dernier cas,
+on peut utiliser le plug-in (s'il est présent) ou forcer la boîte de téléchargement de fichier.
 <BR>
 La méthode commence par appeler Close() si nécessaire pour terminer le document.
+<BR>
+<BR>
+<B>Note : </B>on ne peut forcer la boîte de téléchargement qu'à partir de la version 1.2.
 <H4>Paramètres</H4>
 <TT><U>file</U></TT>
 <BLOCKQUOTE>
-Le nom du fichier. S'il est vide ou non renseigné, le document est envoyé au navigateur.
+Le nom du fichier. S'il est vide ou non renseigné, le document est envoyé au navigateur qui
+utilisera le plug-in s'il est installé.
+</BLOCKQUOTE>
+<TT><U>download</U></TT>
+<BLOCKQUOTE>
+Dans le cas où <TT>file</TT> est renseigné, indique si le fichier doit être sauvé en local
+(<TT>false</TT>) où provoquer la boîte de téléchargement de fichier (<TT>true</TT>). Vaut
+<TT>false</TT> par défaut.
 </BLOCKQUOTE>
 <H4>Voir</H4>
 <A HREF="close.htm">Close()</A>.

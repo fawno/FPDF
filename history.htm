@@ -2,8 +2,26 @@
 <HEAD>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1"> 
 <TITLE>Historique</TITLE>
+<LINK TYPE="text/css" REL="stylesheet" HREF="fpdf.css">
 </HEAD>
 <H2>Historique</H2>
+<B>V 1.2</B> (11/11/2001)
+<BLOCKQUOTE>
+- Ajout des fichiers de métrique des polices et de la méthode GetStringWidth().
+<BR>
+- Possibilité de centrer et d'aligner à droite le texte dans les cellules.
+<BR>
+- Réglage du mode d'affichage (SetDisplayMode()).
+<BR>
+- Ajout des méthodes de propriété du document (SetAuthor(), SetCreator(), SetKeywords(),
+SetSubject(), SetTitle()).
+<BR>
+- Possibilité de forcer le téléchargement du PDF.
+<BR>
+- Ajout des méthodes SetX() et GetX().
+<BR>
+- Lors du saut de page automatique, l'abscisse courante est maintenant conservée.
+</BLOCKQUOTE>
 <B>V 1.11</B> (20/10/2001)
 <BLOCKQUOTE>
 - L'utilisation des PNG ne nécessite plus PHP4 et l'extension Zlib. Les données sont intégrées
@@ -16,7 +34,6 @@ directement dans le document PDF sans étape de décompression/recompression.
 - Support des images JPEG et PNG.
 </BLOCKQUOTE>
 <B>V 1.01</B> (03/10/2001)
-<BR>
 <BLOCKQUOTE>- Correction d'un bug lors du saut de page : dans le cas où la méthode Header() ne
 spécifiait pas de police, celle de la page précédente n'était pas restaurée et produisait un
 document incorrect.
