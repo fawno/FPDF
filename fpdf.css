@@ -1,1 +1,5 @@
 H2 {color: #4000A0}
+A.demo {text-decoration:none; font-weight:bold; color:#0000CC}
+A.demo:link {text-decoration:none; font-weight:bold; color:#0000CC}
+A.demo:hover {text-decoration:none; font-weight:bold; color:#0000FF}
+A.demo:active {text-decoration:none; font-weight:bold; color:#0000FF}

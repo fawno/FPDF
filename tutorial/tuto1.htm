@@ -27,21 +27,22 @@ $pdf-&gt;Output();<BR>
 <!--
 if(document.location.href.indexOf('http:')==0)
 {
-document.write("<A HREF='tuto1.php'>[Demo]</A><BR><BR>");
+document.write("<A HREF='tuto1.php' CLASS='demo'>[Demo]</A><BR><BR>");
 }
 //-->
 </SCRIPT>
 After including the library file, we create an FPDF object.
-The <A HREF='../doc/fpdf.htm'>FPDF()</A> constructor is used here with the default values. Pages are in portrait and
+The <A HREF='../doc/fpdf.htm'>FPDF()</A> constructor is used here with the default values. Pages are in A4 portrait and
 the measure unit is millimeter. It could have been specified explicitly with:
 <BR>
 <BR>
 <TABLE WIDTH="100%" BGCOLOR="#E0E0E0"><TR><TD>
 <TT>
-$pdf=new FPDF('P','mm');
+$pdf=new FPDF('P','mm','A4');
 </TT>
 </TD></TR></TABLE><BR>
-It is possible to use landscape (L) and other measure units (pt, cm, in).
+It is possible to use landscape (<TT>L</TT>), other page formats (such as <TT>Letter</TT> and
+<TT>Legal</TT>) and measure units (<TT>pt</TT>, <TT>cm</TT>, <TT>in</TT>).
 <BR>
 <BR>
 <A HREF='../doc/open.htm'>Open()</A> starts the PDF document. There is still no page for the moment, so we have to
@@ -65,8 +66,8 @@ exception. The other available fonts are Times, Courier, Symbol and ZapfDingbats
 <BR>
 We can now print a cell with <A HREF='../doc/cell.htm'>Cell()</A>. A cell is a rectangular area, possibly framed,
 which contains some text. It is output at the current position. We specify its dimensions,
-its text (centered or aligned), if it is framed and if the current position has to be moved
-to the right or return to the beginning of the next line. To add a frame, we would do this:
+its text (centered or aligned), if borders should be drawn, and where the current position
+moves after it (to the right, below or to the beginning of the next line). To add a frame, we would do this:
 <BR>
 <BR>
 <TABLE WIDTH="100%" BGCOLOR="#E0E0E0"><TR><TD>
@@ -88,5 +89,11 @@ in addition the height of the break.
 <BR>
 Finally, the document is closed and sent to the browser with <A HREF='../doc/output.htm'>Output()</A>. We could have saved
 it in a file by passing the desired file name.
+<BR>
+<BR>
+Caution: in case when the PDF is sent to the browser, nothing else must be output, not before
+nor after (the least space or carriage return matters). If you send some data before, you will
+get the error message: "Some data has already been output to browser, can't send PDF file". If
+you send after, your browser may display a blank page.
 </BODY>
 </HTML>

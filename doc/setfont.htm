@@ -11,6 +11,8 @@
 Sets the font used to print character strings. It is mandatory to call this method
 at least once before printing text or the resulting document would not be valid.
 <BR>
+The character set used is Windows-1252 (Western-European).
+<BR>
 The method can be called before the first page is created and the font is retained from page
 to page.
 <BR>
@@ -74,13 +76,13 @@ the document, the value taken is 12.
 <TABLE WIDTH="100%" BGCOLOR="#E0E0E0"><TR><TD>
 <TT>
 //Times normal 12<BR>
-$pdf->SetFont('Times');<BR>
+$pdf-&gt;SetFont('Times');<BR>
 //Arial bold 14<BR>
-$pdf->SetFont('Arial','B',14);<BR>
+$pdf-&gt;SetFont('Arial','B',14);<BR>
 //Removes bold<BR>
-$pdf->SetFont('');<BR>
+$pdf-&gt;SetFont('');<BR>
 //Times normal 14<BR>
-$pdf->SetFont('Times');
+$pdf-&gt;SetFont('Times');
 </TT>
 </TD></TR></TABLE><BR>
 <H4>See also</H4>
