@@ -1,0 +1,79 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1"> 
+<TITLE>Manuel de r&eacute;f&eacute;rence de FPDF</TITLE>
+</HEAD>
+<BODY>
+<H2>Image</H2>
+<TT>Image(<B>string</B> file, <B>double</B> x, <B>double</B> y, <B>double</B> w [, <B>double</B> h [, <B>string</B> type]])</TT>
+<H4>Version</H4>
+1.1
+<H4>Description</H4>
+Imprime une image dans la page. Le coin supérieur gauche ainsi que la largeur doivent être
+spécifiés; la hauteur peut être précisée ou calculée automatiquement afin de respecter les
+proportions de l'image.
+<BR>
+<BR>
+Les formats supportés sont le JPEG et le PNG.
+<BR>
+<BR>
+Pour le JPEG, toutes les variantes sont autorisées :
+<UL>
+<LI>niveaux de gris
+<LI>couleurs vraies (24 bits)
+<LI>CMYK (32 bits)
+</UL>
+Pour le PNG, sont autorisées :
+<UL>
+<LI>les images en niveaux de gris sur 8 bits au plus (256 teintes)
+<LI>les images en couleurs indexées
+<LI>les images en couleurs vraies (24 bits)
+</UL>
+mais ne sont pas supportés :
+<UL>
+<LI>L'interlacement
+<LI>L'alpha channel
+<LI>Les fonctions de prédiction
+</UL>
+Si une couleur transparente est définie, elle sera prise en compte (mais ne sera interprétée
+qu'à partir d'Acrobat 4).
+<BR>
+<BR>
+<B>Note : </B>l'utilisation du PNG requiert PHP 4 et l'extension Zlib.
+<BR>
+<BR>
+Le format peut être spécifié explicitement ou déduit de l'extension du fichier.
+<BR>
+<BR>
+Si une image est utilisée plusieurs fois, une seule copie sera intégrée au document.
+<H4>Paramètres</H4>
+<TT><U>file</U></TT>
+<BLOCKQUOTE>
+Nom du fichier contenant l'image.
+</BLOCKQUOTE>
+<TT><U>x</U></TT>
+<BLOCKQUOTE>
+Abscisse du coin supérieur gauche.
+</BLOCKQUOTE>
+<TT><U>y</U></TT>
+<BLOCKQUOTE>
+Ordonnée du coin supérieur gauche.
+</BLOCKQUOTE>
+<TT><U>w</U></TT>
+<BLOCKQUOTE>
+Largeur de l'image dans la page.
+</BLOCKQUOTE>
+<TT><U>h</U></TT>
+<BLOCKQUOTE>
+Hauteur de l'image dans la page. Si elle n'est pas indiquée ou vaut zéro, elle est
+automatiquement calculée afin de respecter les proportions d'origine.
+</BLOCKQUOTE>
+<TT><U>type</U></TT>
+<BLOCKQUOTE>
+Format de l'image. Les valeurs possibles sont (indépendamment de la casse) : JPG, JPEG, PNG.
+S'il n'est pas précisé, le type est déduit de l'extension du fichier.
+</BLOCKQUOTE>
+<HR>
+<DIV ALIGN="CENTER"><A HREF="index.htm">Index</A></DIV>
+</BODY>
+</HTML>
