@@ -11,7 +11,7 @@ Let's start with the classic example:
 <BR>
 <TABLE WIDTH="100%" STYLE="color:#4040C0; border-style:ridge" BORDERCOLORLIGHT="#B0B0E0" BORDERCOLORDARK="#000000" BORDER="2" CELLPADDING=6 CELLSPACING=0 BGCOLOR="#F0F5FF"><TR><TD style="border-width:0px">
 <NOBR><code><font color="#000000">
-&lt;?php<br>define<font class="kw">(</font><font class="str">'FPDF_FONTPATH'</font><font class="kw">,</font><font class="str">'font/'</font><font class="kw">);<br>require(</font><font class="str">'fpdf.php'</font><font class="kw">);<br><br></font>$pdf<font class="kw">=new&nbsp;</font>FPDF<font class="kw">();<br></font>$pdf<font class="kw">-&gt;</font>Open<font class="kw">();<br></font>$pdf<font class="kw">-&gt;</font>AddPage<font class="kw">();<br></font>$pdf<font class="kw">-&gt;</font>SetFont<font class="kw">(</font><font class="str">'Arial'</font><font class="kw">,</font><font class="str">'B'</font><font class="kw">,</font>16<font class="kw">);<br></font>$pdf<font class="kw">-&gt;</font>Cell<font class="kw">(</font>40<font class="kw">,</font>10<font class="kw">,</font><font class="str">'Hello World!'</font><font class="kw">);<br></font>$pdf<font class="kw">-&gt;</font>Output<font class="kw">();<br></font>?&gt;
+&lt;?php<br>define<font class="kw">(</font><font class="str">'FPDF_FONTPATH'</font><font class="kw">,</font><font class="str">'font/'</font><font class="kw">);<br>require(</font><font class="str">'fpdf.php'</font><font class="kw">);<br><br></font>$pdf<font class="kw">=new </font>FPDF<font class="kw">();<br></font>$pdf<font class="kw">-&gt;</font>AddPage<font class="kw">();<br></font>$pdf<font class="kw">-&gt;</font>SetFont<font class="kw">(</font><font class="str">'Arial'</font><font class="kw">,</font><font class="str">'B'</font><font class="kw">,</font>16<font class="kw">);<br></font>$pdf<font class="kw">-&gt;</font>Cell<font class="kw">(</font>40<font class="kw">,</font>10<font class="kw">,</font><font class="str">'Hello World!'</font><font class="kw">);<br></font>$pdf<font class="kw">-&gt;</font>Output<font class="kw">();<br></font>?&gt;
 </font>
 </code></NOBR></TD></TR></TABLE><P></P>
 <SCRIPT>
@@ -30,16 +30,16 @@ the measure unit is millimeter. It could have been specified explicitly with:
 <BR>
 <TABLE WIDTH="100%" STYLE="color:#4040C0; border-style:ridge" BORDERCOLORLIGHT="#B0B0E0" BORDERCOLORDARK="#000000" BORDER="2" CELLPADDING=6 CELLSPACING=0 BGCOLOR="#F0F5FF"><TR><TD style="border-width:0px">
 <NOBR><code><font color="#000000">
-$pdf<font class="kw">=new&nbsp;</font>FPDF<font class="kw">(</font><font class="str">'P'</font><font class="kw">,</font><font class="str">'mm'</font><font class="kw">,</font><font class="str">'A4'</font><font class="kw">);</font><br>
+$pdf<font class="kw">=new </font>FPDF<font class="kw">(</font><font class="str">'P'</font><font class="kw">,</font><font class="str">'mm'</font><font class="kw">,</font><font class="str">'A4'</font><font class="kw">);</font><br>
 </font>
 </code></NOBR></TD></TR></TABLE><P></P>
 It is possible to use landscape (<TT>L</TT>), other page formats (such as <TT>Letter</TT> and
 <TT>Legal</TT>) and measure units (<TT>pt</TT>, <TT>cm</TT>, <TT>in</TT>).
 <BR>
 <BR>
-<A HREF='../doc/open.htm'>Open()</A> starts the PDF document. There is still no page for the moment, so we have to
-add one with <A HREF='../doc/addpage.htm'>AddPage()</A>. The origin is at the upper-left corner and the current position
-is by default placed at 1 cm from the borders; the margins can be changed with <A HREF='../doc/setmargins.htm'>SetMargins()</A>.
+There is no page for the moment, so we have to add one with <A HREF='../doc/addpage.htm'>AddPage()</A>. The origin
+is at the upper-left corner and the current position is by default placed at 1 cm from the
+borders; the margins can be changed with <A HREF='../doc/setmargins.htm'>SetMargins()</A>.
 <BR>
 <BR>
 Before we can print text, it is mandatory to select a font with <A HREF='../doc/setfont.htm'>SetFont()</A>, otherwise the

@@ -75,7 +75,6 @@ function PrintChapter($num,$title,$file)
 }
 
 $pdf=new PDF();
-$pdf->Open();
 $title='20000 Leagues Under the Seas';
 $pdf->SetTitle($title);
 $pdf->SetAuthor('Jules Verne');

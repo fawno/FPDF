@@ -14,25 +14,23 @@
 <B>6.</B> <A HREF='#6'>When I'm on SSL, IE can't open the PDF.</A><BR>
 <B>7.</B> <A HREF='#7'>When I execute a script I get the message "FPDF error: Don't alter the locale before including class file".</A><BR>
 <B>8.</B> <A HREF='#8'>I try to put a PNG and Acrobat says "There was an error processing a page. A drawing error occurred".</A><BR>
-<B>9.</B> <A HREF='#9'>I try to put an image and Acrobat says "There was an error processing a page. Wrong operand type".</A><BR>
-<B>10.</B> <A HREF='#10'>I'd like to put my image in real size in the PDF. How can I convert pixels to mm?</A><BR>
-<B>11.</B> <A HREF='#11'>I encounter the following error when I try to generate a PDF: Warning: Cannot add header information - headers already sent by (output started at script.php:X)</A><BR>
-<B>12.</B> <A HREF='#12'>I try to display a variable in the Header method but nothing prints.</A><BR>
-<B>13.</B> <A HREF='#13'>I defined the Header and Footer methods in my PDF class but nothing appears.</A><BR>
-<B>14.</B> <A HREF='#14'>I can't make line breaks work. I put \n in the string printed by MultiCell but it doesn't work.</A><BR>
-<B>15.</B> <A HREF='#15'>I try to put the euro symbol but it doesn't work.</A><BR>
-<B>16.</B> <A HREF='#16'>I draw a frame with very precise dimensions, but when printed I notice some differences.</A><BR>
-<B>17.</B> <A HREF='#17'>I'd like to use the whole surface of the page, but when printed I always have some margins. How can I get rid of them?</A><BR>
-<B>18.</B> <A HREF='#18'>What's the limit of the file sizes I can generate with FPDF?</A><BR>
-<B>19.</B> <A HREF='#19'>Can I modify a PDF with FPDF?</A><BR>
-<B>20.</B> <A HREF='#20'>I'd like to make a search engine in PHP and index PDF files. Can I do it with FPDF?</A><BR>
-<B>21.</B> <A HREF='#21'>Can I convert an HTML page to PDF with FPDF?</A><BR>
-<B>22.</B> <A HREF='#22'>Can I concatenate PDF files with FPDF?</A><BR>
+<B>9.</B> <A HREF='#9'>I encounter the following error when I try to generate a PDF: Warning: Cannot add header information - headers already sent by (output started at script.php:X)</A><BR>
+<B>10.</B> <A HREF='#10'>I try to display a variable in the Header method but nothing prints.</A><BR>
+<B>11.</B> <A HREF='#11'>I defined the Header and Footer methods in my PDF class but nothing appears.</A><BR>
+<B>12.</B> <A HREF='#12'>I can't make line breaks work. I put \n in the string printed by MultiCell but it doesn't work.</A><BR>
+<B>13.</B> <A HREF='#13'>I try to put the euro symbol but it doesn't work.</A><BR>
+<B>14.</B> <A HREF='#14'>I draw a frame with very precise dimensions, but when printed I notice some differences.</A><BR>
+<B>15.</B> <A HREF='#15'>I'd like to use the whole surface of the page, but when printed I always have some margins. How can I get rid of them?</A><BR>
+<B>16.</B> <A HREF='#16'>What's the limit of the file sizes I can generate with FPDF?</A><BR>
+<B>17.</B> <A HREF='#17'>Can I modify a PDF with FPDF?</A><BR>
+<B>18.</B> <A HREF='#18'>I'd like to make a search engine in PHP and index PDF files. Can I do it with FPDF?</A><BR>
+<B>19.</B> <A HREF='#19'>Can I convert an HTML page to PDF with FPDF?</A><BR>
+<B>20.</B> <A HREF='#20'>Can I concatenate PDF files with FPDF?</A><BR>
 <BR><BR>
 <P><A NAME='1'></A><B>1.</B> <FONT CLASS='st'>What's exactly the license of FPDF? Are there any usage restrictions?</FONT></P>
 FPDF is Freeware (it is stated at the beginning of the source file). There is no usage
 restriction. You may embed it freely in your application (commercial or not), with or
-without modification.
+without modification. You may redistribute it, too.
 <P><A NAME='2'></A><B>2.</B> <FONT CLASS='st'>When I try to create a PDF, a lot of weird characters show on the screen. Why?</FONT></P>
 These "weird" characters are in fact the actual content of your PDF. This behaviour is a bug of
 IE. When it first receives an HTML page, then a PDF from the same URL, it displays it directly
@@ -196,24 +194,17 @@ Header('Pragma: public');
 
 <P><A NAME='7'></A><B>7.</B> <FONT CLASS='st'>When I execute a script I get the message "FPDF error: Don't alter the locale before including class file".</FONT></P>
 When the decimal separator is configured as a comma before including a file, there is a
-<A HREF="http://bugs.php.net/bug.php?id=17105" TARGET="_blank">bug</A> in PHP and decimal numbers
-get truncated. Therefore you shouldn't make a call to setlocale() before including the class.
+<A HREF="http://bugs.php.net/bug.php?id=17105" TARGET="_blank">bug</A> in some PHP versions and decimal
+numbers get truncated. Therefore you shouldn't make a call to setlocale() before including the class.
 On Unix, you shouldn't set the LC_ALL environment variable neither, for it is equivalent to a
 setlocale() call.
 <P><A NAME='8'></A><B>8.</B> <FONT CLASS='st'>I try to put a PNG and Acrobat says "There was an error processing a page. A drawing error occurred".</FONT></P>
 Acrobat 5 has a bug and is unable to display transparent monochrome images (i.e. with 1 bit per
 pixel). Remove transparency or save your image in 16 colors (4 bits per pixel) or more.
-<P><A NAME='9'></A><B>9.</B> <FONT CLASS='st'>I try to put an image and Acrobat says "There was an error processing a page. Wrong operand type".</FONT></P>
-You have to give at least one dimension; height and width can't be both equal to zero.
-<P><A NAME='10'></A><B>10.</B> <FONT CLASS='st'>I'd like to put my image in real size in the PDF. How can I convert pixels to mm?</FONT></P>
-An image has no "real size". The dimension it is given in the document is arbitrary. Except if
-you want to impose a particular resolution (for instance 72dpi, which is the one typically used
-on screen display), in which case the ratio between the pixel width and the resolution gives the
-dimension.
-<P><A NAME='11'></A><B>11.</B> <FONT CLASS='st'>I encounter the following error when I try to generate a PDF: Warning: Cannot add header information - headers already sent by (output started at script.php:X)</FONT></P>
+<P><A NAME='9'></A><B>9.</B> <FONT CLASS='st'>I encounter the following error when I try to generate a PDF: Warning: Cannot add header information - headers already sent by (output started at script.php:X)</FONT></P>
 You must send nothing to the browser except the PDF itself: no HTML, no space, no carriage return,
 neither before nor after. The script outputs something at line X.
-<P><A NAME='12'></A><B>12.</B> <FONT CLASS='st'>I try to display a variable in the Header method but nothing prints.</FONT></P>
+<P><A NAME='10'></A><B>10.</B> <FONT CLASS='st'>I try to display a variable in the Header method but nothing prints.</FONT></P>
 You have to use the <TT>global</TT> keyword, for instance:
 <BR>
 <BR>
@@ -229,7 +220,7 @@ function Header()<BR>
 </TT>
 </TD></TR></TABLE><BR>
 
-<P><A NAME='13'></A><B>13.</B> <FONT CLASS='st'>I defined the Header and Footer methods in my PDF class but nothing appears.</FONT></P>
+<P><A NAME='11'></A><B>11.</B> <FONT CLASS='st'>I defined the Header and Footer methods in my PDF class but nothing appears.</FONT></P>
 You have to create an object from the PDF class, not FPDF:<BR>
 <BR>
 <TABLE WIDTH="100%" BGCOLOR="#E0E0E0"><TR><TD>
@@ -238,9 +229,9 @@ $pdf=new PDF();
 </TT>
 </TD></TR></TABLE><BR>
 
-<P><A NAME='14'></A><B>14.</B> <FONT CLASS='st'>I can't make line breaks work. I put \n in the string printed by MultiCell but it doesn't work.</FONT></P>
+<P><A NAME='12'></A><B>12.</B> <FONT CLASS='st'>I can't make line breaks work. I put \n in the string printed by MultiCell but it doesn't work.</FONT></P>
 You have to enclose your string with double quotes, not single ones.
-<P><A NAME='15'></A><B>15.</B> <FONT CLASS='st'>I try to put the euro symbol but it doesn't work.</FONT></P>
+<P><A NAME='13'></A><B>13.</B> <FONT CLASS='st'>I try to put the euro symbol but it doesn't work.</FONT></P>
 The standard fonts have the euro character at position 128. You can define a constant like this
 for convenience:
 <BR>
@@ -251,12 +242,12 @@ define('EURO',chr(128));
 </TT>
 </TD></TR></TABLE><BR>
 Note: Acrobat 4 or higher is required to display euro.
-<P><A NAME='16'></A><B>16.</B> <FONT CLASS='st'>I draw a frame with very precise dimensions, but when printed I notice some differences.</FONT></P>
+<P><A NAME='14'></A><B>14.</B> <FONT CLASS='st'>I draw a frame with very precise dimensions, but when printed I notice some differences.</FONT></P>
 To respect dimensions, you have to uncheck the option "Fit to page" in the print dialog box.
-<P><A NAME='17'></A><B>17.</B> <FONT CLASS='st'>I'd like to use the whole surface of the page, but when printed I always have some margins. How can I get rid of them?</FONT></P>
+<P><A NAME='15'></A><B>15.</B> <FONT CLASS='st'>I'd like to use the whole surface of the page, but when printed I always have some margins. How can I get rid of them?</FONT></P>
 All printers have physical margins (different depending on the model), it is therefore impossible
 to remove them and print on the totality of the paper.
-<P><A NAME='18'></A><B>18.</B> <FONT CLASS='st'>What's the limit of the file sizes I can generate with FPDF?</FONT></P>
+<P><A NAME='16'></A><B>16.</B> <FONT CLASS='st'>What's the limit of the file sizes I can generate with FPDF?</FONT></P>
 There is no particular limit. There are some constraints however:
 <BR>
 <BR>
@@ -276,20 +267,23 @@ page 1, page 2... with flush() to force the output). When the document is finish
 a redirection on it with JavaScript or create a link.
 <BR>
 Remark: even when the browser goes in time-out, the script may continue to run on the server.
-<P><A NAME='19'></A><B>19.</B> <FONT CLASS='st'>Can I modify a PDF with FPDF?</FONT></P>
-No.
-<P><A NAME='20'></A><B>20.</B> <FONT CLASS='st'>I'd like to make a search engine in PHP and index PDF files. Can I do it with FPDF?</FONT></P>
+<P><A NAME='17'></A><B>17.</B> <FONT CLASS='st'>Can I modify a PDF with FPDF?</FONT></P>
+You can import an existing PDF document thanks to the FPDI extension:<BR>
+<BR>
+<A HREF="http://fpdi.setasign.de" TARGET="_blank">http://fpdi.setasign.de</A>
+<P><A NAME='18'></A><B>18.</B> <FONT CLASS='st'>I'd like to make a search engine in PHP and index PDF files. Can I do it with FPDF?</FONT></P>
 No. But a GPL C utility does exist, pdftotext, which is able to extract the textual content from
 a PDF. It is provided with the Xpdf package:<BR>
 <BR>
 <A HREF="http://www.foolabs.com/xpdf/" TARGET="_blank">http://www.foolabs.com/xpdf/</A>
-<P><A NAME='21'></A><B>21.</B> <FONT CLASS='st'>Can I convert an HTML page to PDF with FPDF?</FONT></P>
-No. But a GPL C utility does exist, htmldoc, which allows to do it and gives good results:<BR>
+<P><A NAME='19'></A><B>19.</B> <FONT CLASS='st'>Can I convert an HTML page to PDF with FPDF?</FONT></P>
+Not real pages. But a GPL C utility does exist, htmldoc, which allows to do it and gives good results:<BR>
 <BR>
 <A HREF="http://www.easysw.com/htmldoc/" TARGET="_blank">http://www.easysw.com/htmldoc/</A>
-<P><A NAME='22'></A><B>22.</B> <FONT CLASS='st'>Can I concatenate PDF files with FPDF?</FONT></P>
-No. But a free C utility exists to perform this task:<BR>
+<P><A NAME='20'></A><B>20.</B> <FONT CLASS='st'>Can I concatenate PDF files with FPDF?</FONT></P>
+No. But some free tools exist to perform this task:<BR>
 <BR>
-<A HREF="http://thierry.schmit.free.fr/dev/mbtPdfAsm/enMbtPdfAsm2.html" TARGET="_blank">http://thierry.schmit.free.fr/dev/mbtPdfAsm/enMbtPdfAsm2.html</A>
+<A HREF="http://thierry.schmit.free.fr/dev/mbtPdfAsm/enMbtPdfAsm2.html" TARGET="_blank">http://thierry.schmit.free.fr/dev/mbtPdfAsm/enMbtPdfAsm2.html</A><BR STYLE="font-height:2em">
+<A HREF="http://www.accesspdf.com/pdftk/">http://www.accesspdf.com/pdftk/</A>
 </BODY>
 </HTML>

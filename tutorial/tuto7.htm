@@ -29,7 +29,7 @@ with the font. In case you have only a metric file in PFM format, use the conver
 <A HREF="http://www.fpdf.org/fr/dl.php?id=34">here</A>.
 <H4 CLASS='st'>Generation of the metric file</H4>
 The first step for a TrueType consists in generating the AFM file. A utility exists to do this
-task: <A HREF="http://ttf2pt1.sourceforge.net" TARGET="_BLANK">ttf2pt1</A>. The Windows binary
+task: <A HREF="http://ttf2pt1.sourceforge.net" TARGET="_blank">ttf2pt1</A>. The Windows binary
 is available <A HREF="http://www.fpdf.org/fr/dl.php?id=22">here</A>. The command line to use is
 the following:
 <BR>
@@ -96,15 +96,22 @@ The encoding defines the association between a code (from 0 to 255) and a charac
 <LI>cp1251 (Cyrillic)
 <LI>cp1252 (Western Europe)
 <LI>cp1253 (Greek)
+<LI>cp1254 (Turkish)
+<LI>cp1255 (Hebrew)
 <LI>cp1257 (Baltic)
+<LI>cp1258 (Vietnamese)
+<LI>cp874 (Thai)
 <LI>ISO-8859-1 (Western Europe)
 <LI>ISO-8859-2 (Central Europe)
 <LI>ISO-8859-4 (Baltic)
 <LI>ISO-8859-5 (Cyrillic)
 <LI>ISO-8859-7 (Greek)
+<LI>ISO-8859-9 (Turkish)
+<LI>ISO-8859-11 (Thai)
 <LI>ISO-8859-15 (Western Europe)
 <LI>ISO-8859-16 (Central Europe)
-<LI>KOI8-R (Cyrillic)
+<LI>KOI8-R (Russian)
+<LI>KOI8-U (Ukrainian)
 </UL>
 Of course, the font must contain the characters corresponding to the chosen encoding.
 <BR>
@@ -207,7 +214,7 @@ We can now copy the two files in the font directory and write the script:
 <BR>
 <TABLE WIDTH="100%" STYLE="color:#4040C0; border-style:ridge" BORDERCOLORLIGHT="#B0B0E0" BORDERCOLORDARK="#000000" BORDER="2" CELLPADDING=6 CELLSPACING=0 BGCOLOR="#F0F5FF"><TR><TD style="border-width:0px">
 <NOBR><code><font color="#000000">
-&lt;?php<br>define<font class="kw">(</font><font class="str">'FPDF_FONTPATH'</font><font class="kw">,</font><font class="str">'font/'</font><font class="kw">);<br>require(</font><font class="str">'fpdf.php'</font><font class="kw">);<br><br></font>$pdf<font class="kw">=new&nbsp;</font>FPDF<font class="kw">();<br></font>$pdf<font class="kw">-&gt;</font>Open<font class="kw">();<br></font>$pdf<font class="kw">-&gt;</font>AddPage<font class="kw">();<br></font>$pdf<font class="kw">-&gt;</font>AddFont<font class="kw">(</font><font class="str">'Calligrapher'</font><font class="kw">,</font><font class="str">''</font><font class="kw">,</font><font class="str">'calligra.php'</font><font class="kw">);<br></font>$pdf<font class="kw">-&gt;</font>SetFont<font class="kw">(</font><font class="str">'Calligrapher'</font><font class="kw">,</font><font class="str">''</font><font class="kw">,</font>35<font class="kw">);<br></font>$pdf<font class="kw">-&gt;</font>Cell<font class="kw">(</font>0<font class="kw">,</font>10<font class="kw">,</font><font class="str">'Enjoy new fonts with FPDF!'</font><font class="kw">);<br></font>$pdf<font class="kw">-&gt;</font>Output<font class="kw">();<br></font>?&gt;
+&lt;?php<br>define<font class="kw">(</font><font class="str">'FPDF_FONTPATH'</font><font class="kw">,</font><font class="str">'font/'</font><font class="kw">);<br>require(</font><font class="str">'fpdf.php'</font><font class="kw">);<br><br></font>$pdf<font class="kw">=new </font>FPDF<font class="kw">();<br></font>$pdf<font class="kw">-&gt;</font>AddFont<font class="kw">(</font><font class="str">'Calligrapher'</font><font class="kw">,</font><font class="str">''</font><font class="kw">,</font><font class="str">'calligra.php'</font><font class="kw">);<br></font>$pdf<font class="kw">-&gt;</font>AddPage<font class="kw">();<br></font>$pdf<font class="kw">-&gt;</font>SetFont<font class="kw">(</font><font class="str">'Calligrapher'</font><font class="kw">,</font><font class="str">''</font><font class="kw">,</font>35<font class="kw">);<br></font>$pdf<font class="kw">-&gt;</font>Cell<font class="kw">(</font>0<font class="kw">,</font>10<font class="kw">,</font><font class="str">'Enjoy new fonts with FPDF!'</font><font class="kw">);<br></font>$pdf<font class="kw">-&gt;</font>Output<font class="kw">();<br></font>?&gt;
 </font>
 </code></NOBR></TD></TR></TABLE><P></P>
 <SCRIPT>
@@ -226,7 +233,7 @@ The euro character is not present in all encodings, and is not always placed at 
 TH {text-align:left; background:#E0EBFF}
 TH, TD {padding-left:10px; padding-right:10px; border-bottom-width:0px; border-left-width:1px; border-right-width:0px; border-top-width:1px}
 TR.alt0 {background:#FFFFEE}
-TR.alt1 {background:#FFFFDE}
+TR.alt1 {background:#FFFFDF}
 </STYLE>
 <TABLE STYLE="margin-left:15px; border-style:outset" BORDER="2" CELLSPACING="0" CELLPADDING="2" BGCOLOR2="#FFFFEE">
 <TR><TH CLASS="st">Encoding</TH><TH CLASS="st">Position</TH></TR>
@@ -234,15 +241,22 @@ TR.alt1 {background:#FFFFDE}
 <TR CLASS="alt1"><TD>cp1251</TD><TD>136<BR></TD></TR>
 <TR CLASS="alt0"><TD>cp1252</TD><TD>128<BR></TD></TR>
 <TR CLASS="alt1"><TD>cp1253</TD><TD>128<BR></TD></TR>
+<TR CLASS="alt0"><TD>cp1254</TD><TD>128<BR></TD></TR>
+<TR CLASS="alt1"><TD>cp1255</TD><TD>128<BR></TD></TR>
 <TR CLASS="alt0"><TD>cp1257</TD><TD>128<BR></TD></TR>
+<TR CLASS="alt1"><TD>cp1258</TD><TD>128<BR></TD></TR>
+<TR CLASS="alt0"><TD>cp874</TD><TD>128<BR></TD></TR>
 <TR CLASS="alt1"><TD>ISO-8859-1</TD><TD>absent<BR></TD></TR>
 <TR CLASS="alt0"><TD>ISO-8859-2</TD><TD>absent<BR></TD></TR>
 <TR CLASS="alt1"><TD>ISO-8859-4</TD><TD>absent<BR></TD></TR>
 <TR CLASS="alt0"><TD>ISO-8859-5</TD><TD>absent<BR></TD></TR>
 <TR CLASS="alt1"><TD>ISO-8859-7</TD><TD>absent<BR></TD></TR>
+<TR CLASS="alt0"><TD>ISO-8859-9</TD><TD>absent<BR></TD></TR>
+<TR CLASS="alt1"><TD>ISO-8859-11</TD><TD>absent<BR></TD></TR>
 <TR CLASS="alt0"><TD>ISO-8859-15</TD><TD>164<BR></TD></TR>
 <TR CLASS="alt1"><TD>ISO-8859-16</TD><TD>164<BR></TD></TR>
 <TR CLASS="alt0"><TD>KOI8-R</TD><TD>absent<BR></TD></TR>
+<TR CLASS="alt1"><TD>KOI8-U</TD><TD>absent<BR></TD></TR>
 </TABLE>
 <BR>
 ISO-8859-1 is widespread but does not include the euro sign. If you need it, the simplest thing
