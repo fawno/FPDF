@@ -1,6 +1,6 @@
 <HTML>
 <HEAD>
-<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1"> 
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
 <TITLE>Image</TITLE>
 <LINK TYPE="text/css" REL="stylesheet" HREF="../fpdf.css">
 </HEAD>
@@ -10,70 +10,66 @@
 <H4>Version</H4>
 1.1
 <H4>Description</H4>
-Imprime une image dans la page. Le coin supérieur gauche ainsi que la largeur doivent être
-spécifiés; la hauteur peut être précisée ou calculée automatiquement afin de respecter les
-proportions de l'image.
+Prints an image in the page. The upper-left corner and the width must be specified; the height
+may be given or automatically calculated to keep the image proportions.
 <BR>
 <BR>
-Les formats supportés sont le JPEG et le PNG.
+Supported formats are JPEG and PNG.
 <BR>
 <BR>
-Pour le JPEG, toutes les variantes sont autorisées :
+For JPEG, all flavors are allowed:
 <UL>
-<LI>niveaux de gris
-<LI>couleurs vraies (24 bits)
+<LI>gray scales
+<LI>true colors (24 bits)
 <LI>CMYK (32 bits)
 </UL>
-Pour le PNG, sont autorisées :
+For PNG, are allowed:
 <UL>
-<LI>les images en niveaux de gris sur 8 bits au plus (256 teintes)
-<LI>les images en couleurs indexées
-<LI>les images en couleurs vraies (24 bits)
+<LI>gray scales on at most 8 bits (256 levels)
+<LI>indexed colors
+<LI>true colors (24 bits)
 </UL>
-mais ne sont pas supportés :
+but are not supported:
 <UL>
-<LI>L'interlacement
-<LI>L'alpha channel
+<LI>Interlacing
+<LI>Alpha channel
 </UL>
-Si une couleur transparente est définie, elle sera prise en compte (mais ne sera interprétée
-qu'à partir d'Acrobat 4).
+If a transparent color is defined, it will be taken into account (but will only be interpreted
+by Acrobat 4 and above).
 <BR>
 <BR>
-<B>Note : </B>dans la version 1.1, l'utilisation du PNG requiert PHP 4 et l'extension Zlib. Ce
-n'est plus le cas à partir de la version 1.11.
+The format may be specified explicitly or inferred from the file extension.
 <BR>
 <BR>
-Le format peut être spécifié explicitement ou déduit de l'extension du fichier.
-<BR>
-<BR>
-Si une image est utilisée plusieurs fois, une seule copie sera intégrée au document.
-<H4>Paramètres</H4>
+If an image is used several times, only one copy will be embedded into the file.
+<H4>Parameters</H4>
 <TT><U>file</U></TT>
 <BLOCKQUOTE>
-Nom du fichier contenant l'image.
+Name of the file containing the image.
 </BLOCKQUOTE>
 <TT><U>x</U></TT>
 <BLOCKQUOTE>
-Abscisse du coin supérieur gauche.
+Abscissa of the upper-left corner.
 </BLOCKQUOTE>
 <TT><U>y</U></TT>
 <BLOCKQUOTE>
-Ordonnée du coin supérieur gauche.
+Ordinate of the upper-left corner.
 </BLOCKQUOTE>
 <TT><U>w</U></TT>
 <BLOCKQUOTE>
-Largeur de l'image dans la page.
+Width of the image in the page.
 </BLOCKQUOTE>
 <TT><U>h</U></TT>
 <BLOCKQUOTE>
-Hauteur de l'image dans la page. Si elle n'est pas indiquée ou vaut zéro, elle est
-automatiquement calculée afin de respecter les proportions d'origine.
+Height of the image in the page. If not specified or equal to zero, it is automatically
+calculated to keep the original proportions.
 </BLOCKQUOTE>
 <TT><U>type</U></TT>
 <BLOCKQUOTE>
-Format de l'image. Les valeurs possibles sont (indépendamment de la casse) : JPG, JPEG, PNG.
-S'il n'est pas précisé, le type est déduit de l'extension du fichier.
+Image format. Possible values are (case insensitive) : <TT>JPG</TT>, <TT>JPEG</TT>, <TT>PNG</TT>.
+If not specified, the type is inferred from the file extension.
 </BLOCKQUOTE>
+<H6></H6>
 <HR>
 <DIV ALIGN="CENTER"><A HREF="index.htm">Index</A></DIV>
 </BODY>

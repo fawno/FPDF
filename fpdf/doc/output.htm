@@ -1,6 +1,6 @@
 <HTML>
 <HEAD>
-<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1"> 
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
 <TITLE>Output</TITLE>
 <LINK TYPE="text/css" REL="stylesheet" HREF="../fpdf.css">
 </HEAD>
@@ -8,29 +8,24 @@
 <H2>Output</H2>
 <TT>Output([<B>string</B> file [, <B>boolean</B> download]])</TT>
 <H4>Description</H4>
-Sauve le document PDF dans un fichier local ou l'envoie au navigateur. Dans ce dernier cas,
-on peut utiliser le plug-in (s'il est présent) ou forcer la boîte de téléchargement de fichier.
+Saves the PDF document in a local file or sends it to the browser. In the last case, the
+plug-in may be used (if present) or a download ("Save as" dialog box) may be forced.
 <BR>
-La méthode commence par appeler Close() si nécessaire pour terminer le document.
-<BR>
-<BR>
-<B>Note : </B>on ne peut forcer la boîte de téléchargement qu'à partir de la version 1.2.
-<H4>Paramètres</H4>
+The method first calls Close() if necessary to terminate the document.
+<H4>Parameters</H4>
 <TT><U>file</U></TT>
 <BLOCKQUOTE>
-Le nom du fichier. S'il est vide ou non renseigné, le document est envoyé au navigateur qui
-utilisera le plug-in s'il est installé.
+The name of the file. If empty or not given, the document will be sent to the browser which
+will then use the plug-in (if available).
 </BLOCKQUOTE>
 <TT><U>download</U></TT>
 <BLOCKQUOTE>
-Dans le cas où <TT>file</TT> est renseigné, indique si le fichier doit être sauvé en local
-(<TT>false</TT>) où provoquer la boîte de téléchargement de fichier (<TT>true</TT>). Vaut
-<TT>false</TT> par défaut.
+If <TT>file</TT> was specified, indicates whether it must be saved locally (<TT>false</TT>)
+or cause a Save as dialog box by the browser. Default value: <TT>false</TT>.
 </BLOCKQUOTE>
-<H4>Voir</H4>
+<H4>See also</H4>
 <A HREF="close.htm">Close()</A>.
-<BR>
-<BR>
+<H6></H6>
 <HR>
 <DIV ALIGN="CENTER"><A HREF="index.htm">Index</A></DIV>
 </BODY>

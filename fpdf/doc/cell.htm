@@ -1,76 +1,83 @@
 <HTML>
 <HEAD>
-<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1"> 
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
 <TITLE>Cell</TITLE>
 <LINK TYPE="text/css" REL="stylesheet" HREF="../fpdf.css">
 </HEAD>
 <BODY>
 <H2>Cell</H2>
-<TT>Cell(<B>double</B> w [, <B>double</B> h [, <B>string</B> txt [, <B>string</B> border [, <B>string</B> ln [, <B>string</B> align]]]]])</TT>
+<TT>Cell(<B>double</B> w [, <B>double</B> h [, <B>string</B> txt [, <B>int</B> border [, <B>int</B> ln [, <B>string</B> align [, <B>int</B> fill]]]]]])</TT>
 <H4>Description</H4>
-Imprime une cellule (zone rectangulaire) avec éventuellement un cadre et une chaîne de
-caractères. Le coin supérieur gauche de la cellule correspond à la position courante. Le
-texte peut être aligné ou centré. Après l'appel, la position courante se déplace à droite
-ou un retour à la ligne est effectué.
+Prints a cell (rectangular area) with an optional border and a character string. The upper-left
+corner of the cell corresponds to the current position. The text can be aligned or centered.
+After the call, the current position moves to the right or to the next line.
 <BR>
-La chaîne doit utiliser l'encodage de caractères de Windows.
+The string uses the Windows character set (Cp1252, Western-European).
 <BR>
-Si le saut de page automatique est activé et que la cellule dépasse le seuil de déclenchement,
-un saut de page est effectué avant de l'imprimer.
-<H4>Paramètres</H4>
+If automatic page breaking is enabled and the cell goes beyond the limit, a page break is
+done before outputting.
+<H4>Parameters</H4>
 <TT><U>w</U></TT>
 <BLOCKQUOTE>
-Largeur de la cellule.
+Cell width. If <TT>0</TT>, the cell extends up to the right margin (the right margin equals
+the left one).
 </BLOCKQUOTE>
 <TT><U>h</U></TT>
 <BLOCKQUOTE>
-Hauteur de la cellule.
-Valeur par défaut : 0.
+Cell height.
+Default value: <TT>0</TT>.
 </BLOCKQUOTE>
 <TT><U>txt</U></TT>
 <BLOCKQUOTE>
-Chaîne à imprimer.
-Valeur par défaut : chaîne vide.
+String to print.
+Default value: empty string.
 </BLOCKQUOTE>
 <TT><U>border</U></TT>
 <BLOCKQUOTE>
-Indique si un cadre doit être tracé autour de la cellule (0 : non, 1 : oui).
-Valeur par défaut : 0.
+Indicates if a border must be drawn around the cell (<TT>0</TT>: no, <TT>1</TT>: yes).
+Default value: <TT>0</TT>.
 </BLOCKQUOTE>
 <TT><U>ln</U></TT>
 <BLOCKQUOTE>
-Indique si la position courante se décale à droite (0) ou passe à la ligne (1). Mettre 1
-est équivalent à appeler la méthode Ln() juste après Cell().
-<BR>
-Valeur par défaut : 0.
+Indicates if the current position must go to the right (<TT>0</TT>) or to the beginning of the next
+line (<TT>1</TT>). Putting <TT>1</TT> is equivalent to calling Ln() just after Cell().
+Default value: <TT>0</TT>.
 </BLOCKQUOTE>
 <TT><U>align</U></TT>
 <BLOCKQUOTE>
-Permet de centrer ou d'aligner le texte. Les valeurs possibles sont :
+Allows to center or align the text. Possible values are:
 <UL>
-<LI><TT>L</TT> ou chaîne vide : alignement à gauche (valeur par défaut)
-<LI><TT>C</TT> : centrage
-<LI><TT>R</TT> : alignement à droite
+<LI><TT>L</TT> or empty string: left align (default value)
+<LI><TT>C</TT>: center
+<LI><TT>R</TT>: right align
 </UL>
 </BLOCKQUOTE>
-<H4>Exemple</H4>
+<TT><U>fill</U></TT>
+<BLOCKQUOTE>
+Indicates if the cell background must be painted (<TT>1</TT>) or transparent (<TT>0</TT>).
+Default value: <TT>0</TT>.
+</BLOCKQUOTE>
+<H4>Example</H4>
 <TABLE WIDTH="100%" BGCOLOR="#E0E0E0"><TR><TD>
-<PRE>
-//Sélection de la police
-$pdf->SetFont('Arial','B',16);
-//Décalage de 8 cm à droite
-$pdf->Cell(80);
-//Texte centré dans une cellule 20*10 mm encadrée et retour à la ligne
-$pdf->Cell(20,10,'Titre',1,1,'C');
-</PRE>
-</TD></TR></TABLE>
-<H4>Voir</H4>
+<TT>
+//Set font<BR>
+$pdf->SetFont('Arial','B',16);<BR>
+//Move to 8 cm to the right<BR>
+$pdf->Cell(80);<BR>
+//Centered text in a framed 20*10 mm cell and line break<BR>
+$pdf->Cell(20,10,'Title',1,1,'C');
+</TT>
+</TD></TR></TABLE><BR>
+<H4>See also</H4>
 <A HREF="setfont.htm">SetFont()</A>,
+<A HREF="setdrawcolor.htm">SetDrawColor()</A>,
+<A HREF="setfillcolor.htm">SetFillColor()</A>,
+<A HREF="settextcolor.htm">SetTextColor()</A>,
 <A HREF="setlinewidth.htm">SetLineWidth()</A>,
 <A HREF="ln.htm">Ln()</A>,
+<A HREF="multicell.htm">MultiCell()</A>,
 <A HREF="setautopagebreak.htm">SetAutoPageBreak()</A>.
-<BR>
-<BR>
+<H6></H6>
 <HR>
 <DIV ALIGN="CENTER"><A HREF="index.htm">Index</A></DIV>
 </BODY>

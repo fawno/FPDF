@@ -1,0 +1,46 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
+<TITLE>History</TITLE>
+<LINK TYPE="text/css" REL="stylesheet" HREF="fpdf.css">
+</HEAD>
+<BODY>
+<H2>History</H2>
+<B>v1.3</B> (2001/12/03)
+<BLOCKQUOTE>
+- Line break and text justification support (MultiCell()).<BR>
+- Color support (SetDrawColor(), SetFillColor(), SetTextColor()). Possibility to draw filled rectangles and paint cell background.<BR>
+- A cell whose width is declared null extends up to the right margin of the page.<BR>
+- Line width is now retained from page to page and defaults to 0.2 mm.<BR>
+- Added SetXY() method.<BR>
+- Fixed a passing by reference done in a deprecated manner for PHP4.<BR>
+</BLOCKQUOTE>
+<B>v1.2</B> (2001/11/11)
+<BLOCKQUOTE>
+- Added font metric files and GetStringWidth() method.<BR>
+- Centering and right-aligning text in cells.<BR>
+- Display mode control (SetDisplayMode()).<BR>
+- Added methods to set document properties (SetAuthor(), SetCreator(), SetKeywords(), SetSubject(), SetTitle()).<BR>
+- Possibility to force PDF download by browser.<BR>
+- Added SetX() and GetX() methods.<BR>
+- During automatic page break, current abscissa is now retained.<BR>
+</BLOCKQUOTE>
+<B>v1.11</B> (2001/10/20)
+<BLOCKQUOTE>
+- PNG support doesn't require PHP4/Zlib any more. Data are now put directly into PDF without any decompression/recompression stage.<BR>
+- Image insertion works correctly even with magic_quotes_runtime option set to on.<BR>
+</BLOCKQUOTE>
+<B>v1.1</B> (2001/10/07)
+<BLOCKQUOTE>
+- JPEG and PNG image support.<BR>
+</BLOCKQUOTE>
+<B>v1.01</B> (2001/10/03)
+<BLOCKQUOTE>
+- Fixed a bug involving page break: in case when Header() doesn't specify a font, the one from previous page was not restored and produced an incorrect document.<BR>
+</BLOCKQUOTE>
+<B>v1.0</B> (2001/09/17)
+<BLOCKQUOTE>
+- First version.<BR>
+</BLOCKQUOTE>
+</BODY>
+</HTML>

@@ -1,14 +1,14 @@
 <?php
 /****************************************************************************
-* Logiciel : FPDF                                                           *
-* Version :  1.2                                                            *
-* Date :     11/11/2001                                                     *
-* Licence :  Freeware                                                       *
-* Auteur :   Olivier PLATHEY                                                *
+* Software : FPDF                                                           *
+* Version :  1.3                                                            *
+* Date :     2001/12/03                                                     *
+* License :  Freeware                                                       *
+* Author :   Olivier PLATHEY                                                *
 *                                                                           *
-* Vous pouvez utiliser et modifier ce logiciel comme vous le souhaitez.     *
+* You may use and modify this software as you wish.                         *
 ****************************************************************************/
-define('FPDF_VERSION','1.2');
+define('FPDF_VERSION','1.3');
 
 class FPDF
 {
@@ -18,13 +18,15 @@ var $n;                 //current number of objects
 var $offset;            //stream offset
 var $offsets;           //array of object offsets
 var $buffer;            //buffer holding in-memory PDF
-var $w,$h;              //dimensions of page in points
+var $wPt,$hPt;          //dimensions of page in points
+var $w,$h;              //dimensions of page in user unit
 var $lMargin;           //left margin in user unit
 var $tMargin;           //top margin in user unit
 var $cMargin;           //cell margin in user unit
 var $x,$y;              //current position in user unit for cell positionning
 var $lasth;             //height of last cell printed
 var $k;                 //scale factor (number of points in user unit)
+var $LineWidth;         //line width in user unit
 var $fontnames;         //array of Postscript (Type1) font names
 var $fonts;             //array of used fonts
 var $images;            //array of used images
@@ -32,6 +34,11 @@ var $FontFamily;        //current font family
 var $FontStyle;         //current font style
 var $FontSizePt;        //current font size in points
 var $FontSize;          //current font size in user unit
+var $DrawColor;         //commands for drawing color
+var $FillColor;         //commands for filling color
+var $TextColor;         //commands for text color
+var $ColorFlag;         //indicates whether fill and text colors are different
+var $ws;                //word spacing
 var $AutoPageBreak;     //automatic page breaking
 var $PageBreakTrigger;  //threshold used to trigger page breaks
 var $InFooter;          //flag set when processing footer
@@ -58,8 +65,14 @@ function FPDF($orientation='P',$unit='mm')
 	$this->images=array();
 	$this->InFooter=false;
 	$this->DocOpen=false;
+	$this->FontFamily='';
 	$this->FontStyle='';
 	$this->FontSizePt=12;
+	$this->DrawColor='0 G';
+	$this->FillColor='0 g';
+	$this->TextColor='0 g';
+	$this->ColorFlag=false;
+	$this->ws=0;
 	//Font names
 	$this->fontnames['courier']='Courier';
 	$this->fontnames['courierB']='Courier-Bold';
@@ -79,13 +92,13 @@ function FPDF($orientation='P',$unit='mm')
 	$orientation=strtolower($orientation);
 	if($orientation=='p' or $orientation=='portrait')
 	{
-		$this->w=595.3;
-		$this->h=841.9;
+		$this->wPt=595.3;
+		$this->hPt=841.9;
 	}
 	elseif($orientation=='l' or $orientation=='landscape')
 	{
-		$this->w=841.9;
-		$this->h=595.3;
+		$this->wPt=841.9;
+		$this->hPt=595.3;
 	}
 	else
 		$this->Error('Incorrect orientation : '.$orientation);
@@ -100,6 +113,10 @@ function FPDF($orientation='P',$unit='mm')
 		$this->k=72;
 	else
 		$this->Error('Incorrect unit : '.$unit);
+	$this->w=(double)sprintf('%.2f',$this->wPt/$this->k);
+	$this->h=(double)sprintf('%.2f',$this->hPt/$this->k);
+	//Line width (0.2 mm)
+	$this->LineWidth=(double)sprintf('%.3f',.567/$this->k);
 	//Page margins (1 cm)
 	$margin=(double)sprintf('%.2f',28.35/$this->k);
 	$this->SetMargins($margin,$margin);
@@ -122,7 +139,7 @@ function SetAutoPageBreak($auto,$margin=0)
 {
 	//Set auto page break mode and triggering margin
 	$this->AutoPageBreak=$auto;
-	$this->PageBreakTrigger=$this->h/$this->k-$margin;
+	$this->PageBreakTrigger=$this->h-$margin;
 }
 
 function SetDisplayMode($mode,$z=100)
@@ -198,13 +215,16 @@ function Close()
 function AddPage()
 {
 	//Start a new page
-	$page=$this->page;
-	if($page>0)
+	$family=$this->FontFamily;
+	$style=$this->FontStyle;
+	$size=$this->FontSizePt;
+	$lw=$this->LineWidth;
+	$dc=$this->DrawColor;
+	$fc=$this->FillColor;
+	$tc=$this->TextColor;
+	$cf=$this->ColorFlag;
+	if($this->page>0)
 	{
-		//Remember font
-		$family=$this->FontFamily;
-		$style=$this->FontStyle;
-		$size=$this->FontSizePt;
 		//Page footer
 		$this->InFooter=true;
 		$this->Footer();
@@ -214,15 +234,44 @@ function AddPage()
 	}
 	//Start new page
 	$this->_beginpage();
-	//Set line width to 1 point
-	$this->SetLineWidth(sprintf('%.2f',1/$this->k));
 	//Set line cap style to square
 	$this->_out('2 J');
+	//Set line width
+	$this->_out($lw.' w');
+	//Set font
+	if($family)
+		$this->SetFont($family,$style,$size);
+	//Set colors
+	if($dc!='0 G')
+		$this->_out($dc);
+	if($fc!='0 g')
+		$this->_out($fc);
+	$this->TextColor=$tc;
+	$this->ColorFlag=$cf;
 	//Page header
 	$this->Header();
+	//Restore line width
+	if($this->LineWidth!=$lw)
+	{
+		$this->LineWidth=$lw;
+		$this->_out($lw.' w');
+	}
 	//Restore font
-	if($page>0 and $family!='')
+	if($family)
 		$this->SetFont($family,$style,$size);
+	//Restore colors
+	if($this->DrawColor!=$dc)
+	{
+		$this->DrawColor=$dc;
+		$this->_out($dc);
+	}
+	if($this->FillColor!=$fc)
+	{
+		$this->FillColor=$fc;
+		$this->_out($fc);
+	}
+	$this->TextColor=$tc;
+	$this->ColorFlag=$cf;
 }
 
 function Header()
@@ -241,18 +290,53 @@ function PageNo()
 	return $this->page;
 }
 
+function SetDrawColor($r,$g=-1,$b=-1)
+{
+	//Set color for all stroking operations
+	if(($r==0 and $g==0 and $b==0) or $g==-1)
+		$this->DrawColor=substr($r/255,0,5).' G';
+	else
+		$this->DrawColor=substr($r/255,0,5).' '.substr($g/255,0,5).' '.substr($b/255,0,5).' RG';
+	if($this->page>0)
+		$this->_out($this->DrawColor);
+}
+
+function SetFillColor($r,$g=-1,$b=-1)
+{
+	//Set color for all filling operations
+	if(($r==0 and $g==0 and $b==0) or $g==-1)
+		$this->FillColor=substr($r/255,0,5).' g';
+	else
+		$this->FillColor=substr($r/255,0,5).' '.substr($g/255,0,5).' '.substr($b/255,0,5).' rg';
+	$this->ColorFlag=($this->FillColor!=$this->TextColor);
+	if($this->page>0)
+		$this->_out($this->FillColor);
+}
+
+function SetTextColor($r,$g=-1,$b=-1)
+{
+	//Set color for text
+	if(($r==0 and $g==0 and $b==0) or $g==-1)
+		$this->TextColor=substr($r/255,0,5).' g';
+	else
+		$this->TextColor=substr($r/255,0,5).' '.substr($g/255,0,5).' '.substr($b/255,0,5).' rg';
+	$this->ColorFlag=($this->FillColor!=$this->TextColor);
+}
+
 function GetStringWidth($s)
 {
 	//Get width of a string in the current font
 	global $fpdf_charwidths;
 
-	return $this->_getstringwidth($s,&$fpdf_charwidths[$this->FontFamily.$this->FontStyle]);
+	return $this->_getstringwidth($s,$fpdf_charwidths[$this->FontFamily.$this->FontStyle]);
 }
 
 function SetLineWidth($width)
 {
 	//Set line width
-	$this->_out($width.' w');
+	$this->LineWidth=$width;
+	if($this->page>0)
+		$this->_out($width.' w');
 }
 
 function Line($x1,$y1,$x2,$y2)
@@ -261,10 +345,16 @@ function Line($x1,$y1,$x2,$y2)
 	$this->_out($x1.' -'.$y1.' m '.$x2.' -'.$y2.' l S');
 }
 
-function Rect($x,$y,$w,$h)
+function Rect($x,$y,$w,$h,$style='')
 {
 	//Draw a rectangle
-	$this->_out($x.' -'.$y.' '.$w.' -'.$h.' re S');
+	if($style=='F')
+		$op='f';
+	elseif($style=='FD' or $style=='DF')
+		$op='B';
+	else
+		$op='S';
+	$this->_out($x.' -'.$y.' '.$w.' -'.$h.' re '.$op);
 }
 
 function SetFont($family,$style='',$size=0)
@@ -284,22 +374,34 @@ function Text($x,$y,$txt)
 {
 	//Output a string
 	$txt=str_replace(')','\\)',str_replace('(','\\(',str_replace('\\','\\\\',$txt)));
-	$this->_out('BT '.$x.' -'.$y.' Td ('.$txt.') Tj ET');
+	$s='BT '.$x.' -'.$y.' Td ('.$txt.') Tj ET';
+	if($this->ColorFlag)
+		$s='q '.$this->TextColor.' '.$s.' Q';
+	$this->_out($s);
 }
 
-function Cell($w,$h=0,$txt='',$border=0,$ln=0,$align='')
+function Cell($w,$h=0,$txt='',$border=0,$ln=0,$align='',$fill=0)
 {
 	//Output a cell
 	if($this->y+$h>$this->PageBreakTrigger and $this->AutoPageBreak and !$this->InFooter)
 	{
-		$old=$this->x;
+		$x=$this->x;
 		$this->AddPage();
-		$this->x=$old;
+		$this->x=$x;
+		if($this->ws>0)
+			$this->_out($this->ws.' Tw');
 	}
-	if($border==1)
-		$s=$this->x.' -'.$this->y.' '.$w.' -'.$h.' re S ';
-	else
-		$s='';
+	if($w==0)
+		$w=$this->w-$this->lMargin-$this->x;
+	$s='';
+	if($fill==1 or $border==1)
+	{
+		$s.=$this->x.' -'.$this->y.' '.$w.' -'.$h.' re ';
+		if($fill==1)
+			$s.=($border==1) ? 'B ' : 'f ';
+		else
+			$s.='S ';
+	}
 	if($txt!='')
 	{
 		if($align=='R')
@@ -309,7 +411,11 @@ function Cell($w,$h=0,$txt='',$border=0,$ln=0,$align='')
 		else
 			$dx=$this->cMargin;
 		$txt=str_replace(')','\\)',str_replace('(','\\(',str_replace('\\','\\\\',$txt)));
+		if($this->ColorFlag)
+			$s.='q '.$this->TextColor.' ';
 		$s.='BT '.($this->x+$dx).' -'.($this->y+.5*$h+.3*$this->FontSize).' Td ('.$txt.') Tj ET';
+		if($this->ColorFlag)
+			$s.=' Q';
 	}
 	if($s)
 		$this->_out($s);
@@ -322,6 +428,14 @@ function Cell($w,$h=0,$txt='',$border=0,$ln=0,$align='')
 	}
 	else
 		$this->x+=$w;
+}
+
+function MultiCell($w,$h,$txt,$border=0,$align='J',$fill=0)
+{
+	//Output text with automatic or explicit line breaks
+	global $fpdf_charwidths;
+
+	$this->_multicell($w,$h,$txt,$border,$align,$fill,$fpdf_charwidths[$this->FontFamily.$this->FontStyle]);
 }
 
 function Image($file,$x,$y,$w,$h=0,$type='')
@@ -380,7 +494,7 @@ function SetX($x)
 	if($x>=0)
 		$this->x=$x;
 	else
-		$this->x=(double)sprintf('%.2f',$this->w/$this->k)+$x;
+		$this->x=$this->w+$x;
 }
 
 function GetY()
@@ -391,12 +505,19 @@ function GetY()
 
 function SetY($y)
 {
-	//Set y position
+	//Set y position and reset x
 	$this->x=$this->lMargin;
 	if($y>=0)
 		$this->y=$y;
 	else
-		$this->y=(double)sprintf('%.2f',$this->h/$this->k)+$y;
+		$this->y=$this->h+$y;
+}
+
+function SetXY($x,$y)
+{
+	//Set x and y positions
+	$this->SetY($y);
+	$this->SetX($x);
 }
 
 function Output($file='',$download=false)
@@ -516,7 +637,7 @@ function _enddoc()
 		$kids.=(2+3*$i).' 0 R ';
 	$this->_out($kids.']');
 	$this->_out('/Count '.$this->page);
-	$this->_out('/MediaBox [0 0 '.$this->w.' '.$this->h.']');
+	$this->_out('/MediaBox [0 0 '.$this->wPt.' '.$this->hPt.']');
 	$this->_out('/Resources << /ProcSet [/PDF /Text /ImageC]');
 	$this->_out('/Font <<');
 	for($i=1;$i<=count($this->fonts);$i++)
@@ -597,7 +718,7 @@ function _beginpage()
 	$this->_out('stream');
 	$this->offset=strlen($this->buffer);
 	//Set transformation matrix
-	$this->_out(sprintf('%.6f',$this->k).' 0 0 '.sprintf('%.6f',$this->k).' 0 '.$this->h.' cm');
+	$this->_out(sprintf('%.6f',$this->k).' 0 0 '.sprintf('%.6f',$this->k).' 0 '.$this->hPt.' cm');
 }
 
 function _endpage()
@@ -667,7 +788,8 @@ function _setfont($family,$style,$size)
 	$this->FontStyle=$style;
 	$this->FontSizePt=$size;
 	$this->FontSize=(double)sprintf('%.2f',$size/$this->k);
-	$this->_out('BT /F'.$this->fonts[$fontname].' '.$this->FontSize.' Tf ET');
+	if($this->page>0)
+		$this->_out('BT /F'.$this->fonts[$fontname].' '.$this->FontSize.' Tf ET');
 	return true;
 }
 
@@ -680,10 +802,11 @@ function _setfontsize($size)
 	$fontname=$this->fontnames[$this->FontFamily.$this->FontStyle];
 	$this->FontSizePt=$size;
 	$this->FontSize=(double)sprintf('%.2f',$size/$this->k);
-	$this->_out('BT /F'.$this->fonts[$fontname].' '.$this->FontSize.' Tf ET');
+	if($this->page>0)
+		$this->_out('BT /F'.$this->fonts[$fontname].' '.$this->FontSize.' Tf ET');
 }
 
-function _getstringwidth($s,$cw)
+function _getstringwidth($s,&$cw)
 {
 	//Compute width of a string
 	$w=0;
@@ -691,6 +814,119 @@ function _getstringwidth($s,$cw)
 	for($i=0;$i<$l;$i++)
 		$w+=$cw[$s[$i]];
 	return $w*$this->FontSize/1000;
+}
+
+function _multicell($w,$h,$txt,$border,$align,$fill,&$cw)
+{
+	//Output text with automatic or explicit line breaks
+	$x=$this->x;
+	if($w==0)
+		$w=$this->w-$this->lMargin-$x;
+	$wmax=($w-2*$this->cMargin)*1000/$this->FontSize;
+	$s=str_replace("\r",'',$txt);
+	$nb=strlen($s);
+	if($nb>0 and $s[$nb-1]=="\n")
+		$nb--;
+	$sep=-1;
+	$i=0;
+	$j=0;
+	$l=0;
+	$ns=0;
+	$nl=1;
+	while($i<$nb)
+	{
+		//Get next character
+		$c=$s[$i];
+		if($c=="\n")
+		{
+			//Explicit line break
+			if($align=='J')
+			{
+				$this->ws=0;
+				$this->_out('0 Tw');
+			}
+			$this->Cell($w,$h,substr($s,$j,$i-$j),0,1,$align,$fill);
+			$i++;
+			$this->x=$x;
+			$sep=-1;
+			$j=$i;
+			$l=0;
+			$ns=0;
+			if($border)
+			{
+				$x=$this->x;
+				$y=$this->y-$h;
+				if($nl==1)
+					$this->_out($x.' -'.$y.' m '.($x+$w).' -'.$y.' l');
+				$this->_out($x.' -'.$y.' m '.$x.' -'.$this->y.' l '.($x+$w).' -'.$y.' m '.($x+$w).' -'.$this->y.' l S');
+			}
+			$nl++;
+			continue;
+		}
+		if($c==' ')
+		{
+			$sep=$i;
+			$ls=$l;
+			$ns++;
+		}
+		$l+=$cw[$c];
+		if($l>$wmax)
+		{
+			//Automatic line break
+			if($sep==-1)
+			{
+				if($i==$j)
+					$i++;
+				if($align=='J')
+				{
+					$this->ws=0;
+					$this->_out('0 Tw');
+				}
+				$this->Cell($w,$h,substr($s,$j,$i-$j),0,1,$align,$fill);
+			}
+			else
+			{
+				if($align=='J')
+				{
+					$this->ws=($ns>1) ? ($wmax-$ls)/1000*$this->FontSize/($ns-1) : 0;
+					$this->_out(substr($this->ws,0,6).' Tw');
+				}
+				$this->Cell($w,$h,substr($s,$j,$sep-$j),0,1,$align,$fill);
+				$i=$sep+1;
+			}
+			$this->x=$x;
+			$sep=-1;
+			$j=$i;
+			$l=0;
+			$ns=0;
+			if($border)
+			{
+				$x=$this->x;
+				$y=$this->y-$h;
+				if($nl==1)
+					$this->_out($x.' -'.$y.' m '.($x+$w).' -'.$y.' l');
+				$this->_out($x.' -'.$y.' m '.$x.' -'.$this->y.' l '.($x+$w).' -'.$y.' m '.($x+$w).' -'.$this->y.' l S');
+			}
+			$nl++;
+		}
+		else
+			$i++;
+	}
+	//Last chunk
+	if($align=='J')
+	{
+		$this->ws=0;
+		$this->_out('0 Tw');
+	}
+	$this->Cell($w,$h,substr($s,$j,$i),0,1,$align,$fill);
+	if($border)
+	{
+		$x=$this->x;
+		$y=$this->y-$h;
+		if($nl==1)
+			$this->_out($x.' -'.$y.' m '.($x+$w).' -'.$y.' l');
+		$this->_out($x.' -'.$y.' m '.$x.' -'.$this->y.' l '.($x+$w).' -'.$this->y.' l '.($x+$w).' -'.$y.' l S');
+	}
 }
 
 function _parsejpg($file)

@@ -1,6 +1,6 @@
 <HTML>
 <HEAD>
-<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1"> 
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
 <TITLE>Error</TITLE>
 <LINK TYPE="text/css" REL="stylesheet" HREF="../fpdf.css">
 </HEAD>
@@ -8,15 +8,15 @@
 <H2>Error</H2>
 <TT>Error(<B>string</B> msg)</TT>
 <H4>Description</H4>
-Cette méthode est appelée automatiquement en cas d'erreur fatale; elle se contente d'afficher
-le message et de mettre fin à l'exécution du script. Une classe dérivée peut la redéfinir mais
-elle doit impérativement arrêter l'exécution du script, sinon le fichier PDF résultant serait
-probablement invalide.
-<H4>Paramètres</H4>
+This method is automatically called in case of fatal error; it simply outputs the message
+and halts the execution. An inherited class may override it to customize the error handling
+but should always halt the script, or the resulting document would probably be invalid.
+<H4>Parameters</H4>
 <TT><U>msg</U></TT>
 <BLOCKQUOTE>
-Le message d'erreur.
+The error message.
 </BLOCKQUOTE>
+<H6></H6>
 <HR>
 <DIV ALIGN="CENTER"><A HREF="index.htm">Index</A></DIV>
 </BODY>

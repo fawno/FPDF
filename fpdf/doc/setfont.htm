@@ -1,6 +1,6 @@
 <HTML>
 <HEAD>
-<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1"> 
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
 <TITLE>SetFont</TITLE>
 <LINK TYPE="text/css" REL="stylesheet" HREF="../fpdf.css">
 </HEAD>
@@ -8,88 +8,86 @@
 <H2>SetFont</H2>
 <TT>SetFont(<B>string</B> family [, <B>string</B> style [, <B>double</B> size]])</TT>
 <H4>Description</H4>
-Fixe la police utilisée pour imprimer les chaînes de caractères. Il est obligatoire
-d'appeler cette fonction au moins une fois avant d'imprimer du texte, sinon le document
-résultant ne sera pas valide.
+Sets the font used to print character strings. It is mandatory to call this method
+at least once before printing text or the resulting document would not be valid.
 <BR>
-Si vous souhaitez simplement changer la taille courante, il est plus simple d'appeler
-SetFontSize().
+The method can be called before the first page is created and the font is retained from page
+to page.
+<BR>
+If you just wish to change the current font size, it is simpler to call SetFontSize().
 <BR>
 <BR>
-<B>Note : </B>à partir de la version 1.2, les fichiers de métrique des polices doivent
-être accessibles. Il y a trois possibilités pour cela :
+<B>Note: </B>for the method to work, the font metric files must be accessible. There are three
+possibilities for this:
 <BR>
 <BR>
 <UL>
-<LI>Ils sont dans le répertoire courant (celui du script en cours d'exécution)
+<LI>They are in the current directory (the one where the running script lies)
 <BR>
-<LI>Ils sont dans un des répertoires définis par le paramètre <TT>include_path</TT>
+<LI>They are in one of the directories defined by the <TT>include_path</TT> parameter
 <BR>
-<LI>Ils sont dans le répertoire défini par la constante FPDF_FONTPATH
+<LI>They are in the directory defined by the <TT>FPDF_FONTPATH</TT> constant
 </UL>
-Exemple pour ce dernier cas (notez le slash final) :
+Example for the last case (note the trailing slash):
 <BR>
 <BR>
 <TABLE WIDTH="100%" BGCOLOR="#E0E0E0"><TR><TD>
-<PRE>
-define('FPDF_FONTPATH','/home/www/font/');
+<TT>
+define('FPDF_FONTPATH','/home/www/font/');<BR>
 require('fpdf.php');
-</PRE>
-</TD></TR></TABLE>
-<BR>
-Si le fichier correspondant à la police demandée n'est pas trouvé, l'erreur "Could not include
-font metric file" est générée.
-<H4>Paramètres</H4>
+</TT>
+</TD></TR></TABLE><BR>
+If the file corresponding to the requested font is not found, the error "Could not include
+font metric file" is generated.
+<H4>Parameters</H4>
 <TT><U>family</U></TT>
 <BLOCKQUOTE>
-Famille de la police. Les valeurs possibles sont (indépendamment de la casse) :
+Family font. Possible values are (case insensitive):
 <UL>
-<LI><TT>Courier</TT> (caractères de largeur fixe)
-<LI><TT>Helvetica<TT> ou </TT>Arial</TT> (synonymes; sans serif)
-<LI><TT>Times</TT> (avec serif)
-<LI><TT>Symbol</TT> (symboles)
-<LI><TT>ZapfDingbats</TT> (symboles)
+<LI><TT>Courier</TT> (fixed-width)
+<LI><TT>Helvetica<TT> or </TT>Arial</TT> (synonymous; sans serif)
+<LI><TT>Times</TT> (serif)
+<LI><TT>Symbol</TT> (symbols)
+<LI><TT>ZapfDingbats</TT> (symbols)
 </UL>
-Il est également possible de passer une chaîne vide, auquel cas la famille courante est
-conservée.
+It is also possible to pass an empty string. In that case, the current family is retained.
 </BLOCKQUOTE>
 <TT><U>style</U></TT>
 <BLOCKQUOTE>
-Style de la police. Les valeurs possibles sont (indépendamment de la casse) :
+Font style. Possible values are (case insensitive):
 <UL>
-<LI><TT>(chaîne vide)</TT> : normal
-<LI><TT>B</TT> : gras
-<LI><TT>I</TT> : italique
-<LI><TT>BI</TT> ou <TT>IB</TT> : gras italique
+<LI>empty string: normal
+<LI><TT>B</TT>: bold
+<LI><TT>I</TT>: italic
+<LI><TT>BI</TT> or <TT>IB</TT>: bold italic
 </UL>
-La valeur par défaut est le style normal. Le style ne s'applique pas aux familles
-<TT>Symbol</TT> et <TT>ZapfDingbats</TT>.
+The default value is normal. Style does not apply to <TT>Symbol</TT> and <TT>ZapfDingbats</TT>.
 </BLOCKQUOTE>
 <TT><U>size</U></TT>
 <BLOCKQUOTE>
-Taille de la police en points.
+Font size in points.
 <BR>
-La valeur par défaut est la taille courante. Si aucune taille n'a encore été spécifiée
-depuis le début du document, la valeur prise est 12.
+The default value is the current size. If no size has been specified since the beginning of
+the document, the value taken is 12.
 </BLOCKQUOTE>
-<H4>Exemple</H4>
+<H4>Example</H4>
 <TABLE WIDTH="100%" BGCOLOR="#E0E0E0"><TR><TD>
-<PRE>
-//Times normal 12
+<TT>
+//Times normal 12<BR>
+$pdf->SetFont('Times');<BR>
+//Arial bold 14<BR>
+$pdf->SetFont('Arial','B',14);<BR>
+//Removes bold<BR>
+$pdf->SetFont('');<BR>
+//Times normal 14<BR>
 $pdf->SetFont('Times');
-//Arial gras 14
-$pdf->SetFont('Arial','B',14);
-//Enlève le gras
-$pdf->SetFont('');
-//Times normal 14
-$pdf->SetFont('Times');
-</PRE>
-</TD></TR></TABLE>
-<H4>Voir</H4>
+</TT>
+</TD></TR></TABLE><BR>
+<H4>See also</H4>
 <A HREF="setfontsize.htm">SetFontSize()</A>,
-<A HREF="cell.htm">Cell()</A>.
-<BR>
-<BR>
+<A HREF="cell.htm">Cell()</A>,
+<A HREF="multicell.htm">MultiCell()</A>.
+<H6></H6>
 <HR>
 <DIV ALIGN="CENTER"><A HREF="index.htm">Index</A></DIV>
 </BODY>
