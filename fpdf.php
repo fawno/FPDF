@@ -1,14 +1,14 @@
 <?php
 /****************************************************************************
 * Logiciel : FPDF                                                           *
-* Version :  1.1                                                            *
-* Date :     07/10/2001                                                     *
+* Version :  1.11                                                           *
+* Date :     20/10/2001                                                     *
 * Licence :  Freeware                                                       *
 * Auteur :   Olivier PLATHEY                                                *
 *                                                                           *
 * Vous pouvez utiliser et modifier ce logiciel comme vous le souhaitez.     *
 ****************************************************************************/
-define('FPDF_VERSION','1.1');
+define('FPDF_VERSION','1.11');
 
 class FPDF
 {
@@ -270,12 +270,15 @@ function Image($file,$x,$y,$w,$h=0,$type='')
 			$type=substr($file,$pos+1);
 		}
 		$type=strtolower($type);
+		$mqr=get_magic_quotes_runtime();
+		set_magic_quotes_runtime(0);
 		if($type=='jpg' or $type=='jpeg')
 			$info=$this->_parsejpg($file);
 		elseif($type=='png')
 			$info=$this->_parsepng($file);
 		else
 			$this->Error('Unsupported image file type : '.$type);
+		set_magic_quotes_runtime($mqr);
 		$info['n']=count($this->images)+1;
 		$this->images[$file]=$info;
 	}
@@ -375,6 +378,8 @@ function _enddoc()
 			$this->_out('/ColorSpace /'.$info['cs']);
 		$this->_out('/BitsPerComponent '.$info['bpc']);
 		$this->_out('/Filter /'.$info['f']);
+		if(isset($info['parms']))
+			$this->_out($info['parms']);
 		if(isset($info['trns']) and is_array($info['trns']))
 		{
 			$trns='';
@@ -581,22 +586,11 @@ function _parsepng($file)
 		$this->Error('16-bit depth not supported : '.$file);
 	$ct=ord(fread($f,1));
 	if($ct==0)
-	{
 		$colspace='DeviceGray';
-		$r=($w*$bpc)%8;
-		$wb=$r ? ($w*$bpc-$r)/8+1 : ($w*$bpc)/8;
-	}
 	elseif($ct==2)
-	{
 		$colspace='DeviceRGB';
-		$wb=3*$w;
-	}
 	elseif($ct==3)
-	{
 		$colspace='Indexed';
-		$r=($w*$bpc)%8;
-		$wb=$r ? ($w*$bpc-$r)/8+1 : ($w*$bpc)/8;
-	}
 	else
 		$this->Error('Alpha channel not supported : '.$file);
 	if(ord(fread($f,1))!=0)
@@ -606,6 +600,7 @@ function _parsepng($file)
 	if(ord(fread($f,1))!=0)
 		$this->Error('Interlacing not supported : '.$file);
 	fread($f,4);
+	$parms='/DecodeParms << /Predictor 15 /Colors '.($ct==2 ? 3 : 1).' /BitsPerComponent '.$bpc.' /Columns '.$w.' >>';
 	//Scan chunks looking for palette, transparency and image data
 	$pal='';
 	$trns='';
@@ -642,6 +637,8 @@ function _parsepng($file)
 			$data.=fread($f,$n);
 			fread($f,4);
 		}
+		elseif($type=='IEND')
+			break;
 		else
 			fread($f,$n+4);
 	}
@@ -649,22 +646,7 @@ function _parsepng($file)
 	if($colspace=='Indexed' and empty($pal))
 		$this->Error('Missing palette in '.$file);
 	fclose($f);
-	//Remove predictor tags
-	if(!function_exists('gzuncompress'))
-		$this->Error('PHP4 and Zlib extension needed for PNG support');
-	$data2=gzuncompress($data);
-	unset($data);
-	$data3='';
-	for($i=0;$i<$h;$i++)
-	{
-		if(substr($data2,$i*($wb+1),1)!=chr(0))
-			$this->Error('PNG predictors not supported : '.$file);
-		$data3.=substr($data2,$i*($wb+1)+1,$wb);
-	}
-	unset($data2);
-	$data=gzcompress($data3);
-	unset($data3);
-	return array('w'=>$w,'h'=>$h,'cs'=>$colspace,'bpc'=>$bpc,'f'=>'FlateDecode','pal'=>$pal,'trns'=>$trns,'data'=>$data);
+	return array('w'=>$w,'h'=>$h,'cs'=>$colspace,'bpc'=>$bpc,'f'=>'FlateDecode','parms'=>$parms,'pal'=>$pal,'trns'=>$trns,'data'=>$data);
 }
 
 function _freadint($f)
