@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML>
 <HEAD>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
@@ -22,18 +23,13 @@ to page.
 If you just wish to change the current font size, it is simpler to call SetFontSize().
 <BR>
 <BR>
-<B>Note: </B>for the standard fonts, the font metric files must be accessible. There are three
-possibilities for this:
-<BR>
-<BR>
+<B>Note:</B> the font metric files must be accessible. They are searched successively in:
 <UL>
-<LI>They are in the current directory (the one where the running script lies)
-<BR>
-<LI>They are in one of the directories defined by the <TT>include_path</TT> parameter
-<BR>
-<LI>They are in the directory defined by the <TT>FPDF_FONTPATH</TT> constant
+<LI>The directory defined by the <TT>FPDF_FONTPATH</TT> constant (if this constant is defined)
+<LI>The <TT>font</TT> directory located in the directory containing <TT>fpdf.php</TT> (if it exists)
+<LI>The directories accessible through <TT>include()</TT>
 </UL>
-Example for the last case (note the trailing slash):
+Example defining <TT>FPDF_FONTPATH</TT> (note the mandatory trailing slash):
 <BR>
 <BR>
 <TABLE WIDTH="100%" BGCOLOR="#E0E0E0"><TR><TD>
@@ -43,7 +39,7 @@ require('fpdf.php');
 </TT>
 </TD></TR></TABLE><BR>
 If the file corresponding to the requested font is not found, the error "Could not include
-font metric file" is generated.
+font metric file" is issued.
 <H4 CLASS='st'>Parameters</H4>
 <TT><U>family</U></TT>
 <BLOCKQUOTE>
@@ -51,7 +47,7 @@ Family font. It can be either a name defined by AddFont() or one of the standard
 insensitive):
 <UL>
 <LI><TT>Courier</TT> (fixed-width)
-<LI><TT>Helvetica<TT> or </TT>Arial</TT> (synonymous; sans serif)
+<LI><TT>Helvetica</TT> or <TT>Arial</TT> (synonymous; sans serif)
 <LI><TT>Times</TT> (serif)
 <LI><TT>Symbol</TT> (symbolic)
 <LI><TT>ZapfDingbats</TT> (symbolic)
@@ -96,8 +92,7 @@ $pdf-&gt;SetFont('Times','BIU');
 <A HREF="cell.htm">Cell()</A>,
 <A HREF="multicell.htm">MultiCell()</A>,
 <A HREF="write.htm">Write()</A>.
-<H6></H6>
-<HR>
+<HR STYLE="margin-top:1.2em">
 <DIV ALIGN="CENTER"><A HREF="index.htm">Index</A></DIV>
 </BODY>
 </HTML>

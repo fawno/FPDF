@@ -1,27 +1,124 @@
-<HTML>
-<HEAD>
-<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
-<TITLE>Tables</TITLE>
-<LINK TYPE="text/css" REL="stylesheet" HREF="../fpdf.css">
-</HEAD>
-<BODY>
-<H2>Tables</H2>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Tables</title>
+<link type="text/css" rel="stylesheet" href="../fpdf.css">
+</head>
+<body>
+<h1>Tables</h1>
 This tutorial shows how to make tables easily.
-<BR>
-<BR>
-<TABLE WIDTH="100%" STYLE="color:#4040C0; border-style:ridge" BORDERCOLORLIGHT="#B0B0E0" BORDERCOLORDARK="#000000" BORDER="2" CELLPADDING=6 CELLSPACING=0 BGCOLOR="#F0F5FF"><TR><TD style="border-width:0px">
-<NOBR><code><font color="#000000">
-&lt;?php<br>define<font class="kw">(</font><font class="str">'FPDF_FONTPATH'</font><font class="kw">,</font><font class="str">'font/'</font><font class="kw">);<br>require(</font><font class="str">'fpdf.php'</font><font class="kw">);<br><br>class </font>PDF <font class="kw">extends </font>FPDF<br><font class="kw">{<br></font><font class="cmt">//Load data<br></font><font class="kw">function </font>LoadData<font class="kw">(</font>$file<font class="kw">)<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;</font><font class="cmt">//Read file lines<br>&nbsp;&nbsp;&nbsp;&nbsp;</font>$lines<font class="kw">=</font>file<font class="kw">(</font>$file<font class="kw">);<br>&nbsp;&nbsp;&nbsp;&nbsp;</font>$data<font class="kw">=array();<br>&nbsp;&nbsp;&nbsp;&nbsp;foreach(</font>$lines <font class="kw">as </font>$line<font class="kw">)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>$data<font class="kw">[]=</font>explode<font class="kw">(</font><font class="str">';'</font><font class="kw">,</font>chop<font class="kw">(</font>$line<font class="kw">));<br>&nbsp;&nbsp;&nbsp;&nbsp;return </font>$data<font class="kw">;<br>}<br><br></font><font class="cmt">//Simple table<br></font><font class="kw">function </font>BasicTable<font class="kw">(</font>$header<font class="kw">,</font>$data<font class="kw">)<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;</font><font class="cmt">//Header<br>&nbsp;&nbsp;&nbsp;&nbsp;</font><font class="kw">foreach(</font>$header <font class="kw">as </font>$col<font class="kw">)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>$<font class="kw">this-&gt;</font>Cell<font class="kw">(</font>40<font class="kw">,</font>7<font class="kw">,</font>$col<font class="kw">,</font>1<font class="kw">);<br>&nbsp;&nbsp;&nbsp;&nbsp;</font>$<font class="kw">this-&gt;</font>Ln<font class="kw">();<br>&nbsp;&nbsp;&nbsp;&nbsp;</font><font class="cmt">//Data<br>&nbsp;&nbsp;&nbsp;&nbsp;</font><font class="kw">foreach(</font>$data <font class="kw">as </font>$row<font class="kw">)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;foreach(</font>$row <font class="kw">as </font>$col<font class="kw">)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>$<font class="kw">this-&gt;</font>Cell<font class="kw">(</font>40<font class="kw">,</font>6<font class="kw">,</font>$col<font class="kw">,</font>1<font class="kw">);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>$<font class="kw">this-&gt;</font>Ln<font class="kw">();<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br><br></font><font class="cmt">//Better table<br></font><font class="kw">function </font>ImprovedTable<font class="kw">(</font>$header<font class="kw">,</font>$data<font class="kw">)<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;</font><font class="cmt">//Column widths<br>&nbsp;&nbsp;&nbsp;&nbsp;</font>$w<font class="kw">=array(</font>40<font class="kw">,</font>35<font class="kw">,</font>40<font class="kw">,</font>45<font class="kw">);<br>&nbsp;&nbsp;&nbsp;&nbsp;</font><font class="cmt">//Header<br>&nbsp;&nbsp;&nbsp;&nbsp;</font><font class="kw">for(</font>$i<font class="kw">=</font>0<font class="kw">;</font>$i<font class="kw">&lt;</font>count<font class="kw">(</font>$header<font class="kw">);</font>$i<font class="kw">++)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>$<font class="kw">this-&gt;</font>Cell<font class="kw">(</font>$w<font class="kw">[</font>$i<font class="kw">],</font>7<font class="kw">,</font>$header<font class="kw">[</font>$i<font class="kw">],</font>1<font class="kw">,</font>0<font class="kw">,</font><font class="str">'C'</font><font class="kw">);<br>&nbsp;&nbsp;&nbsp;&nbsp;</font>$<font class="kw">this-&gt;</font>Ln<font class="kw">();<br>&nbsp;&nbsp;&nbsp;&nbsp;</font><font class="cmt">//Data<br>&nbsp;&nbsp;&nbsp;&nbsp;</font><font class="kw">foreach(</font>$data <font class="kw">as </font>$row<font class="kw">)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>$<font class="kw">this-&gt;</font>Cell<font class="kw">(</font>$w<font class="kw">[</font>0<font class="kw">],</font>6<font class="kw">,</font>$row<font class="kw">[</font>0<font class="kw">],</font><font class="str">'LR'</font><font class="kw">);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>$<font class="kw">this-&gt;</font>Cell<font class="kw">(</font>$w<font class="kw">[</font>1<font class="kw">],</font>6<font class="kw">,</font>$row<font class="kw">[</font>1<font class="kw">],</font><font class="str">'LR'</font><font class="kw">);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>$<font class="kw">this-&gt;</font>Cell<font class="kw">(</font>$w<font class="kw">[</font>2<font class="kw">],</font>6<font class="kw">,</font>number_format<font class="kw">(</font>$row<font class="kw">[</font>2<font class="kw">]),</font><font class="str">'LR'</font><font class="kw">,</font>0<font class="kw">,</font><font class="str">'R'</font><font class="kw">);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>$<font class="kw">this-&gt;</font>Cell<font class="kw">(</font>$w<font class="kw">[</font>3<font class="kw">],</font>6<font class="kw">,</font>number_format<font class="kw">(</font>$row<font class="kw">[</font>3<font class="kw">]),</font><font class="str">'LR'</font><font class="kw">,</font>0<font class="kw">,</font><font class="str">'R'</font><font class="kw">);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>$<font class="kw">this-&gt;</font>Ln<font class="kw">();<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;</font><font class="cmt">//Closure line<br>&nbsp;&nbsp;&nbsp;&nbsp;</font>$<font class="kw">this-&gt;</font>Cell<font class="kw">(</font>array_sum<font class="kw">(</font>$w<font class="kw">),</font>0<font class="kw">,</font><font class="str">''</font><font class="kw">,</font><font class="str">'T'</font><font class="kw">);<br>}<br><br></font><font class="cmt">//Colored table<br></font><font class="kw">function </font>FancyTable<font class="kw">(</font>$header<font class="kw">,</font>$data<font class="kw">)<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;</font><font class="cmt">//Colors, line width and bold font<br>&nbsp;&nbsp;&nbsp;&nbsp;</font>$<font class="kw">this-&gt;</font>SetFillColor<font class="kw">(</font>255<font class="kw">,</font>0<font class="kw">,</font>0<font class="kw">);<br>&nbsp;&nbsp;&nbsp;&nbsp;</font>$<font class="kw">this-&gt;</font>SetTextColor<font class="kw">(</font>255<font class="kw">);<br>&nbsp;&nbsp;&nbsp;&nbsp;</font>$<font class="kw">this-&gt;</font>SetDrawColor<font class="kw">(</font>128<font class="kw">,</font>0<font class="kw">,</font>0<font class="kw">);<br>&nbsp;&nbsp;&nbsp;&nbsp;</font>$<font class="kw">this-&gt;</font>SetLineWidth<font class="kw">(</font>.3<font class="kw">);<br>&nbsp;&nbsp;&nbsp;&nbsp;</font>$<font class="kw">this-&gt;</font>SetFont<font class="kw">(</font><font class="str">''</font><font class="kw">,</font><font class="str">'B'</font><font class="kw">);<br>&nbsp;&nbsp;&nbsp;&nbsp;</font><font class="cmt">//Header<br>&nbsp;&nbsp;&nbsp;&nbsp;</font>$w<font class="kw">=array(</font>40<font class="kw">,</font>35<font class="kw">,</font>40<font class="kw">,</font>45<font class="kw">);<br>&nbsp;&nbsp;&nbsp;&nbsp;for(</font>$i<font class="kw">=</font>0<font class="kw">;</font>$i<font class="kw">&lt;</font>count<font class="kw">(</font>$header<font class="kw">);</font>$i<font class="kw">++)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>$<font class="kw">this-&gt;</font>Cell<font class="kw">(</font>$w<font class="kw">[</font>$i<font class="kw">],</font>7<font class="kw">,</font>$header<font class="kw">[</font>$i<font class="kw">],</font>1<font class="kw">,</font>0<font class="kw">,</font><font class="str">'C'</font><font class="kw">,</font>1<font class="kw">);<br>&nbsp;&nbsp;&nbsp;&nbsp;</font>$<font class="kw">this-&gt;</font>Ln<font class="kw">();<br>&nbsp;&nbsp;&nbsp;&nbsp;</font><font class="cmt">//Color and font restoration<br>&nbsp;&nbsp;&nbsp;&nbsp;</font>$<font class="kw">this-&gt;</font>SetFillColor<font class="kw">(</font>224<font class="kw">,</font>235<font class="kw">,</font>255<font class="kw">);<br>&nbsp;&nbsp;&nbsp;&nbsp;</font>$<font class="kw">this-&gt;</font>SetTextColor<font class="kw">(</font>0<font class="kw">);<br>&nbsp;&nbsp;&nbsp;&nbsp;</font>$<font class="kw">this-&gt;</font>SetFont<font class="kw">(</font><font class="str">''</font><font class="kw">);<br>&nbsp;&nbsp;&nbsp;&nbsp;</font><font class="cmt">//Data<br>&nbsp;&nbsp;&nbsp;&nbsp;</font>$fill<font class="kw">=</font>0<font class="kw">;<br>&nbsp;&nbsp;&nbsp;&nbsp;foreach(</font>$data <font class="kw">as </font>$row<font class="kw">)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>$<font class="kw">this-&gt;</font>Cell<font class="kw">(</font>$w<font class="kw">[</font>0<font class="kw">],</font>6<font class="kw">,</font>$row<font class="kw">[</font>0<font class="kw">],</font><font class="str">'LR'</font><font class="kw">,</font>0<font class="kw">,</font><font class="str">'L'</font><font class="kw">,</font>$fill<font class="kw">);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>$<font class="kw">this-&gt;</font>Cell<font class="kw">(</font>$w<font class="kw">[</font>1<font class="kw">],</font>6<font class="kw">,</font>$row<font class="kw">[</font>1<font class="kw">],</font><font class="str">'LR'</font><font class="kw">,</font>0<font class="kw">,</font><font class="str">'L'</font><font class="kw">,</font>$fill<font class="kw">);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>$<font class="kw">this-&gt;</font>Cell<font class="kw">(</font>$w<font class="kw">[</font>2<font class="kw">],</font>6<font class="kw">,</font>number_format<font class="kw">(</font>$row<font class="kw">[</font>2<font class="kw">]),</font><font class="str">'LR'</font><font class="kw">,</font>0<font class="kw">,</font><font class="str">'R'</font><font class="kw">,</font>$fill<font class="kw">);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>$<font class="kw">this-&gt;</font>Cell<font class="kw">(</font>$w<font class="kw">[</font>3<font class="kw">],</font>6<font class="kw">,</font>number_format<font class="kw">(</font>$row<font class="kw">[</font>3<font class="kw">]),</font><font class="str">'LR'</font><font class="kw">,</font>0<font class="kw">,</font><font class="str">'R'</font><font class="kw">,</font>$fill<font class="kw">);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>$<font class="kw">this-&gt;</font>Ln<font class="kw">();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>$fill<font class="kw">=!</font>$fill<font class="kw">;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;</font>$<font class="kw">this-&gt;</font>Cell<font class="kw">(</font>array_sum<font class="kw">(</font>$w<font class="kw">),</font>0<font class="kw">,</font><font class="str">''</font><font class="kw">,</font><font class="str">'T'</font><font class="kw">);<br>}<br>}<br><br></font>$pdf<font class="kw">=new </font>PDF<font class="kw">();<br></font><font class="cmt">//Column titles<br></font>$header<font class="kw">=array(</font><font class="str">'Country'</font><font class="kw">,</font><font class="str">'Capital'</font><font class="kw">,</font><font class="str">'Area (sq km)'</font><font class="kw">,</font><font class="str">'Pop. (thousands)'</font><font class="kw">);<br></font><font class="cmt">//Data loading<br></font>$data<font class="kw">=</font>$pdf<font class="kw">-&gt;</font>LoadData<font class="kw">(</font><font class="str">'countries.txt'</font><font class="kw">);<br></font>$pdf<font class="kw">-&gt;</font>SetFont<font class="kw">(</font><font class="str">'Arial'</font><font class="kw">,</font><font class="str">''</font><font class="kw">,</font>14<font class="kw">);<br></font>$pdf<font class="kw">-&gt;</font>AddPage<font class="kw">();<br></font>$pdf<font class="kw">-&gt;</font>BasicTable<font class="kw">(</font>$header<font class="kw">,</font>$data<font class="kw">);<br></font>$pdf<font class="kw">-&gt;</font>AddPage<font class="kw">();<br></font>$pdf<font class="kw">-&gt;</font>ImprovedTable<font class="kw">(</font>$header<font class="kw">,</font>$data<font class="kw">);<br></font>$pdf<font class="kw">-&gt;</font>AddPage<font class="kw">();<br></font>$pdf<font class="kw">-&gt;</font>FancyTable<font class="kw">(</font>$header<font class="kw">,</font>$data<font class="kw">);<br></font>$pdf<font class="kw">-&gt;</font>Output<font class="kw">();<br></font>?&gt;
-</font>
-</code></NOBR></TD></TR></TABLE><P></P>
-<SCRIPT>
+<div class="source">
+<pre><code>&lt;?php
+<span class="kw">require(</span><span class="str">'fpdf.php'</span><span class="kw">);
+
+class </span>PDF <span class="kw">extends </span>FPDF
+<span class="kw">{
+</span><span class="cmt">//Load data
+</span><span class="kw">function </span>LoadData<span class="kw">(</span>$file<span class="kw">)
+{
+    </span><span class="cmt">//Read file lines
+    </span>$lines<span class="kw">=</span>file<span class="kw">(</span>$file<span class="kw">);
+    </span>$data<span class="kw">=array();
+    foreach(</span>$lines <span class="kw">as </span>$line<span class="kw">)
+        </span>$data<span class="kw">[]=</span>explode<span class="kw">(</span><span class="str">';'</span><span class="kw">,</span>chop<span class="kw">(</span>$line<span class="kw">));
+    return </span>$data<span class="kw">;
+}
+
+</span><span class="cmt">//Simple table
+</span><span class="kw">function </span>BasicTable<span class="kw">(</span>$header<span class="kw">,</span>$data<span class="kw">)
+{
+    </span><span class="cmt">//Header
+    </span><span class="kw">foreach(</span>$header <span class="kw">as </span>$col<span class="kw">)
+        </span>$<span class="kw">this-&gt;</span>Cell<span class="kw">(</span>40<span class="kw">,</span>7<span class="kw">,</span>$col<span class="kw">,</span>1<span class="kw">);
+    </span>$<span class="kw">this-&gt;</span>Ln<span class="kw">();
+    </span><span class="cmt">//Data
+    </span><span class="kw">foreach(</span>$data <span class="kw">as </span>$row<span class="kw">)
+    {
+        foreach(</span>$row <span class="kw">as </span>$col<span class="kw">)
+            </span>$<span class="kw">this-&gt;</span>Cell<span class="kw">(</span>40<span class="kw">,</span>6<span class="kw">,</span>$col<span class="kw">,</span>1<span class="kw">);
+        </span>$<span class="kw">this-&gt;</span>Ln<span class="kw">();
+    }
+}
+
+</span><span class="cmt">//Better table
+</span><span class="kw">function </span>ImprovedTable<span class="kw">(</span>$header<span class="kw">,</span>$data<span class="kw">)
+{
+    </span><span class="cmt">//Column widths
+    </span>$w<span class="kw">=array(</span>40<span class="kw">,</span>35<span class="kw">,</span>40<span class="kw">,</span>45<span class="kw">);
+    </span><span class="cmt">//Header
+    </span><span class="kw">for(</span>$i<span class="kw">=</span>0<span class="kw">;</span>$i<span class="kw">&lt;</span>count<span class="kw">(</span>$header<span class="kw">);</span>$i<span class="kw">++)
+        </span>$<span class="kw">this-&gt;</span>Cell<span class="kw">(</span>$w<span class="kw">[</span>$i<span class="kw">],</span>7<span class="kw">,</span>$header<span class="kw">[</span>$i<span class="kw">],</span>1<span class="kw">,</span>0<span class="kw">,</span><span class="str">'C'</span><span class="kw">);
+    </span>$<span class="kw">this-&gt;</span>Ln<span class="kw">();
+    </span><span class="cmt">//Data
+    </span><span class="kw">foreach(</span>$data <span class="kw">as </span>$row<span class="kw">)
+    {
+        </span>$<span class="kw">this-&gt;</span>Cell<span class="kw">(</span>$w<span class="kw">[</span>0<span class="kw">],</span>6<span class="kw">,</span>$row<span class="kw">[</span>0<span class="kw">],</span><span class="str">'LR'</span><span class="kw">);
+        </span>$<span class="kw">this-&gt;</span>Cell<span class="kw">(</span>$w<span class="kw">[</span>1<span class="kw">],</span>6<span class="kw">,</span>$row<span class="kw">[</span>1<span class="kw">],</span><span class="str">'LR'</span><span class="kw">);
+        </span>$<span class="kw">this-&gt;</span>Cell<span class="kw">(</span>$w<span class="kw">[</span>2<span class="kw">],</span>6<span class="kw">,</span>number_format<span class="kw">(</span>$row<span class="kw">[</span>2<span class="kw">]),</span><span class="str">'LR'</span><span class="kw">,</span>0<span class="kw">,</span><span class="str">'R'</span><span class="kw">);
+        </span>$<span class="kw">this-&gt;</span>Cell<span class="kw">(</span>$w<span class="kw">[</span>3<span class="kw">],</span>6<span class="kw">,</span>number_format<span class="kw">(</span>$row<span class="kw">[</span>3<span class="kw">]),</span><span class="str">'LR'</span><span class="kw">,</span>0<span class="kw">,</span><span class="str">'R'</span><span class="kw">);
+        </span>$<span class="kw">this-&gt;</span>Ln<span class="kw">();
+    }
+    </span><span class="cmt">//Closure line
+    </span>$<span class="kw">this-&gt;</span>Cell<span class="kw">(</span>array_sum<span class="kw">(</span>$w<span class="kw">),</span>0<span class="kw">,</span><span class="str">''</span><span class="kw">,</span><span class="str">'T'</span><span class="kw">);
+}
+
+</span><span class="cmt">//Colored table
+</span><span class="kw">function </span>FancyTable<span class="kw">(</span>$header<span class="kw">,</span>$data<span class="kw">)
+{
+    </span><span class="cmt">//Colors, line width and bold font
+    </span>$<span class="kw">this-&gt;</span>SetFillColor<span class="kw">(</span>255<span class="kw">,</span>0<span class="kw">,</span>0<span class="kw">);
+    </span>$<span class="kw">this-&gt;</span>SetTextColor<span class="kw">(</span>255<span class="kw">);
+    </span>$<span class="kw">this-&gt;</span>SetDrawColor<span class="kw">(</span>128<span class="kw">,</span>0<span class="kw">,</span>0<span class="kw">);
+    </span>$<span class="kw">this-&gt;</span>SetLineWidth<span class="kw">(</span>.3<span class="kw">);
+    </span>$<span class="kw">this-&gt;</span>SetFont<span class="kw">(</span><span class="str">''</span><span class="kw">,</span><span class="str">'B'</span><span class="kw">);
+    </span><span class="cmt">//Header
+    </span>$w<span class="kw">=array(</span>40<span class="kw">,</span>35<span class="kw">,</span>40<span class="kw">,</span>45<span class="kw">);
+    for(</span>$i<span class="kw">=</span>0<span class="kw">;</span>$i<span class="kw">&lt;</span>count<span class="kw">(</span>$header<span class="kw">);</span>$i<span class="kw">++)
+        </span>$<span class="kw">this-&gt;</span>Cell<span class="kw">(</span>$w<span class="kw">[</span>$i<span class="kw">],</span>7<span class="kw">,</span>$header<span class="kw">[</span>$i<span class="kw">],</span>1<span class="kw">,</span>0<span class="kw">,</span><span class="str">'C'</span><span class="kw">,</span>1<span class="kw">);
+    </span>$<span class="kw">this-&gt;</span>Ln<span class="kw">();
+    </span><span class="cmt">//Color and font restoration
+    </span>$<span class="kw">this-&gt;</span>SetFillColor<span class="kw">(</span>224<span class="kw">,</span>235<span class="kw">,</span>255<span class="kw">);
+    </span>$<span class="kw">this-&gt;</span>SetTextColor<span class="kw">(</span>0<span class="kw">);
+    </span>$<span class="kw">this-&gt;</span>SetFont<span class="kw">(</span><span class="str">''</span><span class="kw">);
+    </span><span class="cmt">//Data
+    </span>$fill<span class="kw">=</span>0<span class="kw">;
+    foreach(</span>$data <span class="kw">as </span>$row<span class="kw">)
+    {
+        </span>$<span class="kw">this-&gt;</span>Cell<span class="kw">(</span>$w<span class="kw">[</span>0<span class="kw">],</span>6<span class="kw">,</span>$row<span class="kw">[</span>0<span class="kw">],</span><span class="str">'LR'</span><span class="kw">,</span>0<span class="kw">,</span><span class="str">'L'</span><span class="kw">,</span>$fill<span class="kw">);
+        </span>$<span class="kw">this-&gt;</span>Cell<span class="kw">(</span>$w<span class="kw">[</span>1<span class="kw">],</span>6<span class="kw">,</span>$row<span class="kw">[</span>1<span class="kw">],</span><span class="str">'LR'</span><span class="kw">,</span>0<span class="kw">,</span><span class="str">'L'</span><span class="kw">,</span>$fill<span class="kw">);
+        </span>$<span class="kw">this-&gt;</span>Cell<span class="kw">(</span>$w<span class="kw">[</span>2<span class="kw">],</span>6<span class="kw">,</span>number_format<span class="kw">(</span>$row<span class="kw">[</span>2<span class="kw">]),</span><span class="str">'LR'</span><span class="kw">,</span>0<span class="kw">,</span><span class="str">'R'</span><span class="kw">,</span>$fill<span class="kw">);
+        </span>$<span class="kw">this-&gt;</span>Cell<span class="kw">(</span>$w<span class="kw">[</span>3<span class="kw">],</span>6<span class="kw">,</span>number_format<span class="kw">(</span>$row<span class="kw">[</span>3<span class="kw">]),</span><span class="str">'LR'</span><span class="kw">,</span>0<span class="kw">,</span><span class="str">'R'</span><span class="kw">,</span>$fill<span class="kw">);
+        </span>$<span class="kw">this-&gt;</span>Ln<span class="kw">();
+        </span>$fill<span class="kw">=!</span>$fill<span class="kw">;
+    }
+    </span>$<span class="kw">this-&gt;</span>Cell<span class="kw">(</span>array_sum<span class="kw">(</span>$w<span class="kw">),</span>0<span class="kw">,</span><span class="str">''</span><span class="kw">,</span><span class="str">'T'</span><span class="kw">);
+}
+}
+
+</span>$pdf<span class="kw">=new </span>PDF<span class="kw">();
+</span><span class="cmt">//Column titles
+</span>$header<span class="kw">=array(</span><span class="str">'Country'</span><span class="kw">,</span><span class="str">'Capital'</span><span class="kw">,</span><span class="str">'Area (sq km)'</span><span class="kw">,</span><span class="str">'Pop. (thousands)'</span><span class="kw">);
+</span><span class="cmt">//Data loading
+</span>$data<span class="kw">=</span>$pdf<span class="kw">-&gt;</span>LoadData<span class="kw">(</span><span class="str">'countries.txt'</span><span class="kw">);
+</span>$pdf<span class="kw">-&gt;</span>SetFont<span class="kw">(</span><span class="str">'Arial'</span><span class="kw">,</span><span class="str">''</span><span class="kw">,</span>14<span class="kw">);
+</span>$pdf<span class="kw">-&gt;</span>AddPage<span class="kw">();
+</span>$pdf<span class="kw">-&gt;</span>BasicTable<span class="kw">(</span>$header<span class="kw">,</span>$data<span class="kw">);
+</span>$pdf<span class="kw">-&gt;</span>AddPage<span class="kw">();
+</span>$pdf<span class="kw">-&gt;</span>ImprovedTable<span class="kw">(</span>$header<span class="kw">,</span>$data<span class="kw">);
+</span>$pdf<span class="kw">-&gt;</span>AddPage<span class="kw">();
+</span>$pdf<span class="kw">-&gt;</span>FancyTable<span class="kw">(</span>$header<span class="kw">,</span>$data<span class="kw">);
+</span>$pdf<span class="kw">-&gt;</span>Output<span class="kw">();
+</span>?&gt;</code></pre>
+</div>
+<script type="text/javascript">
 <!--
 if(document.location.href.indexOf('http:')==0)
 {
-document.write("<P CLASS='demo'><A HREF='tuto5.php' TARGET='_blank' CLASS='demo'>[Demo]</A></P>");
+document.write("<p class='demo'><a href='tuto5.php' target='_blank' class='demo'>[Demo]<\/a><\/p>");
 }
 //-->
-</SCRIPT>
+</script>
 A table being just a collection of cells, it is natural to build one from them. The first
 example is achieved in the most basic way possible: simple framed cells, all of the same size
 and left aligned. The result is rudimentary but very quick to obtain.
@@ -29,7 +126,7 @@ and left aligned. The result is rudimentary but very quick to obtain.
 <BR>
 The second table brings some improvements: each column has its own width, titles are centered
 and figures right aligned. Moreover, horizontal lines have been removed. This is done by means
-of the <TT>border</TT> parameter of the <A HREF='../doc/cell.htm'>Cell()</A> method, which specifies which sides of the
+of the <TT>border</TT> parameter of the <a href='../doc/cell.htm'>Cell()</a> method, which specifies which sides of the
 cell must be drawn. Here we want the left (<TT>L</TT>) and right (<TT>R</TT>) ones. It remains
 the problem of the horizontal line to finish the table. There are two possibilities: either
 check for the last line in the loop, in which case we use <TT>LRB</TT> for the <TT>border</TT>
@@ -39,5 +136,5 @@ parameter; or, as done here, add the line once the loop is over.
 The third table is similar to the second one but uses colors. Fill, text and line colors are
 simply specified. Alternate coloring for rows is obtained by using alternatively transparent
 and filled cells.
-</BODY>
-</HTML>
+</body>
+</html>
