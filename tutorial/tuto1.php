@@ -1,6 +1,7 @@
 <?php
-//Exemple minimal
-require('fpdf.php');
+define('FPDF_FONTPATH','../font/');
+require('../fpdf.php');
+
 $pdf=new FPDF();
 $pdf->Open();
 $pdf->AddPage();

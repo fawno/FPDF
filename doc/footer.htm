@@ -1,6 +1,6 @@
 <HTML>
 <HEAD>
-<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1"> 
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
 <TITLE>Footer</TITLE>
 <LINK TYPE="text/css" REL="stylesheet" HREF="../fpdf.css">
 </HEAD>
@@ -8,42 +8,38 @@
 <H2>Footer</H2>
 <TT>Footer()</TT>
 <H4>Description</H4>
-Cette méthode permet de définir le pied de page. Elle est appelée automatiquement par
-AddPage() et Close() et ne devrait donc pas être appelée explicitement par l'application.
-L'implémentation de Footer() dans FPDF est vide, donc vous devez dériver la classe et
-redéfinir la méthode si vous voulez un traitement particulier pour vos pieds de page.
-<H4>Exemple</H4>
+This method is used to render the page footer. It is automatically called by AddPage() and
+Close() and should not be called directly by the application. The implementation in FPDF is
+empty, so you have to subclass it and override the method if you want a specific processing.
+<H4>Example</H4>
 <TABLE WIDTH="100%" BGCOLOR="#E0E0E0"><TR><TD>
-<PRE>
-class PDF extends FPDF
-{
-
-//Constructeur (obligatoire pour PHP3)
-function PDF()
-{
-    $this->FPDF();
+<TT>
+class PDF extends FPDF<BR>
+{<BR>
+<BR>
+//Constructor (mandatory for PHP3)<BR>
+function PDF()<BR>
+{<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;$this->FPDF();<BR>
+}<BR>
+<BR>
+//Page footer<BR>
+function Footer()<BR>
+{<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;//Go to 1.5 cm from bottom<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;$this->SetY(-15);<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;//Select Arial italic 8<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;$this->SetFont('Arial','I',8);<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;//Print centered page number<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;$this->Cell(0,10,'Page '.$this->PageNo(),0,0,'C');<BR>
+}<BR>
+<BR>
 }
-
-//Pied de page
-function Footer()
-{
-    //Police Arial italique 8
-    $this->SetFont('Arial','I',8);
-    //Positionnement à 1,5 cm du bas
-    $this->SetY(-15);
-    //Décalage
-    $this->Cell(80);
-    //Numéro de page
-    $this->Cell(30,10,'Page '.$this->PageNo());
-}
-
-}
-</PRE>
-</TD></TR></TABLE>
-<H4>Voir</H4>
+</TT>
+</TD></TR></TABLE><BR>
+<H4>See also</H4>
 <A HREF="header.htm">Header()</A>.
-<BR>
-<BR>
+<H6></H6>
 <HR>
 <DIV ALIGN="CENTER"><A HREF="index.htm">Index</A></DIV>
 </BODY>

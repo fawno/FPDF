@@ -1,6 +1,6 @@
 <HTML>
 <HEAD>
-<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1"> 
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
 <TITLE>SetDisplayMode</TITLE>
 <LINK TYPE="text/css" REL="stylesheet" HREF="../fpdf.css">
 </HEAD>
@@ -10,28 +10,28 @@
 <H4>Version</H4>
 1.2
 <H4>Description</H4>
-Contrôle la manière dont le document sera affiché par Acrobat. On peut afficher la page en
-entier, occuper toute la largeur de la fenêtre, utiliser la taille réelle, choisir un
-facteur de zoom ou encore utiliser la valeur par défaut de l'utilisateur (celle paramétrée
-dans le menu Préférences).
+Defines the way the document is displayed by the viewer. Pages can be displayed entirely on
+screen, occupy the full width of the window, use real size, be scaled by a zooming factor or
+use viewer defaults (set in the Preferences menu of Acrobat).
 <BR>
-Par défaut, à partir de la version 1.2, les documents sont en mode pleine largeur.
-<H4>Paramètres</H4>
+By default, documents use the full width mode.
+<H4>Parameters</H4>
 <TT><U>mode</U></TT>
 <BLOCKQUOTE>
-Le mode à utiliser. Il peut prendre les valeurs suivantes :
+The mode to use. Possible values are:
 <UL>
-<LI><TT>fullpage</TT> : affiche entièrement les pages à l'écran
-<LI><TT>fullwidth</TT> : maximise la largeur des pages
-<LI><TT>real</TT> : affiche la taille réelle (équivaut à un zoom de 100%)
-<LI><TT>zoom</TT> : applique le facteur de zoom indiqué par <TT>z</TT>
-<LI><TT>default</TT> : utilise le mode d'affichage par défaut d'Acrobat
+<LI><TT>fullpage</TT>: displays the entire page on screen
+<LI><TT>fullwidth</TT>: uses maximum width of window
+<LI><TT>real</TT> : uses real size (equivalent to 100% zoom)
+<LI><TT>zoom</TT> : applies the zooming factor defined by <TT>z</TT>
+<LI><TT>default</TT> : uses default viewer mode
 </UL>
 </BLOCKQUOTE>
 <TT><U>z</U></TT>
 <BLOCKQUOTE>
-Dans le cas où <TT>mode</TT> vaut <TT>zoom</TT>, indique le facteur à appliquer.
+When <TT>mode</TT> equals <TT>zoom</TT>, defines the zooming factor.
 </BLOCKQUOTE>
+<H6></H6>
 <HR>
 <DIV ALIGN="CENTER"><A HREF="index.htm">Index</A></DIV>
 </BODY>
