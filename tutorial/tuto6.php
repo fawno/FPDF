@@ -42,26 +42,26 @@ function WriteHTML($html)
 				$this->CloseTag(strtoupper(substr($e,1)));
 			else
 			{
-				//Extract properties
-				$a2=split(' ',$e);
+				//Extract attributes
+				$a2=explode(' ',$e);
 				$tag=strtoupper(array_shift($a2));
-				$prop=array();
+				$attr=array();
 				foreach($a2 as $v)
 					if(ereg('^([^=]*)=["\']?([^"\']*)["\']?$',$v,$a3))
-						$prop[strtoupper($a3[1])]=$a3[2];
-				$this->OpenTag($tag,$prop);
+						$attr[strtoupper($a3[1])]=$a3[2];
+				$this->OpenTag($tag,$attr);
 			}
 		}
 	}
 }
 
-function OpenTag($tag,$prop)
+function OpenTag($tag,$attr)
 {
 	//Opening tag
 	if($tag=='B' or $tag=='I' or $tag=='U')
 		$this->SetStyle($tag,true);
 	if($tag=='A')
-		$this->HREF=$prop['HREF'];
+		$this->HREF=$attr['HREF'];
 	if($tag=='BR')
 		$this->Ln(5);
 }
@@ -108,7 +108,7 @@ $pdf->Open();
 //First page
 $pdf->AddPage();
 $pdf->SetFont('Arial','',20);
-$pdf->Write(5,'To discover what\'s new in this tutorial, click ');
+$pdf->Write(5,'To find out what\'s new in this tutorial, click ');
 $pdf->SetFont('','U');
 $link=$pdf->AddLink();
 $pdf->Write(5,'here',$link);

@@ -9,57 +9,16 @@
 Here is a two page example with header, footer and logo:
 <BR>
 <BR>
-<TABLE WIDTH="100%" BGCOLOR="#E0E0E0"><TR><TD>
-<TT>
-&lt;?php<BR>
-require('fpdf.php');<BR>
-<BR>
-class PDF extends FPDF<BR>
-{<BR>
-//Page header<BR>
-function Header()<BR>
-{<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;//Logo<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;Image('logo_pb.png',10,8,33);<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;//Arial bold 15<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;SetFont('Arial','B',15);<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;//Move to the right<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;Cell(80);<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;//Title<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;Cell(30,10,'Title',1,0,'C');<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;//Line break<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;Ln(20);<BR>
-}<BR>
-<BR>
-//Page footer<BR>
-function Footer()<BR>
-{<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;//Position at 1.5 cm from bottom<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;SetY(-15);<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;//Arial italic 8<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;SetFont('Arial','I',8);<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;//Page number<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;Cell(0,10,'Page '.$this-&gt;PageNo().'/{nb}',0,0,'C');<BR>
-}<BR>
-}<BR>
-<BR>
-//Instanciation of inherited class<BR>
-$pdf=new PDF();<BR>
-$pdf-&gt;Open();<BR>
-$pdf-&gt;AliasNbPages();<BR>
-$pdf-&gt;AddPage();<BR>
-$pdf-&gt;SetFont('Times','',12);<BR>
-for($i=1;$i&lt;=40;$i++)<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;$pdf-&gt;Cell(0,10,'Printing line number '.$i,0,1);<BR>
-$pdf-&gt;Output();<BR>
-?&gt;
-</TT>
-</TD></TR></TABLE><BR>
+<TABLE WIDTH="100%" STYLE="color:#4040C0; border-style:ridge" BORDERCOLORLIGHT="#B0B0E0" BORDERCOLORDARK="#000000" BORDER="2" CELLPADDING=6 CELLSPACING=0 BGCOLOR="#F0F5FF"><TR><TD style="border-width:0px">
+<NOBR><code><font color="#000000">
+&lt;?php<br>define<font class="kw">(</font><font class="str">'FPDF_FONTPATH'</font><font class="kw">,</font><font class="str">'font/'</font><font class="kw">);<br>require(</font><font class="str">'fpdf.php'</font><font class="kw">);<br><br>class&nbsp;</font>PDF&nbsp;<font class="kw">extends&nbsp;</font>FPDF<br><font class="kw">{<br></font><font class="cmt">//Page header<br></font><font class="kw">function&nbsp;</font>Header<font class="kw">()<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;</font><font class="cmt">//Logo<br>&nbsp;&nbsp;&nbsp;&nbsp;</font>$<font class="kw">this-&gt;</font>Image<font class="kw">(</font><font class="str">'logo_pb.png'</font><font class="kw">,</font>10<font class="kw">,</font>8<font class="kw">,</font>33<font class="kw">);<br>&nbsp;&nbsp;&nbsp;&nbsp;</font><font class="cmt">//Arial bold 15<br>&nbsp;&nbsp;&nbsp;&nbsp;</font>$<font class="kw">this-&gt;</font>SetFont<font class="kw">(</font><font class="str">'Arial'</font><font class="kw">,</font><font class="str">'B'</font><font class="kw">,</font>15<font class="kw">);<br>&nbsp;&nbsp;&nbsp;&nbsp;</font><font class="cmt">//Move to the right<br>&nbsp;&nbsp;&nbsp;&nbsp;</font>$<font class="kw">this-&gt;</font>Cell<font class="kw">(</font>80<font class="kw">);<br>&nbsp;&nbsp;&nbsp;&nbsp;</font><font class="cmt">//Title<br>&nbsp;&nbsp;&nbsp;&nbsp;</font>$<font class="kw">this-&gt;</font>Cell<font class="kw">(</font>30<font class="kw">,</font>10<font class="kw">,</font><font class="str">'Title'</font><font class="kw">,</font>1<font class="kw">,</font>0<font class="kw">,</font><font class="str">'C'</font><font class="kw">);<br>&nbsp;&nbsp;&nbsp;&nbsp;</font><font class="cmt">//Line break<br>&nbsp;&nbsp;&nbsp;&nbsp;</font>$<font class="kw">this-&gt;</font>Ln<font class="kw">(</font>20<font class="kw">);<br>}<br><br></font><font class="cmt">//Page footer<br></font><font class="kw">function&nbsp;</font>Footer<font class="kw">()<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;</font><font class="cmt">//Position at 1.5 cm from bottom<br>&nbsp;&nbsp;&nbsp;&nbsp;</font>$<font class="kw">this-&gt;</font>SetY<font class="kw">(-</font>15<font class="kw">);<br>&nbsp;&nbsp;&nbsp;&nbsp;</font><font class="cmt">//Arial italic 8<br>&nbsp;&nbsp;&nbsp;&nbsp;</font>$<font class="kw">this-&gt;</font>SetFont<font class="kw">(</font><font class="str">'Arial'</font><font class="kw">,</font><font class="str">'I'</font><font class="kw">,</font>8<font class="kw">);<br>&nbsp;&nbsp;&nbsp;&nbsp;</font><font class="cmt">//Page number<br>&nbsp;&nbsp;&nbsp;&nbsp;</font>$<font class="kw">this-&gt;</font>Cell<font class="kw">(</font>0<font class="kw">,</font>10<font class="kw">,</font><font class="str">'Page '</font><font class="kw">.</font>$<font class="kw">this-&gt;</font>PageNo<font class="kw">().</font><font class="str">'/{nb}'</font><font class="kw">,</font>0<font class="kw">,</font>0<font class="kw">,</font><font class="str">'C'</font><font class="kw">);<br>}<br>}<br><br></font><font class="cmt">//Instanciation of inherited class<br></font>$pdf<font class="kw">=new&nbsp;</font>PDF<font class="kw">();<br></font>$pdf<font class="kw">-&gt;</font>Open<font class="kw">();<br></font>$pdf<font class="kw">-&gt;</font>AliasNbPages<font class="kw">();<br></font>$pdf<font class="kw">-&gt;</font>AddPage<font class="kw">();<br></font>$pdf<font class="kw">-&gt;</font>SetFont<font class="kw">(</font><font class="str">'Times'</font><font class="kw">,</font><font class="str">''</font><font class="kw">,</font>12<font class="kw">);<br>for(</font>$i<font class="kw">=</font>1<font class="kw">;</font>$i<font class="kw">&lt;=</font>40<font class="kw">;</font>$i<font class="kw">++)<br>&nbsp;&nbsp;&nbsp;&nbsp;</font>$pdf<font class="kw">-&gt;</font>Cell<font class="kw">(</font>0<font class="kw">,</font>10<font class="kw">,</font><font class="str">'Printing line number '</font><font class="kw">.</font>$i<font class="kw">,</font>0<font class="kw">,</font>1<font class="kw">);<br></font>$pdf<font class="kw">-&gt;</font>Output<font class="kw">();<br></font>?&gt;
+</font>
+</code></NOBR></TD></TR></TABLE><P></P>
 <SCRIPT>
 <!--
 if(document.location.href.indexOf('http:')==0)
 {
-document.write("<A HREF='tuto2.php' TARGET='_blank' CLASS='demo'>[Demo]</A><BR><BR>");
+document.write("<P CLASS='demo'><A HREF='tuto2.php' TARGET='_blank' CLASS='demo'>[Demo]</A></P>");
 }
 //-->
 </SCRIPT>

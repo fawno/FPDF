@@ -6,9 +6,20 @@
 </HEAD>
 <BODY>
 <H2>History</H2>
+<B>v1.51</B> (2002/08/03)
+<BLOCKQUOTE>
+- Type1 font support.<BR>
+- Added Baltic encoding.<BR>
+- The class now works internally in points with the origin at the bottom in order to avoid two bugs occurring with Acrobat 5 :<BR>&nbsp;&nbsp;* The line thickness was too large when printed under Windows 98 SE and ME.<BR>&nbsp;&nbsp;* TrueType fonts didn't appear immediately inside the plug-in (a substitution font was used), one had to cause a window refresh to make them show up.<BR>
+- It is no longer necessary to set the decimal separator as dot to produce valid documents.<BR>
+- The clickable area in a cell was always on the left independently from the text alignment.<BR>
+- JPEG images in CMYK mode appeared in inverted colors.<BR>
+- Transparent PNG images in grayscale or true color mode were incorrectly handled.<BR>
+- Adding new fonts now works correctly even with the magic_quotes_runtime option set to on.<BR>
+</BLOCKQUOTE>
 <B>v1.5</B> (2002/05/28)
 <BLOCKQUOTE>
-- TrueType font (AddFont()) and encoding support.<BR>
+- TrueType font (AddFont()) and encoding support (Western and Eastern Europe, Cyrillic and Greek).<BR>
 - Added Write() method.<BR>
 - Added underlined style.<BR>
 - Internal and external link support (AddLink(), SetLink(), Link()).<BR>
@@ -61,7 +72,7 @@
 <B>v1.11</B> (2001/10/20)
 <BLOCKQUOTE>
 - PNG support doesn't require PHP4/Zlib any more. Data are now put directly into PDF without any decompression/recompression stage.<BR>
-- Image insertion works correctly even with magic_quotes_runtime option set to on.<BR>
+- Image insertion now works correctly even with magic_quotes_runtime option set to on.<BR>
 </BLOCKQUOTE>
 <B>v1.1</B> (2001/10/07)
 <BLOCKQUOTE>

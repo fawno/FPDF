@@ -7,9 +7,9 @@
 <BODY>
 <H2>SetFont</H2>
 <TT>SetFont(<B>string</B> family [, <B>string</B> style [, <B>float</B> size]])</TT>
-<H4>Version</H4>
+<H4 CLASS='st'>Version</H4>
 1.0
-<H4>Description</H4>
+<H4 CLASS='st'>Description</H4>
 Sets the font used to print character strings. It is mandatory to call this method
 at least once before printing text or the resulting document would not be valid.
 <BR>
@@ -44,7 +44,7 @@ require('fpdf.php');
 </TD></TR></TABLE><BR>
 If the file corresponding to the requested font is not found, the error "Could not include
 font metric file" is generated.
-<H4>Parameters</H4>
+<H4 CLASS='st'>Parameters</H4>
 <TT><U>family</U></TT>
 <BLOCKQUOTE>
 Family font. It can be either a name defined by AddFont() or one of the standard families (case
@@ -77,7 +77,7 @@ Font size in points.
 The default value is the current size. If no size has been specified since the beginning of
 the document, the value taken is 12.
 </BLOCKQUOTE>
-<H4>Example</H4>
+<H4 CLASS='st'>Example</H4>
 <TABLE WIDTH="100%" BGCOLOR="#E0E0E0"><TR><TD>
 <TT>
 //Times regular 12<BR>
@@ -90,7 +90,7 @@ $pdf-&gt;SetFont('');<BR>
 $pdf-&gt;SetFont('Times','BIU');
 </TT>
 </TD></TR></TABLE><BR>
-<H4>See also</H4>
+<H4 CLASS='st'>See also</H4>
 <A HREF="addfont.htm">AddFont()</A>,
 <A HREF="setfontsize.htm">SetFontSize()</A>,
 <A HREF="cell.htm">Cell()</A>,

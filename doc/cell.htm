@@ -7,9 +7,9 @@
 <BODY>
 <H2>Cell</H2>
 <TT>Cell(<B>float</B> w [, <B>float</B> h [, <B>string</B> txt [, <B>mixed</B> border [, <B>int</B> ln [, <B>string</B> align [, <B>int</B> fill [, <B>mixed</B> link]]]]]]])</TT>
-<H4>Version</H4>
+<H4 CLASS='st'>Version</H4>
 1.0
-<H4>Description</H4>
+<H4 CLASS='st'>Description</H4>
 Prints a cell (rectangular area) with optional borders, background color and character string.
 The upper-left corner of the cell corresponds to the current position. The text can be aligned
 or centered. After the call, the current position moves to the right or to the next line. It is
@@ -17,7 +17,7 @@ possible to put a link on the text.
 <BR>
 If automatic page breaking is enabled and the cell goes beyond the limit, a page break is
 done before outputting.
-<H4>Parameters</H4>
+<H4 CLASS='st'>Parameters</H4>
 <TT><U>w</U></TT>
 <BLOCKQUOTE>
 Cell width. If <TT>0</TT>, the cell extends up to the right margin.
@@ -77,7 +77,7 @@ Default value: <TT>0</TT>.
 <BLOCKQUOTE>
 URL or identifier returned by AddLink().
 </BLOCKQUOTE>
-<H4>Example</H4>
+<H4 CLASS='st'>Example</H4>
 <TABLE WIDTH="100%" BGCOLOR="#E0E0E0"><TR><TD>
 <TT>
 //Set font<BR>
@@ -88,7 +88,7 @@ $pdf-&gt;Cell(80);<BR>
 $pdf-&gt;Cell(20,10,'Title',1,1,'C');
 </TT>
 </TD></TR></TABLE><BR>
-<H4>See also</H4>
+<H4 CLASS='st'>See also</H4>
 <A HREF="setfont.htm">SetFont()</A>,
 <A HREF="setdrawcolor.htm">SetDrawColor()</A>,
 <A HREF="setfillcolor.htm">SetFillColor()</A>,
