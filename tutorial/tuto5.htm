@@ -75,14 +75,14 @@ class </span>PDF <span class="kw">extends </span>FPDF
     </span><span class="cmt">//Header
     </span>$w<span class="kw">=array(</span>40<span class="kw">,</span>35<span class="kw">,</span>40<span class="kw">,</span>45<span class="kw">);
     for(</span>$i<span class="kw">=</span>0<span class="kw">;</span>$i<span class="kw">&lt;</span>count<span class="kw">(</span>$header<span class="kw">);</span>$i<span class="kw">++)
-        </span>$<span class="kw">this-&gt;</span>Cell<span class="kw">(</span>$w<span class="kw">[</span>$i<span class="kw">],</span>7<span class="kw">,</span>$header<span class="kw">[</span>$i<span class="kw">],</span>1<span class="kw">,</span>0<span class="kw">,</span><span class="str">'C'</span><span class="kw">,</span>1<span class="kw">);
+        </span>$<span class="kw">this-&gt;</span>Cell<span class="kw">(</span>$w<span class="kw">[</span>$i<span class="kw">],</span>7<span class="kw">,</span>$header<span class="kw">[</span>$i<span class="kw">],</span>1<span class="kw">,</span>0<span class="kw">,</span><span class="str">'C'</span><span class="kw">,</span>true<span class="kw">);
     </span>$<span class="kw">this-&gt;</span>Ln<span class="kw">();
     </span><span class="cmt">//Color and font restoration
     </span>$<span class="kw">this-&gt;</span>SetFillColor<span class="kw">(</span>224<span class="kw">,</span>235<span class="kw">,</span>255<span class="kw">);
     </span>$<span class="kw">this-&gt;</span>SetTextColor<span class="kw">(</span>0<span class="kw">);
     </span>$<span class="kw">this-&gt;</span>SetFont<span class="kw">(</span><span class="str">''</span><span class="kw">);
     </span><span class="cmt">//Data
-    </span>$fill<span class="kw">=</span>0<span class="kw">;
+    </span>$fill<span class="kw">=</span>false<span class="kw">;
     foreach(</span>$data <span class="kw">as </span>$row<span class="kw">)
     {
         </span>$<span class="kw">this-&gt;</span>Cell<span class="kw">(</span>$w<span class="kw">[</span>0<span class="kw">],</span>6<span class="kw">,</span>$row<span class="kw">[</span>0<span class="kw">],</span><span class="str">'LR'</span><span class="kw">,</span>0<span class="kw">,</span><span class="str">'L'</span><span class="kw">,</span>$fill<span class="kw">);
@@ -111,28 +111,21 @@ class </span>PDF <span class="kw">extends </span>FPDF
 </span>$pdf<span class="kw">-&gt;</span>Output<span class="kw">();
 </span>?&gt;</code></pre>
 </div>
-<script type="text/javascript">
-<!--
-if(document.location.href.indexOf('http:')==0)
-{
-document.write("<p class='demo'><a href='tuto5.php' target='_blank' class='demo'>[Demo]<\/a><\/p>");
-}
-//-->
-</script>
+<p class='demo'><a href='tuto5.php' target='_blank' class='demo'>[Demo]</a></p>
 A table being just a collection of cells, it is natural to build one from them. The first
 example is achieved in the most basic way possible: simple framed cells, all of the same size
 and left aligned. The result is rudimentary but very quick to obtain.
-<BR>
-<BR>
+<br>
+<br>
 The second table brings some improvements: each column has its own width, titles are centered
 and figures right aligned. Moreover, horizontal lines have been removed. This is done by means
-of the <TT>border</TT> parameter of the <a href='../doc/cell.htm'>Cell()</a> method, which specifies which sides of the
-cell must be drawn. Here we want the left (<TT>L</TT>) and right (<TT>R</TT>) ones. It remains
+of the <code>border</code> parameter of the <a href='../doc/cell.htm'>Cell()</a> method, which specifies which sides of the
+cell must be drawn. Here we want the left (<code>L</code>) and right (<code>R</code>) ones. It remains
 the problem of the horizontal line to finish the table. There are two possibilities: either
-check for the last line in the loop, in which case we use <TT>LRB</TT> for the <TT>border</TT>
+check for the last line in the loop, in which case we use <code>LRB</code> for the <code>border</code>
 parameter; or, as done here, add the line once the loop is over.
-<BR>
-<BR>
+<br>
+<br>
 The third table is similar to the second one but uses colors. Fill, text and line colors are
 simply specified. Alternate coloring for rows is obtained by using alternatively transparent
 and filled cells.

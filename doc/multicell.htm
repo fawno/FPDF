@@ -1,76 +1,76 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML>
-<HEAD>
-<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
-<TITLE>MultiCell</TITLE>
-<LINK TYPE="text/css" REL="stylesheet" HREF="../fpdf.css">
-</HEAD>
-<BODY>
-<H2>MultiCell</H2>
-<TT>MultiCell(<B>float</B> w, <B>float</B> h, <B>string</B> txt [, <B>mixed</B> border [, <B>string</B> align [, <B>int</B> fill]]])</TT>
-<H4 CLASS='st'>Version</H4>
-1.3
-<H4 CLASS='st'>Description</H4>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>MultiCell</title>
+<link type="text/css" rel="stylesheet" href="../fpdf.css">
+</head>
+<body>
+<h1>MultiCell</h1>
+<code>MultiCell(<b>float</b> w, <b>float</b> h, <b>string</b> txt [, <b>mixed</b> border [, <b>string</b> align [, <b>boolean</b> fill]]])</code>
+<h2>Description</h2>
 This method allows printing text with line breaks. They can be automatic (as soon as the
 text reaches the right border of the cell) or explicit (via the \n character). As many cells
 as necessary are output, one below the other.
-<BR>
+<br>
 Text can be aligned, centered or justified. The cell block can be framed and the background
 painted.
-<H4 CLASS='st'>Parameters</H4>
-<TT><U>w</U></TT>
-<BLOCKQUOTE>
-Width of cells. If <TT>0</TT>, they extend up to the right margin of the page.
-</BLOCKQUOTE>
-<TT><U>h</U></TT>
-<BLOCKQUOTE>
+<h2>Parameters</h2>
+<dl class="param">
+<dt><code>w</code></dt>
+<dd>
+Width of cells. If <code>0</code>, they extend up to the right margin of the page.
+</dd>
+<dt><code>h</code></dt>
+<dd>
 Height of cells.
-</BLOCKQUOTE>
-<TT><U>txt</U></TT>
-<BLOCKQUOTE>
+</dd>
+<dt><code>txt</code></dt>
+<dd>
 String to print.
-</BLOCKQUOTE>
-<TT><U>border</U></TT>
-<BLOCKQUOTE>
+</dd>
+<dt><code>border</code></dt>
+<dd>
 Indicates if borders must be drawn around the cell block. The value can be either a number:
-<UL>
-<LI><TT>0</TT>: no border
-<LI><TT>1</TT>: frame
-</UL>
+<ul>
+<li><code>0</code>: no border</li>
+<li><code>1</code>: frame</li>
+</ul>
 or a string containing some or all of the following characters (in any order):
-<UL>
-<LI><TT>L</TT>: left
-<LI><TT>T</TT>: top
-<LI><TT>R</TT>: right
-<LI><TT>B</TT>: bottom
-</UL>
-Default value: <TT>0</TT>.
-</BLOCKQUOTE>
-<TT><U>align</U></TT>
-<BLOCKQUOTE>
+<ul>
+<li><code>L</code>: left</li>
+<li><code>T</code>: top</li>
+<li><code>R</code>: right</li>
+<li><code>B</code>: bottom</li>
+</ul>
+Default value: <code>0</code>.
+</dd>
+<dt><code>align</code></dt>
+<dd>
 Sets the text alignment. Possible values are:
-<UL>
-<LI><TT>L</TT>: left alignment
-<LI><TT>C</TT>: center
-<LI><TT>R</TT>: right alignment
-<LI><TT>J</TT>: justification (default value)
-</UL>
-</BLOCKQUOTE>
-<TT><U>fill</U></TT>
-<BLOCKQUOTE>
-Indicates if the cell background must be painted (<TT>1</TT>) or transparent (<TT>0</TT>).
-Default value: <TT>0</TT>.
-</BLOCKQUOTE>
-<H4 CLASS='st'>See also</H4>
-<A HREF="setfont.htm">SetFont()</A>,
-<A HREF="setdrawcolor.htm">SetDrawColor()</A>,
-<A HREF="setfillcolor.htm">SetFillColor()</A>,
-<A HREF="settextcolor.htm">SetTextColor()</A>,
-<A HREF="setlinewidth.htm">SetLineWidth()</A>,
-<A HREF="cell.htm">Cell()</A>,
-<A HREF="write.htm">Write()</A>,
-<A HREF="setautopagebreak.htm">SetAutoPageBreak()</A>.
-<HR STYLE="margin-top:1.2em">
-<DIV ALIGN="CENTER"><A HREF="index.htm">Index</A></DIV>
-</BODY>
-</HTML>
+<ul>
+<li><code>L</code>: left alignment</li>
+<li><code>C</code>: center</li>
+<li><code>R</code>: right alignment</li>
+<li><code>J</code>: justification (default value)</li>
+</ul>
+</dd>
+<dt><code>fill</code></dt>
+<dd>
+Indicates if the cell background must be painted (<code>true</code>) or transparent (<code>false</code>).
+Default value: <code>false</code>.
+</dd>
+</dl>
+<h2>See also</h2>
+<a href="setfont.htm">SetFont()</a>,
+<a href="setdrawcolor.htm">SetDrawColor()</a>,
+<a href="setfillcolor.htm">SetFillColor()</a>,
+<a href="settextcolor.htm">SetTextColor()</a>,
+<a href="setlinewidth.htm">SetLineWidth()</a>,
+<a href="cell.htm">Cell()</a>,
+<a href="write.htm">Write()</a>,
+<a href="setautopagebreak.htm">SetAutoPageBreak()</a>.
+<hr style="margin-top:1.5em">
+<div style="text-align:center"><a href="index.htm">Index</a></div>
+</body>
+</html>
