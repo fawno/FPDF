@@ -1,53 +1,51 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML>
-<HEAD>
-<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
-<TITLE>Write</TITLE>
-<LINK TYPE="text/css" REL="stylesheet" HREF="../fpdf.css">
-</HEAD>
-<BODY>
-<H2>Write</H2>
-<TT>Write(<B>float</B> h, <B>string</B> txt [, <B>mixed</B> link])</TT>
-<H4 CLASS='st'>Version</H4>
-1.5
-<H4 CLASS='st'>Description</H4>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Write</title>
+<link type="text/css" rel="stylesheet" href="../fpdf.css">
+</head>
+<body>
+<h1>Write</h1>
+<code>Write(<b>float</b> h, <b>string</b> txt [, <b>mixed</b> link])</code>
+<h2>Description</h2>
 This method prints text from the current position. When the right margin is reached (or the \n
 character is met) a line break occurs and text continues from the left margin. Upon method exit,
 the current position is left just at the end of the text.
-<BR>
+<br>
 It is possible to put a link on the text.
-<H4 CLASS='st'>Parameters</H4>
-<TT><U>h</U></TT>
-<BLOCKQUOTE>
+<h2>Parameters</h2>
+<dl class="param">
+<dt><code>h</code></dt>
+<dd>
 Line height.
-</BLOCKQUOTE>
-<TT><U>txt</U></TT>
-<BLOCKQUOTE>
+</dd>
+<dt><code>txt</code></dt>
+<dd>
 String to print.
-</BLOCKQUOTE>
-<TT><U>link</U></TT>
-<BLOCKQUOTE>
+</dd>
+<dt><code>link</code></dt>
+<dd>
 URL or identifier returned by AddLink().
-</BLOCKQUOTE>
-<H4 CLASS='st'>Example</H4>
-<TABLE WIDTH="100%" BGCOLOR="#E0E0E0"><TR><TD>
-<TT>
-//Begin with regular font<BR>
-$pdf-&gt;SetFont('Arial','',14);<BR>
-$pdf-&gt;Write(5,'Visit ');<BR>
-//Then put a blue underlined link<BR>
-$pdf-&gt;SetTextColor(0,0,255);<BR>
-$pdf-&gt;SetFont('','U');<BR>
-$pdf-&gt;Write(5,'www.fpdf.org','http://www.fpdf.org');
-</TT>
-</TD></TR></TABLE><BR>
-<H4 CLASS='st'>See also</H4>
-<A HREF="setfont.htm">SetFont()</A>,
-<A HREF="settextcolor.htm">SetTextColor()</A>,
-<A HREF="addlink.htm">AddLink()</A>,
-<A HREF="multicell.htm">MultiCell()</A>,
-<A HREF="setautopagebreak.htm">SetAutoPageBreak()</A>.
-<HR STYLE="margin-top:1.2em">
-<DIV ALIGN="CENTER"><A HREF="index.htm">Index</A></DIV>
-</BODY>
-</HTML>
+</dd>
+</dl>
+<h2>Example</h2>
+<div class="doc-source">
+<pre><code>//Begin with regular font
+$pdf-&gt;SetFont('Arial','',14);
+$pdf-&gt;Write(5,'Visit ');
+//Then put a blue underlined link
+$pdf-&gt;SetTextColor(0,0,255);
+$pdf-&gt;SetFont('','U');
+$pdf-&gt;Write(5,'www.fpdf.org','http://www.fpdf.org');</code></pre>
+</div>
+<h2>See also</h2>
+<a href="setfont.htm">SetFont()</a>,
+<a href="settextcolor.htm">SetTextColor()</a>,
+<a href="addlink.htm">AddLink()</a>,
+<a href="multicell.htm">MultiCell()</a>,
+<a href="setautopagebreak.htm">SetAutoPageBreak()</a>.
+<hr style="margin-top:1.5em">
+<div style="text-align:center"><a href="index.htm">Index</a></div>
+</body>
+</html>

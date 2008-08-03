@@ -64,14 +64,14 @@ function FancyTable($header,$data)
 	//Header
 	$w=array(40,35,40,45);
 	for($i=0;$i<count($header);$i++)
-		$this->Cell($w[$i],7,$header[$i],1,0,'C',1);
+		$this->Cell($w[$i],7,$header[$i],1,0,'C',true);
 	$this->Ln();
 	//Color and font restoration
 	$this->SetFillColor(224,235,255);
 	$this->SetTextColor(0);
 	$this->SetFont('');
 	//Data
-	$fill=0;
+	$fill=false;
 	foreach($data as $row)
 	{
 		$this->Cell($w[0],6,$row[0],'LR',0,'L',$fill);

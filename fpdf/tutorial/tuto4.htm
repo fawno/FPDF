@@ -32,7 +32,7 @@ function </span>Header<span class="kw">()
     </span>$<span class="kw">this-&gt;</span>SetFillColor<span class="kw">(</span>230<span class="kw">,</span>230<span class="kw">,</span>0<span class="kw">);
     </span>$<span class="kw">this-&gt;</span>SetTextColor<span class="kw">(</span>220<span class="kw">,</span>50<span class="kw">,</span>50<span class="kw">);
     </span>$<span class="kw">this-&gt;</span>SetLineWidth<span class="kw">(</span>1<span class="kw">);
-    </span>$<span class="kw">this-&gt;</span>Cell<span class="kw">(</span>$w<span class="kw">,</span>9<span class="kw">,</span>$title<span class="kw">,</span>1<span class="kw">,</span>1<span class="kw">,</span><span class="str">'C'</span><span class="kw">,</span>1<span class="kw">);
+    </span>$<span class="kw">this-&gt;</span>Cell<span class="kw">(</span>$w<span class="kw">,</span>9<span class="kw">,</span>$title<span class="kw">,</span>1<span class="kw">,</span>1<span class="kw">,</span><span class="str">'C'</span><span class="kw">,</span>true<span class="kw">);
     </span>$<span class="kw">this-&gt;</span>Ln<span class="kw">(</span>10<span class="kw">);
     </span><span class="cmt">//Save ordinate
     </span>$<span class="kw">this-&gt;</span>y0<span class="kw">=</span>$<span class="kw">this-&gt;</span>GetY<span class="kw">();
@@ -82,7 +82,7 @@ function </span>ChapterTitle<span class="kw">(</span>$num<span class="kw">,</spa
     </span><span class="cmt">//Title
     </span>$<span class="kw">this-&gt;</span>SetFont<span class="kw">(</span><span class="str">'Arial'</span><span class="kw">,</span><span class="str">''</span><span class="kw">,</span>12<span class="kw">);
     </span>$<span class="kw">this-&gt;</span>SetFillColor<span class="kw">(</span>200<span class="kw">,</span>220<span class="kw">,</span>255<span class="kw">);
-    </span>$<span class="kw">this-&gt;</span>Cell<span class="kw">(</span>0<span class="kw">,</span>6<span class="kw">,</span><span class="str">"Chapter $num : $label"</span><span class="kw">,</span>0<span class="kw">,</span>1<span class="kw">,</span><span class="str">'L'</span><span class="kw">,</span>1<span class="kw">);
+    </span>$<span class="kw">this-&gt;</span>Cell<span class="kw">(</span>0<span class="kw">,</span>6<span class="kw">,</span><span class="str">"Chapter $num : $label"</span><span class="kw">,</span>0<span class="kw">,</span>1<span class="kw">,</span><span class="str">'L'</span><span class="kw">,</span>true<span class="kw">);
     </span>$<span class="kw">this-&gt;</span>Ln<span class="kw">(</span>4<span class="kw">);
     </span><span class="cmt">//Save ordinate
     </span>$<span class="kw">this-&gt;</span>y0<span class="kw">=</span>$<span class="kw">this-&gt;</span>GetY<span class="kw">();
@@ -124,19 +124,12 @@ function </span>PrintChapter<span class="kw">(</span>$num<span class="kw">,</spa
 </span>$pdf<span class="kw">-&gt;</span>Output<span class="kw">();
 </span>?&gt;</code></pre>
 </div>
-<script type="text/javascript">
-<!--
-if(document.location.href.indexOf('http:')==0)
-{
-document.write("<p class='demo'><a href='tuto4.php' target='_blank' class='demo'>[Demo]<\/a><\/p>");
-}
-//-->
-</script>
+<p class='demo'><a href='tuto4.php' target='_blank' class='demo'>[Demo]</a></p>
 The key method used is <a href='../doc/acceptpagebreak.htm'>AcceptPageBreak()</a>. It allows to accept or not an automatic page
 break. By refusing it and altering the margin and current position, the desired column layout
 is achieved.
-<BR>
-For the rest, not much change; two properties have been added to the class to save the current
+<br>
+For the rest, not many changes; two properties have been added to the class to save the current
 column number and the position where columns begin, and the MultiCell() call specifies a
 6 centimeter width.
 </body>

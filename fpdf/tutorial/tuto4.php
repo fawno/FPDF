@@ -20,7 +20,7 @@ function Header()
 	$this->SetFillColor(230,230,0);
 	$this->SetTextColor(220,50,50);
 	$this->SetLineWidth(1);
-	$this->Cell($w,9,$title,1,1,'C',1);
+	$this->Cell($w,9,$title,1,1,'C',true);
 	$this->Ln(10);
 	//Save ordinate
 	$this->y0=$this->GetY();
@@ -70,7 +70,7 @@ function ChapterTitle($num,$label)
 	//Title
 	$this->SetFont('Arial','',12);
 	$this->SetFillColor(200,220,255);
-	$this->Cell(0,6,"Chapter $num : $label",0,1,'L',1);
+	$this->Cell(0,6,"Chapter $num : $label",0,1,'L',true);
 	$this->Ln(4);
 	//Save ordinate
 	$this->y0=$this->GetY();
