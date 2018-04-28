@@ -16,7 +16,7 @@
     "autoload": {
         "psr-4": {
             "Fawno\\FPDF\\": "src"
-        }
+        },
         "classmap": [
             "src/fpdf.php"
         ]
