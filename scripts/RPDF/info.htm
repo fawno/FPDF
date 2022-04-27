@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Text rotations</title>
+<style type="text/css">
+body {font-family:"Times New Roman",serif}
+h1 {font:bold 135% Arial,sans-serif; color:#4000A0; margin-bottom:0.9em}
+h2 {font:bold 95% Arial,sans-serif; color:#900000; margin-top:1.5em; margin-bottom:1em}
+</style>
+</head>
+<body>
+<h1>Text rotations</h1>
+<h2>Informations</h2>
+Author: <a href="mailto:boba@khspu.ru?subject=Text%20rotations">Pivkin Vladimir</a><br>
+License: FPDF
+<h2>Description</h2>
+This extension allows to print rotated and sheared (i.e. distorted like in italic) text.<br>
+<br>
+<code>TextWithDirection(<b>float</b> x, <b>float</b> y, <b>string</b> txt [, <b>string</b> direction])</code><br>
+<br>
+<code><u>x</u></code>: abscissa<br>
+<code><u>y</u></code>: ordinate<br>
+<code><u>txt</u></code>: text string<br>
+<code><u>direction</u></code>: one of the following values (<code>R</code> by default):
+<ul>
+<li><code>R</code> (Right): Left to Right</li>
+<li><code>U</code> (Up): Bottom to Top</li>
+<li><code>D</code> (Down): Top To Bottom</li>
+<li><code>L</code> (Left): Right to Left</li>
+</ul>
+<code>TextWithRotation(<b>float</b> x, <b>float</b> y, <b>string</b> txt, <b>float</b> txt_angle [, <b>float</b> font_angle])</code><br>
+<br>
+<code><u>x</u></code>: abscissa<br>
+<code><u>y</u></code>: ordinate<br>
+<code><u>txt</u></code>: text string<br>
+<code><u>txt_angle</u></code>: angle of the text<br>
+<code><u>font_angle</u></code>: shear angle (<code>0</code> by default)<br>
+</body>
+</html>
