@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Geometric figures</title>
+<style type="text/css">
+body {font-family:"Times New Roman",serif}
+h1 {font:bold 135% Arial,sans-serif; color:#4000A0; margin-bottom:0.9em}
+h2 {font:bold 95% Arial,sans-serif; color:#900000; margin-top:1.5em; margin-bottom:1em}
+</style>
+</head>
+<body>
+<h1>Geometric figures</h1>
+<h2>Informations</h2>
+Author: David Hernández Sanz<br>
+License: FPDF
+<h2>Description</h2>
+This extension allows to draw lines, rectangles, ellipses, polygons and curves with line style. Public methods are:<br>
+<br>
+&#x2022; <code>SetLineStyle($style: array)</code><br>
+<br>
+Sets line style. Parameters are:<br>
+<br>
+  - <code>style</code>: an array with the following possible keys:<br>
+<br>
+    . width: width of the line in user units.<br>
+    . cap: type of cap to put on the line (butt, round, square). The difference between "square" and "butt" is that "square" projects a flat end past the end of the line.<br>
+    . join: miter, round, or bevel.<br>
+    . dash: dash pattern. Is 0 (without dash) or array with series of length values, which are the lengths of the on and off dashes.<br>
+    . phase: modifier of the dash pattern which is used to shift the point at which the pattern starts.<br>
+    . color: draw color. Array with components (red, green, blue).<br>
+<br>
+&#x2022; <code>Line($x1: float, $y1: float, $x2: float, $y2: float, $style: array)</code><br>
+<br>
+Draws a line. Overrides the method from FPDF. Parameters are:<br>
+<br>
+  - <code>x1</code>, <code>y1</code>: start point.<br>
+  - <code>x2</code>, <code>y2</code>: end point.<br>
+  - <code>style</code>: line style (array like for SetLineStyle).<br>
+<br>
+&#x2022; <code>Rect($x: float, $y: float, $w: float, $h: float, $style: string, $border_style: array, $fill_color: array)</code><br>
+<br>
+Draws a rectangle. Overrides the method from FPDF. Parameters are:<br>
+<br>
+  - <code>x</code>, <code>y</code>: top left corner.<br>
+  - <code>w</code>, <code>h</code>: width and height.<br>
+  - <code>style</code>: style of rectangle (draw and/or fill: D, F, DF, FD).<br>
+  - <code>border_style</code>: border style of rectangle. Array with index: (all => style) for all borders, or (L => style, T => style, R => style, B => style) for each border. Style is an array like for SetLineStyle.<br>
+  - <code>fill_color</code>: fill color. Array with components (red, green, blue).<br>
+<br>
+&#x2022; <code>Curve($x0: float, $y0: float, $x1: float, $y1: float, $x2: float, $y2: float, $x3: float, $y3: float, $style: string, $line_style: array, $fill_color: array)</code><br>
+<br>
+Draws a Bézier curve. Parameters are:<br>
+<br>
+  - <code>x0</code>, <code>y0</code>: start point.<br>
+  - <code>x1</code>, <code>y1</code>: control point 1.<br>
+  - <code>x2</code>, <code>y2</code>: control point 2.<br>
+  - <code>x3</code>, <code>y3</code>: end point.<br>
+  - <code>style</code>: style of rectangle (draw and/or fill: D, F, DF, FD).<br>
+  - <code>line_style</code>: line style for curve. Array like for SetLineStyle.<br>
+  - <code>fill_color</code>: fill color. Array with components (red, green, blue).<br>
+<br>
+&#x2022; <code>Ellipse($x0: float, $y0: float, $rx: float, $ry: float, $angle: float, $astart: float, $afinish: float, $style: string, $line_style: array, $fill_color: array, $nSeg: integer)</code><br>
+<br>
+Draws an ellipse. Parameters are:<br>
+<br>
+  - <code>x0</code>, <code>y0</code>: center point.<br>
+  - <code>rx</code>, <code>ry</code>: horizontal and vertical radius (if ry is 0, this is a circle).<br>
+  - <code>angle</code>: orientation angle (anti-clockwise).<br>
+  - <code>astart</code>: start angle.<br>
+  - <code>afinish</code>: finish angle.<br>
+  - <code>style</code>: style of ellipse (draw and/or fill: D, F, DF, FD, C (D + close)).<br>
+  - <code>line_style</code>: line style for ellipse. Array like for SetLineStyle.<br>
+  - <code>fill_color</code>: fill color. Array with components (red, green, blue).<br>
+  - <code>nSeg</code>: ellipse is made up of nSeg Bézier curves.<br>
+<br>
+&#x2022; <code>Circle($x0: float, $y0: float, $r: float, $astart: float, $afinish: float, $style: string, $line_style: array, $fill_color: array, $nSeg: integer)</code><br>
+<br>
+Draws a circle. Parameters are:<br>
+<br>
+  - <code>x0</code>, <code>y0</code>: center point.<br>
+  - <code>r</code>: radius.<br>
+  - <code>astart</code>: start angle.<br>
+  - <code>afinish</code>: finish angle.<br>
+  - <code>style</code>: style of circle (draw and/or fill: D, F, DF, FD, C (D + close)).<br>
+  - <code>line_style</code>: line style for circle. Array like for SetLineStyle.<br>
+  - <code>fill_color</code>: fill color. Array with components (red, green, blue).<br>
+  - <code>nSeg</code>: circle is made up of nSeg Bézier curves.<br>
+<br>
+&#x2022; <code>Polygon($p: array, $style: string, $line_style: array, $fill_color: array)</code><br>
+<br>
+Draws a polygon. Parameters are:<br>
+<br>
+  - <code>p</code>: points. Array with values x0, y0, x1, y1,..., x(np-1), y(np-1).<br>
+  - <code>style</code>: style of polygon (draw and/or fill: D, F, DF, FD).<br>
+  - <code>line_style</code>: line style. Array with index (all => style) for all borders, or (0..np-1 => style) for each border. Style is an array like for SetLineStyle.<br>
+  - <code>fill_color</code>: fill color. Array with components (red, green, blue)<br>
+<br>
+&#x2022; <code>RegularPolygon($x0: float, $y0: float, $r: float, $ns: Integer, $angle: float, $circle: boolean, $style: string, $line_style: array, $fill_color: array, $circle_style: array, $circle_line_style: array, $circle_fill_color: array)</code><br>
+<br>
+Draws a regular polygon. Parameters are:<br>
+<br>
+  - <code>x0</code>, <code>y0</code>: center point.<br>
+  - <code>r</code>: radius of circumscribed circle.<br>
+  - <code>ns</code>: number of sides.<br>
+  - <code>angle</code>: orientation angle (anti-clockwise).<br>
+  - <code>circle</code>: draw circumscribed circle or not.<br>
+  - <code>style</code>: style of polygon (draw and/or fill: D, F, DF, FD).<br>
+  - <code>line_style</code>: line style. Array with index (all => style) for all borders, or (0..ns-1 => style) for each border. Style is an array like for SetLineStyle.<br>
+  - <code>fill_color</code>: fill color. Array with components (red, green, blue).<br>
+  - <code>circle_style</code>: style of circumscribed circle (draw and/or fill: D, F, DF, FD).<br>
+  - <code>circle_line_style</code>: line style for circumscribed circle. Array like for SetLineStyle.<br>
+  - <code>circle_fill_color</code>: fill color for circumscribed circle. Array with components (red, green, blue).<br>
+<br>
+&#x2022; <code>StarPolygon($x0: float, $y0: float, $r: float, $nv: Integer, $ng: Integer, $angle: float, $circle: boolean, $style: string, $line_style: array, $fill_color: array, $circle_style: array, $circle_line_style: array, $circle_fill_color: array)</code><br>
+<br>
+Draws a star polygon. Parameters are:<br>
+<br>
+  - <code>x0</code>, <code>y0</code>: center point.<br>
+  - <code>r</code>: radius of circumscribed circle.<br>
+  - <code>nv</code>: number of vertices.<br>
+  - <code>ng</code>: number of gaps (ng % nv = 1 => regular polygon).<br>
+  - <code>angle</code>: orientation angle (anti-clockwise).<br>
+  - <code>circle</code>: draw circumscribed circle or not.<br>
+  - <code>style</code>: style of polygon (draw and/or fill) (D, F, DF, FD).<br>
+  - <code>line_style</code>: line style. Array with index (all => style) for all borders, or (0..n-1 => style) for each border. Style is an array like for SetLineStyle.<br>
+  - <code>fill_color</code>: fill color. Array with components (red, green, blue).<br>
+  - <code>circle_style</code>: style of circumscribed circle (draw and/or fill) (D, F, DF, FD) (if draw).<br>
+  - <code>circle_line_style</code>: line style for circumscribed circle. Array like for SetLineStyle (if draw).<br>
+  - <code>circle_fill_color</code>: fill color for circumscribed circle. Array with components (red, green, blue).<br>
+<br>
+&#x2022; <code>RoundedRect($x: float, $y: float, $w: float, $h: float, $r: float, $round_corner: string, $style: string, $border_style: string, $fill_color: array)</code><br>
+<br>
+Draws a rounded rectangle. Parameters are:<br>
+<br>
+  - <code>x</code>, <code>y</code>: top left corner.<br>
+  - <code>w</code>, <code>h</code>: width and height.<br>
+  - <code>r</code>: radius of the rounded corners.<br>
+  - <code>round_corner</code>: draws rounded corners or not. String with a 0 (not rounded i-corner) or 1 (rounded i-corner) in i-position. Positions are, in order: top left, top right, bottom right and bottom left.<br>
+  - <code>style</code>: style of rectangle (draw and/or fill: D, F, DF, FD).<br>
+  - <code>border_style</code>: border style of rectangle. Array like for SetLineStyle.<br>
+  - <code>fill_color</code>: fill color. Array with components (red, green, blue).
+</body>
+</html>
