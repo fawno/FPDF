@@ -1,5 +1,7 @@
+[![GitHub Workflow](https://github.com/fawno/FPDF/actions/workflows/php.yml/badge.svg)](https://github.com/fawno/FPDF/actions/workflows/php.yml)
 [![GitHub license](https://img.shields.io/github/license/fawno/FPDF)](https://github.com/fawno/FPDF/blob/master/LICENSE)
 [![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/fawno/FPDF)](https://github.com/fawno/FPDF/tags)
+[![GitHub release](https://img.shields.io/github/release/fawno/FPDF)](https://github.com/fawno/FPDF/releases)
 [![Packagist](https://img.shields.io/packagist/v/fawno/fpdf)](https://packagist.org/packages/fawno/fpdf)
 [![Packagist Downloads](https://img.shields.io/packagist/dt/fawno/fpdf)](https://packagist.org/packages/fawno/fpdf/stats)
 [![GitHub issues](https://img.shields.io/github/issues/fawno/FPDF)](https://github.com/fawno/FPDF/issues)
