@@ -2,14 +2,21 @@
 	declare(strict_types=1);
 
 	namespace FPDF\Scripts\PDFBookmark;
-	//http://www.fpdf.org/en/script/script1.php
 
 	trait PDFBookmarkTrait {
 		protected $outlines = array();
 		protected $outlineRoot;
 
-		function Bookmark($txt, $isUTF8=false, $level=0, $y=0)
-		{
+		/**
+		 * Add a bookmark
+		 *
+		 * @param string $txt The bookmark title.
+		 * @param bool $isUTF8 Indicates if the title is encoded in ISO-8859-1 (false) or UTF-8 (true). Default value: false.
+		 * @param int $level The bookmark level (0 is top level, 1 is just below, and so on). Default value: 0.
+		 * @param float $y The y position of the bookmark destination in the current page. -1 means the current position. Default value: 0.
+		 * @return void
+		 */
+		public function Bookmark (string $txt, bool $isUTF8 = false, int $level = 0, float $y = 0) : void	{
 			if(!$isUTF8)
 				$txt = utf8_encode($txt);
 			if($y==-1)
@@ -17,7 +24,7 @@
 			$this->outlines[] = array('t'=>$txt, 'l'=>$level, 'y'=>($this->h-$y)*$this->k, 'p'=>$this->PageNo());
 		}
 
-		function _putbookmarks()
+		protected function _putbookmarks()
 		{
 			$nb = count($this->outlines);
 			if($nb==0)
@@ -77,13 +84,13 @@
 			$this->_put('endobj');
 		}
 
-		function _putresources()
+		protected function _putresources()
 		{
 				parent::_putresources();
 				$this->_putbookmarks();
 		}
 
-		function _putcatalog()
+		protected function _putcatalog()
 		{
 			parent::_putcatalog();
 			if(count($this->outlines)>0)
