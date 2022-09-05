@@ -5,6 +5,16 @@
 
 	use Fawno\FPDF\FawnoFPDF;
 
+	FawnoFPDF::macro('SetDash', function($black = null, $white = null) {
+		if ($black !== null) {
+			$s = sprintf('[%.3F %.3F] 0 d', $black * $this->k, $white * $this->k);
+		} else {
+			$s = '[] 0 d';
+		}
+
+		$this->_out($s);
+	});
+
 	$pdf = new FawnoFPDF();
 
 	// PDFBookmarkTrait;
@@ -23,14 +33,30 @@
 	$pdf->Bookmark('Paragraph 3', false, 1, -1);
 	$pdf->Cell(0, 6, 'Paragraph 3');
 
-	//PDFRotateTrait;
+	//PDFMacroable
 	$pdf->AddPage();
+	$pdf->Bookmark('PDFMacroable', false);
+	$pdf->SetLineWidth(0.1);
+	$pdf->SetDash(5,5); //5mm on, 5mm off
+	$pdf->Line(20,20,190,20);
+	$pdf->SetLineWidth(0.5);
+	$pdf->Line(20,25,190,25);
+	$pdf->SetLineWidth(0.8);
+	$pdf->SetDash(4,2); //4mm on, 2mm off
+	$pdf->Rect(20,30,170,20);
+	$pdf->SetDash(); //restores no dash
+	$pdf->Line(20,55,190,55);
+
+	//PDFRotateTrait
+	$pdf->AddPage();
+	$pdf->Bookmark('PDFRotate', false);
 	$pdf->SetFont('Arial','',20);
 	$pdf->RotatedImage(dirname(__DIR__) . '/scripts/PDFRotate/circle.png',85,60,40,16,45);
 	$pdf->RotatedText(100,60,'Hello!',45);
 
 	// CMYKTrait
 	$pdf->AddPage();
+	$pdf->Bookmark('CMYK', false);
 	$pdf->SetFont('Arial', 'B', 20);
 	$pdf->SetLineWidth(1);
 
@@ -84,6 +110,7 @@
 
 	//RPDFTrait
 	$pdf->AddPage();
+	$pdf->Bookmark('RPDF', false);
 	$pdf->SetFont('Arial', '' , 40);
 	$pdf->TextWithRotation(50, 65, 'Hello', 45, -45);
 	$pdf->SetFontSize(30);
@@ -95,6 +122,7 @@
 	//PDFDrawTrait
 	$pdf->SetFont('arial', '', 10);
 	$pdf->AddPage();
+	$pdf->Bookmark('PDFDraw', false);
 
 	$style = array('width' => 0.5, 'cap' => 'butt', 'join' => 'miter', 'dash' => '10,20,5,10', 'phase' => 10, 'color' => array(255, 0, 0));
 	$style2 = array('width' => 0.5, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => array(255, 0, 0));

@@ -4,6 +4,7 @@
 	namespace Fawno\FPDF;
 
 	use Fawno\FPDF\Traits\CMYKTrait;
+	use Fawno\FPDF\Traits\PDFMacroableTrait;
 	use Fawno\FPDF\PDFWrapper;
 	use FPDF\Scripts\PDFBookmark\PDFBookmarkTrait;
 	use FPDF\Scripts\PDFDraw\PDFDrawTrait;
@@ -11,6 +12,7 @@
 	use FPDF\Scripts\RPDF\RPDFTrait;
 
 	class FawnoFPDF extends PDFWrapper {
+		use PDFMacroableTrait;
 		use PDFBookmarkTrait;
 		use PDFRotateTrait;
 		use CMYKTrait;
