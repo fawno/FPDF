@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Protection</title>
+<style type="text/css">
+body {font-family:"Times New Roman",serif}
+h1 {font:bold 135% Arial,sans-serif; color:#4000A0; margin-bottom:0.9em}
+h2 {font:bold 95% Arial,sans-serif; color:#900000; margin-top:1.5em; margin-bottom:1em}
+</style>
+</head>
+<body>
+<h1>Protection</h1>
+<h2>Informations</h2>
+Author: <a href="mailto:klemen@vodopivec.org?subject=Protection">Klemen Vodopivec</a><br>
+License: FPDF
+<h2>Description</h2>
+This script allows to protect the PDF, that is to say prevent people from copying its content,
+print it or modify it.<br>
+<br>
+<strong>Important:</strong> some PDF readers like Firefox ignore the protection settings,
+which strongly reduces the usefulness of this script.<br>
+<br>
+<code>SetProtection([<b>array</b> permissions [, <b>string</b> user_pass [, <b>string</b> owner_pass]]])</code><br>
+<br>
+<code><u>permissions</u></code>: the set of permissions. Empty by default (only viewing is allowed).<br>
+<code><u>user_pass</u></code>: user password. Empty by default.<br>
+<code><u>owner_pass</u></code>: owner password. If not specified, a random value is used.<br>
+<br>
+The permission array contains values taken from the following list:
+<ul>
+<li><code>copy</code>: copy text and images to the clipboard</li>
+<li><code>print</code>: print the document</li>
+<li><code>modify</code>: modify it (except for annotations and forms)</li>
+<li><code>annot-forms</code>: add annotations and forms</li>
+</ul>
+The protection against modification is for people who have the full Acrobat product.<br>
+<br>
+If you don't set any password, the document will open as usual. If you set a user password, the
+PDF viewer will ask for it before displaying the document. The owner password, if different
+from the user one, can be used to get full access.<br>
+<br>
+<strong>Note:</strong> protecting a document requires to encrypt it. If an encryption extension is
+available (OpenSSL or Mcrypt), it is used. Otherwise encryption is done in PHP, which can increase
+the processing time significantly (especially if the document contains images or fonts).
+</body>
+</html>

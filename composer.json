@@ -20,6 +20,7 @@
         "php": ">=7.2"
     },
     "suggest": {
+        "ext-openssl": "*",
         "setasign/fpdi": "@stable"
     },
     "autoload": {
