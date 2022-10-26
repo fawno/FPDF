@@ -14,8 +14,8 @@
 
 	class FawnoFPDF extends PDFWrapper {
 		use PDFMacroableTrait;
-		use PDFBookmarkTrait { _putresources as PDFBookmark_putresources; }
-		use PDFProtectionTrait { _putresources as PDFProtection_putresources; }
+		use PDFBookmarkTrait { PDFBookmarkTrait::_putresources as PDFBookmark_putresources; }
+		use PDFProtectionTrait { PDFProtectionTrait::_putresources as PDFProtection_putresources; }
 		use PDFRotateTrait;
 		use CMYKTrait;
 		use PDFDrawTrait;
