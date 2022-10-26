@@ -53,3 +53,11 @@ fpdf/** eol=crlf
 *.bz2 binary
 *.7z binary
 *.zip binary
+
+
+/.github           export-ignore
+/tests             export-ignore
+/.editorconfig     export-ignore
+/.gitattributes    export-ignore
+/.gitignore        export-ignore
+/phpunit.xml       export-ignore
