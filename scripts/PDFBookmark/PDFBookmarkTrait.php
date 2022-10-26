@@ -2,6 +2,7 @@
 	declare(strict_types=1);
 
 	namespace FPDF\Scripts\PDFBookmark;
+	//http://www.fpdf.org/en/script/script1.php
 
 	trait PDFBookmarkTrait {
 		protected $outlines = array();

@@ -2,6 +2,7 @@
 	declare(strict_types=1);
 
 	namespace FPDF\Scripts\PDFProtection;
+	//http://www.fpdf.org/en/script/script37.php
 
 	trait PDFProtectionTrait {
 		protected $encrypted = false;  //whether document is protected

@@ -11,7 +11,8 @@
 	};
 
 	$pdf->AddPage();
-	$pdf->SetFont('Arial','',20);
-	$pdf->RotatedImage(__DIR__ . '/circle.png',85,60,40,16,45);
-	$pdf->RotatedText(100,60,'Hello!',45);
+	$pdf->SetFont('Arial', '', 20);
+	$pdf->RotatedImage(__DIR__ . '/circle.png', 85, 60, 40, 16, 45);
+	$pdf->RotatedText(100, 60, 'Hello!', 45);
+
 	$pdf->Output('F', __DIR__ . '/example.pdf');
