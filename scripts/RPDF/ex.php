@@ -18,4 +18,5 @@
 	$pdf->TextWithDirection(110, 50, 'world!', 'U');
 	$pdf->TextWithDirection(110, 50, 'world!', 'R');
 	$pdf->TextWithDirection(110, 50, 'world!', 'D');
+
 	$pdf->Output('F', __DIR__ . '/example.pdf');
