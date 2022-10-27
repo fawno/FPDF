@@ -15,7 +15,7 @@
 		 * @param float|int $y Ordinate of the rotation center. Default value: current position.
 		 * @return void
 		 */
-		function Rotate (float $angle, float $x = null, float $y = null) {
+		public function Rotate (float $angle, float $x = null, float $y = null) {
 			$x = $x ?? $this->x;
 			$y = $y ?? $this->x;
 
@@ -35,7 +35,7 @@
 			}
 		}
 
-		function _endpage () {
+		protected function _endpage () {
 			if ($this->angle != 0) {
 				$this->angle = 0;
 				$this->_out('Q');
@@ -53,7 +53,7 @@
 		 * @param float $angle Angle in degrees.
 		 * @return void
 		 */
-		function RotatedText (float $x, float $y, string $txt, float $angle) {
+		public function RotatedText (float $x, float $y, string $txt, float $angle) {
 			//Text rotated around its origin
 			$this->Rotate($angle, $x, $y);
 			$this->Text($x, $y, $txt);
@@ -71,7 +71,7 @@
 		 * @param float $angle Angle in degrees.
 		 * @return void
 		 */
-		function RotatedImage (string $file, float $x, float $y, float $w, float $h, float $angle) {
+		public function RotatedImage (string $file, float $x, float $y, float $w, float $h, float $angle) {
 			//Image rotated around its upper-left corner
 			$this->Rotate($angle, $x, $y);
 			$this->Image($file, $x, $y, $w, $h);

@@ -21,7 +21,7 @@ use RPDF;
 		 * - L (Left): Right to Left
 		 * @return void
 		 */
-		function TextWithDirection (float $x, float $y, string $txt, string $direction = 'R') {
+		public function TextWithDirection (float $x, float $y, string $txt, string $direction = 'R') {
 			$directions = [
 				'R' => [  1,  0,  0,  1],
 				'L' => [ -1,  0,  0, -1],
@@ -54,7 +54,7 @@ use RPDF;
 		 * @param float|int $font_angle Font angle in degrees.
 		 * @return void
 		 */
-		function TextWithRotation (float $x, float $y, string $txt, float $txt_angle, float $font_angle = 0) {
+		public function TextWithRotation (float $x, float $y, string $txt, float $txt_angle, float $font_angle = 0) {
 			$font_angle += 90 + $txt_angle;
 			$txt_angle *= M_PI / 180;
 			$font_angle *= M_PI / 180;
