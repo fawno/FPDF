@@ -17,7 +17,7 @@ The method to add a bookmark is:
  * @param float $y The y position of the bookmark destination in the current page. -1 means the current position. Default value: 0.
  * @return void
  */
-PDFBookmarkTrait::Bookmark(string $txt [, bool $isUTF8 [, int $level [, float $y]]])
+PDFBookmarkTrait::Bookmark(string $txt [, bool $isUTF8 [, int $level [, float $y]]]);
 ```
 
 ## Example

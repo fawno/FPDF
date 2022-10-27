@@ -22,7 +22,31 @@ The method to set a rotation is:
  * @param float|int $y Ordinate of the rotation center. Default value: current position.
  * @return void
  */
-PDFRotateTrait::Rotate (float $angle [, float $x [, float $y]])
+PDFRotateTrait::Rotate(float $angle [, float $x [, float $y]]);
+
+/**
+ * Prints a character string with rotation
+ *
+ * @param float $x Abscissa of the origin.
+ * @param float $y Ordinate of the origin.
+ * @param string $txt String to print.
+ * @param float $angle Angle in degrees.
+ * @return void
+ */
+PDFRotateTrait::RotatedText(float $x, float $y, string $txt, float $angle);
+
+/**
+ * Puts an image with rotation
+ *
+ * @param string $file Path or URL of the image.
+ * @param float $x Abscissa of the upper-left corner.
+ * @param float $y Ordinate of the upper-left corner.
+ * @param float $w Width of the image in the page.
+ * @param float $h Height of the image in the page.
+ * @param float $angle Angle in degrees.
+ * @return void
+ */
+PDFRotateTrait::RotatedImage (string $file, float $x, float $y, float $w, float $h, float $angle)
 ```
 
 ## Example

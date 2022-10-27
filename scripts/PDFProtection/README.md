@@ -32,7 +32,7 @@ The method to set protection is:
  * @param null|string $owner_pass If an owner password is set, document can be opened in privilege mode with no restriction if that password is entered
  * @return void
  */
-PDFProtectionTrait::SetProtection ([array $permissions = [] [, ?string $user_pass = null [, ?string $owner_pass = null]]])
+PDFProtectionTrait::SetProtection([array $permissions [, ?string $user_pass [, ?string $owner_pass]]]);
 ```
 
 The permission array contains values taken from the following list:
