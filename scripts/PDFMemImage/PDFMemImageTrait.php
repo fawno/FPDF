@@ -6,9 +6,7 @@
 	use FPDF\Scripts\PDFMemImage\VariableStream;
 
 	trait PDFMemImageTrait {
-		function __construct($orientation= 'P', $unit = 'mm', $size = 'A4') {
-			parent::__construct($orientation, $unit, $size);
-
+		private function PDFMemImage_construct() {
 			// Register var stream protocol
 			if (!in_array('var', stream_get_wrappers())) {
 				stream_wrapper_register('var', VariableStream::class);

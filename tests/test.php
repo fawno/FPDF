@@ -145,6 +145,27 @@
 	$pdf->GDImage($im, 120, 25, 40);
 	imagedestroy($im);
 
+	//PDFCode128Trait
+	$pdf->AddPage();
+	$pdf->Bookmark('PDFCode128', false);
+	$pdf->SetFont('Arial','',10);
+	$code='CODE 128';
+	$pdf->Code128(50,20,$code,80,20);
+	$pdf->SetXY(50,45);
+	$pdf->Write(5,'A set: "'.$code.'"');
+	$code='Code 128';
+	$pdf->Code128(50,70,$code,80,20);
+	$pdf->SetXY(50,95);
+	$pdf->Write(5,'B set: "'.$code.'"');
+	$code='12345678901234567890';
+	$pdf->Code128(50,120,$code,110,20);
+	$pdf->SetXY(50,145);
+	$pdf->Write(5,'C set: "'.$code.'"');
+	$code='ABCDEFG1234567890AbCdEf';
+	$pdf->Code128(50,170,$code,125,20);
+	$pdf->SetXY(50,195);
+	$pdf->Write(5,'ABC sets combined: "'.$code.'"');
+
 	//PDFDrawTrait
 	$pdf->SetFont('arial', '', 10);
 	$pdf->AddPage();
