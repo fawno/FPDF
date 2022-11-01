@@ -210,4 +210,27 @@
 	$pdf->RoundedRect(95, 255, 40, 30, 10.0, '1111', null, $style6);
 	$pdf->RoundedRect(140, 255, 40, 30, 8.0, '0101', 'DF', $style6, array(200, 200, 200));
 
+    // Memory image support
+    $pdf->AddPage();
+    // Load an image into a variable
+    $logo = file_get_contents(__DIR__ . '/../scripts/PDFMemoryImage/logo.jpg');
+    // Output it
+    $pdf->MemImage($logo, 50, 30);
+
+    // Create a GD graphics
+    $im = imagecreate(200, 150);
+    $bgcolor = imagecolorallocate($im, 255, 255, 255);
+    $bordercolor = imagecolorallocate($im, 0, 0, 0);
+    $color1 = imagecolorallocate($im, 255, 0, 0);
+    $color2 = imagecolorallocate($im, 0, 255, 0);
+    $color3 = imagecolorallocate($im, 0, 0, 255);
+    imagefilledrectangle($im, 0, 0, 199, 149, $bgcolor);
+    imagerectangle($im, 0, 0, 199, 149, $bordercolor);
+    imagefilledrectangle($im, 30, 100, 60, 148, $color1);
+    imagefilledrectangle($im, 80, 80, 110, 148, $color2);
+    imagefilledrectangle($im, 130, 40, 160, 148, $color3);
+    // Output it
+    $pdf->GDImage($im, 120, 25, 40);
+    imagedestroy($im);
+
 	$pdf->Output('F', __DIR__ . '/example.pdf');

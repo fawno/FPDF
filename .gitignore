@@ -13,6 +13,7 @@ Thumbs.db
 # Tool specific files #
 #######################
 /vendor
+/tests/example.pdf
 /tmp
 .phpunit.cache
 .workflows
