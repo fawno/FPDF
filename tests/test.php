@@ -128,6 +128,7 @@
 
 	$logo = file_get_contents(dirname(__DIR__) . '/scripts/PDFMemImage/logo.jpg');
 	$pdf->MemImage($logo, 50, 30);
+	$pdf->MemImage(base64_encode($logo), 85, 30);
 	$im = imagecreate(200, 150);
 	$bgcolor = imagecolorallocate($im, 255, 255, 255);
 	$bordercolor = imagecolorallocate($im, 0, 0, 0);

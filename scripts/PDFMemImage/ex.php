@@ -19,6 +19,9 @@
 	// Output it
 	$pdf->MemImage($logo, 50, 30);
 
+	// Base64 Image
+	$pdf->MemImage(base64_encode($logo), 85, 30);
+
 	// Create a GD graphics
 	$im = imagecreate(200, 150);
 	$bgcolor = imagecolorallocate($im, 255, 255, 255);
