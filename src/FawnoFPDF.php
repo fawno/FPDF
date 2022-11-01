@@ -8,6 +8,7 @@
 	use Fawno\FPDF\PDFWrapper;
 	use FPDF\Scripts\PDFBookmark\PDFBookmarkTrait;
 	use FPDF\Scripts\PDFDraw\PDFDrawTrait;
+	use FPDF\Scripts\PDFMemImage\PDFMemImageTrait;
 	use FPDF\Scripts\PDFProtection\PDFProtectionTrait;
 	use FPDF\Scripts\PDFRotate\PDFRotateTrait;
 	use FPDF\Scripts\RPDF\RPDFTrait;
@@ -20,6 +21,7 @@
 		use CMYKTrait;
 		use PDFDrawTrait;
 		use RPDFTrait;
+		use PDFMemImageTrait;
 
 		protected function _putresources () {
 			parent::_putresources();
