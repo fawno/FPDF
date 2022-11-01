@@ -68,3 +68,10 @@ fpdf/** eol=crlf
 /fpdf/FAQ.htm        export-ignore
 /fpdf/changelog.htm  export-ignore
 /fpdf/install.txt    export-ignore
+
+/scripts/*/ex.pdf    export-ignore
+/scripts/*/ex.php    export-ignore
+/scripts/*/info.htm  export-ignore
+/scripts/*/*.png     export-ignore
+/scripts/*/*.jpg     export-ignore
+/scripts/*/*.md      export-ignore
