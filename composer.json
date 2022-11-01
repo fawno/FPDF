@@ -46,5 +46,13 @@
     },
     "scripts-descriptions": {
         "test": "Run PHPUnit tests"
+    },
+    "extra": {
+        "laravel": {        
+            "aliases": {
+                "FawnoFPDF": "Fawno\\FPDF\\FawnoFPDF",
+                "FawnoPDFWrapper ": "Fawno\\FPDF\\PDFWrapper"
+            }
+        }
     }
 }
