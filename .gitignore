@@ -37,3 +37,9 @@ nbproject/*
 .vscode
 # Sass preprocessor
 .sass-cache/
+# Original Sources
+/fpdf/doc/
+/fpdf/tutorial/
+/fpdf/FAQ.htm
+/fpdf/changelog.htm
+/fpdf/install.txt
