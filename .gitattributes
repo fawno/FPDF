@@ -61,7 +61,12 @@ fpdf/** eol=crlf
 /.editorconfig     export-ignore
 /.gitattributes    export-ignore
 /.gitignore        export-ignore
+/.workflows        export-ignore
+/.phpunit.cache    export-ignore
 /phpunit.xml       export-ignore
+/tmp               export-ignore
+/vendor            export-ignore
+/composer.lock     export-ignore
 
 /fpdf/doc/           export-ignore
 /fpdf/tutorial/      export-ignore
@@ -69,7 +74,7 @@ fpdf/** eol=crlf
 /fpdf/changelog.htm  export-ignore
 /fpdf/install.txt    export-ignore
 
-/scripts/*/ex.pdf    export-ignore
+/scripts/*/ex*.pdf    export-ignore
 /scripts/*/ex.php    export-ignore
 /scripts/*/info.htm  export-ignore
 /scripts/*/*.png     export-ignore
