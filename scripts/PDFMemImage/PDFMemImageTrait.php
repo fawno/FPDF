@@ -10,7 +10,7 @@
 			parent::__construct($orientation, $unit, $size);
 
 			// Register var stream protocol
-			if (!in_array("var", stream_get_wrappers())) {
+			if (!in_array('var', stream_get_wrappers())) {
 				stream_wrapper_register('var', VariableStream::class);
 			}
 		}
