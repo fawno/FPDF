@@ -2,9 +2,6 @@
 	declare(strict_types=1);
 
 	namespace FPDF\Scripts\RPDF;
-
-use RPDF;
-
 	//http://www.fpdf.org/en/script/script31.php
 
 	trait RPDFTrait {

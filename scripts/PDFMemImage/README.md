@@ -23,7 +23,7 @@ When an image is loaded from a database:
  * @param string $link
  * @return void
  */
-PDFMemImageTrait::MemImage(string $data [, ?float $x [, ?float $y [, float $w [, float $h [, $link]]]]])
+PDFMemImageTrait::MemImage(string $data [, ?float $x [, ?float $y [, float $w [, float $h [, $link]]]]]);
 ```
 
 When an image is created with GD:
@@ -40,7 +40,7 @@ When an image is created with GD:
  * @param string $link
  * @return void
  */
-PDFMemImageTrait::GDImage($im [, ?float $x [, ?float $y [, float $w [, float $h [, $link]]]]])
+PDFMemImageTrait::GDImage($im [, ?float $x [, ?float $y [, float $w [, float $h [, $link]]]]]);
 ```
 
 ## Example

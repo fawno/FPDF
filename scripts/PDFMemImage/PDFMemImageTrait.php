@@ -2,6 +2,7 @@
 	declare(strict_types=1);
 
 	namespace FPDF\Scripts\PDFMemImage;
+	//http://www.fpdf.org/en/script/script45.php
 
 	use FPDF\Scripts\PDFMemImage\VariableStream;
 
