@@ -18,6 +18,7 @@ Thumbs.db
 .workflows
 /.vscode
 /composer.lock
+/tests/example.pdf
 # vim
 *~
 *.swp
