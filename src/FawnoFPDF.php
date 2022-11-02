@@ -7,6 +7,7 @@
 	use Fawno\FPDF\Traits\PDFMacroableTrait;
 	use Fawno\FPDF\PDFWrapper;
 	use FPDF\Scripts\PDFBookmark\PDFBookmarkTrait;
+	use FPDF\Scripts\PDFCode128\PDFCode128Trait;
 	use FPDF\Scripts\PDFDraw\PDFDrawTrait;
 	use FPDF\Scripts\PDFMemImage\PDFMemImageTrait;
 	use FPDF\Scripts\PDFProtection\PDFProtectionTrait;
@@ -22,6 +23,7 @@
 		use PDFDrawTrait;
 		use RPDFTrait;
 		use PDFMemImageTrait;
+		use PDFCode128Trait;
 
 		protected function _putresources () {
 			parent::_putresources();
