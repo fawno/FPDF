@@ -98,8 +98,7 @@
 			$this->_putmetadata();
 		}
 
-		function _putcatalog () {
-			parent::_putcatalog();
+		function _putoutputintent () {
 			$oi = '<</Type /OutputIntent /S /GTS_PDFA1 ';
 			$oi .= '/OutputConditionIdentifier (sRGB2014.icc) /Info (sRGB2014.icc) /RegistryName (http://www.color.org) ';
 			$oi .= '/DestOutputProfile '.$this->n_colorprofile.' 0 R>>';
@@ -107,16 +106,23 @@
 			$this->_put('/Metadata '.$this->n_metadata.' 0 R');
 		}
 
+		function _putcatalog () {
+			parent::_putcatalog();
+			$this->_putoutputintent();
+		}
+
 		protected function _putheader () {
 			$this->_put('%PDF-1.4');
 			$this->_put("%\xE2\xE3\xCF\xD3");
 		}
 
+		/*
 		protected function _puttrailer () {
 			parent::_puttrailer();
 			$id = uniqid();
 			$this->_put("/ID [($id)($id)]");
 		}
+		*/
 
 		protected function _enddoc () {
 			foreach($this->fonts as $font)

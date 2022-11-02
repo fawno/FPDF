@@ -91,11 +91,13 @@
 				$this->_putbookmarks();
 		}
 
-		protected function _putcatalog()
-		{
+		protected function _putcatalog () {
 			parent::_putcatalog();
-			if(count($this->outlines)>0)
-			{
+			$this->_bookmarks_catalog();
+		}
+
+		protected function _bookmarks_catalog () {
+			if (count($this->outlines) > 0) {
 				$this->_put('/Outlines '.$this->outlineRoot.' 0 R');
 				$this->_put('/PageMode /UseOutlines');
 			}

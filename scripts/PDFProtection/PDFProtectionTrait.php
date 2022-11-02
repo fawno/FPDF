@@ -140,9 +140,13 @@
 
 		protected function _puttrailer () {
 			parent::_puttrailer();
+			$this->_trailer_encrypt();
+		}
+
+		protected function _trailer_encrypt () {
 			if ($this->encrypted) {
 				$this->_put('/Encrypt '.$this->enc_obj_id.' 0 R');
-				$this->_put('/ID [()()]');
+				//$this->_put('/ID [()()]');
 			}
 		}
 

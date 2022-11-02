@@ -18,7 +18,7 @@
 
 	class FawnoFPDF extends PDFWrapper {
 		use PDFMacroableTrait;
-		use PDFBookmarkTrait { PDFBookmarkTrait::_putresources as PDFBookmark_putresources; }
+		use PDFBookmarkTrait { PDFBookmarkTrait::_putcatalog as PDFBookmark_putcatalog; PDFBookmarkTrait::_putresources as PDFBookmark_putresources; }
 		use PDFProtectionTrait { PDFProtectionTrait::_putresources as PDFProtection_putresources; }
 		use PDFRotateTrait;
 		use CMYKTrait;
@@ -27,11 +27,23 @@
 		use PDFMemImageTrait;
 		use PDFCode128Trait;
 		use PDFMultiCellsTableTrait;
-		use FPDFATrait;
+		//use FPDFATrait { FPDFATrait::_putcatalog as FPDFA_putcatalog; FPDFATrait::_putresources as FPDFA_putresources; }
 
 		protected function _putresources () {
 			parent::_putresources();
 			$this->_putbookmarks();
+			/*
+			$this->_putcolorprofile();
+			$this->_putmetadata();
+			*/
 			$this->_encrypresources();
 		}
+
+		/*
+		protected function _putcatalog () {
+			parent::_putcatalog();
+			$this->_putoutputintent();
+			$this->_bookmarks_catalog();
+		}
+		*/
 	}

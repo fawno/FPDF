@@ -7,8 +7,9 @@
 	use FPDF\Scripts\FPDFA\FPDFATrait;
 	use PHPUnit\Framework\TestCase;
 
-	define('FPDF_FONTPATH', dirname(__DIR__) . '/Fonts/');
-
+	if (!defined('FPDF_FONTPATH')) {
+		define('FPDF_FONTPATH', dirname(__DIR__) . '/Fonts/');
+	}
 	class FPDFATraitTest extends TestCase {
 		public function testFPDFATrait () {
 			$pdf = new class extends FPDF {
