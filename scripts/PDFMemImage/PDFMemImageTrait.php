@@ -15,6 +15,7 @@
 
 		/**
 		 * Register var stream protocol
+		 *
 		 * @return void
 		 */
 		public function register_var_stream_wrapper () {
@@ -60,7 +61,7 @@
 		 * @param string $link
 		 * @return void
 		 */
-		function MemImage (string $data, ?float $x = null, ?float $y = null, float $w = 0, float $h = 0, $link = '') {
+		public function MemImage (string $data, ?float $x = null, ?float $y = null, float $w = 0, float $h = 0, $link = '') {
 			if ($this->is_base64($data)) {
 			  $data = base64_decode($data);
 			}
@@ -90,7 +91,7 @@
 		 * @param string $link
 		 * @return void
 		 */
-		function GDImage ($im, ?float $x = null, ?float $y = null, float $w = 0, float $h = 0, $link = '') {
+		public function GDImage ($im, ?float $x = null, ?float $y = null, float $w = 0, float $h = 0, $link = '') {
 			ob_start();
 			imagepng($im);
 			$data = ob_get_clean();

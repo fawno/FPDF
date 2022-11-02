@@ -8,7 +8,7 @@
 		private $varname;
 		private $position;
 
-		function stream_open ($path, $mode, $options, &$opened_path) {
+		public function stream_open ($path, $mode, $options, &$opened_path) {
 			$url = parse_url($path);
 			$this->varname = $url['host'];
 			if (!isset($GLOBALS[$this->varname])) {
@@ -19,29 +19,30 @@
 			return true;
 		}
 
-		function stream_read ($count) {
+		public function stream_read ($count) {
 			$ret = substr($GLOBALS[$this->varname], $this->position, $count);
 			$this->position += strlen($ret);
 			return $ret;
 		}
 
-		function stream_eof () {
+		public function stream_eof () {
 			return $this->position >= strlen($GLOBALS[$this->varname]);
 		}
 
-		function stream_tell () {
+		public function stream_tell () {
 			return $this->position;
 		}
 
-		function stream_seek ($offset, $whence) {
-			if ($whence == SEEK_SET) {
-				$this->position = $offset;
-				return true;
+		public function stream_seek ($offset, $whence) {
+			if ($whence != SEEK_SET) {
+				return false;
 			}
-			return false;
+
+			$this->position = $offset;
+			return true;
 		}
 
-		function stream_stat () {
+		public function stream_stat () {
 			return [];
 		}
 	}
