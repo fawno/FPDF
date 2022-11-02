@@ -3,7 +3,6 @@
 
 	namespace Fawno\FPDF\Tests\Scripts;
 
-	use Fawno\FPDF\Traits\FontsTrait;
 	use FPDF;
 	use FPDF\Scripts\FPDFA\FPDFATrait;
 	use Fawno\FPDF\Tests\TestCase;
