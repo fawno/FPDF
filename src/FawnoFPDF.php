@@ -6,6 +6,7 @@
 	use Fawno\FPDF\Traits\CMYKTrait;
 	use Fawno\FPDF\Traits\PDFMacroableTrait;
 	use Fawno\FPDF\PDFWrapper;
+	use FPDF\Scripts\FPDFA\FPDFATrait;
 	use FPDF\Scripts\PDFBookmark\PDFBookmarkTrait;
 	use FPDF\Scripts\PDFCode128\PDFCode128Trait;
 	use FPDF\Scripts\PDFDraw\PDFDrawTrait;
@@ -26,6 +27,7 @@
 		use PDFMemImageTrait;
 		use PDFCode128Trait;
 		use PDFMultiCellsTableTrait;
+		use FPDFATrait;
 
 		protected function _putresources () {
 			parent::_putresources();

@@ -54,7 +54,7 @@
 			$this->assertFileExists($filename);
 
 			if (is_file($filename)) {
-				unlink($filename);
+				//unlink($filename);
 			}
 		}
 	}
