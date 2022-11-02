@@ -38,7 +38,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Fawno\\FPDF\\": "tests/"
+            "Fawno\\FPDF\\Tests\\": "tests/"
         }
     },
     "scripts": {
@@ -48,7 +48,7 @@
         "test": "Run PHPUnit tests"
     },
     "extra": {
-        "laravel": {        
+        "laravel": {
             "aliases": {
                 "FawnoFPDF": "Fawno\\FPDF\\FawnoFPDF",
                 "FawnoPDFWrapper ": "Fawno\\FPDF\\PDFWrapper"
