@@ -18,6 +18,7 @@
 	use FPDF\Scripts\RPDF\RPDFTrait;
 
 	class FawnoFPDF extends PDFWrapper {
+		use FontsTrait;
 		use PDFMacroableTrait;
 		use FontsTrait;
 		use CMYKTrait;
