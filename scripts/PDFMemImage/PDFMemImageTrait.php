@@ -7,18 +7,12 @@
 	use FPDF\Scripts\PDFMemImage\VariableStream;
 
 	trait PDFMemImageTrait {
-		public function __construct ($orientation= 'P', $unit = 'mm', $size = 'A4') {
-			parent::__construct($orientation, $unit, $size);
-
-			$this->register_var_stream_wrapper();
-		}
-
 		/**
 		 * Register var stream protocol
 		 *
 		 * @return void
 		 */
-		public function register_var_stream_wrapper () {
+		private function register_var_stream_wrapper () : void {
 			if (!in_array('var', stream_get_wrappers())) {
 				stream_wrapper_register('var', VariableStream::class);
 			}
@@ -75,6 +69,7 @@
 			$GLOBALS[$v] = $data;
 
 			$type = substr(strstr($a['mime'], '/'), 1);
+			$this->register_var_stream_wrapper();
 			$this->Image('var://' . $v, $x, $y, $w, $h, $type, $link);
 
 			unset($GLOBALS[$v]);
