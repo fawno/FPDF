@@ -9,11 +9,6 @@
 
 	$pdf = new class extends FPDF {
 		use PDFMemImageTrait;
-
-		function __construct($orientation= 'P', $unit = 'mm', $size = 'A4') {
-			parent::__construct($orientation, $unit, $size);
-			$this->PDFMemImage_construct();
-		}
 	};
 
 

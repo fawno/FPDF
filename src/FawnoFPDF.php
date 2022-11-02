@@ -25,12 +25,6 @@
 		use PDFMemImageTrait;
 		use PDFCode128Trait;
 
-		function __construct($orientation= 'P', $unit = 'mm', $size = 'A4') {
-			parent::__construct($orientation, $unit, $size);
-			$this->PDFMemImage_construct();
-			$this->PDFCode128__construct();
-		}
-
 		protected function _putresources () {
 			parent::_putresources();
 			$this->_putbookmarks();

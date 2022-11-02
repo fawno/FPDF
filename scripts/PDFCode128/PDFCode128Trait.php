@@ -2,6 +2,7 @@
 	declare(strict_types=1);
 
 	namespace FPDF\Scripts\PDFCode128;
+	//http://www.fpdf.org/en/script/script88.php
 
 	/*******************************************************************************
 	* Script :  PDF_Code128
@@ -43,172 +44,151 @@
 	*******************************************************************************/
 
 	trait PDFCode128Trait {
-		protected $T128;								            // Tableau des codes 128
-		protected $ABCset = "";							            // jeu des caractères éligibles au C128
-		protected $Aset = "";							            // Set A du jeu des caractères éligibles
-		protected $Bset = "";							            // Set B du jeu des caractères éligibles
-		protected $Cset = "";					                    // Set C du jeu des caractères éligibles
-		protected $SetFrom;							                // Convertisseur source des jeux vers le tableau
-		protected $SetTo;							                // Convertisseur destination des jeux vers le tableau
-		protected $JStart = array("A"=>103, "B"=>104, "C"=>105);    // Caractères de sélection de jeu au début du C128
-		protected $JSwap = array("A"=>101, "B"=>100, "C"=>99);      // Caractères de changement de jeu
+		private static $T128 = [								            // Tableau des codes 128
+			[2, 1, 2, 2, 2, 2],		   //0 : [ ]			   // composition des caractères
+			[2, 2, 2, 1, 2, 2],		   //1 : [!]
+			[2, 2, 2, 2, 2, 1],		   //2 : ["]
+			[1, 2, 1, 2, 2, 3],		   //3 : [#]
+			[1, 2, 1, 3, 2, 2],		   //4 : [$]
+			[1, 3, 1, 2, 2, 2],		   //5 : [%]
+			[1, 2, 2, 2, 1, 3],		   //6 : [&]
+			[1, 2, 2, 3, 1, 2],		   //7 : [']
+			[1, 3, 2, 2, 1, 2],		   //8 : [(]
+			[2, 2, 1, 2, 1, 3],		   //9 : [)]
+			[2, 2, 1, 3, 1, 2],		   //10 : [*]
+			[2, 3, 1, 2, 1, 2],		   //11 : [+]
+			[1, 1, 2, 2, 3, 2],		   //12 : [,]
+			[1, 2, 2, 1, 3, 2],		   //13 : [-]
+			[1, 2, 2, 2, 3, 1],		   //14 : [.]
+			[1, 1, 3, 2, 2, 2],		   //15 : [/]
+			[1, 2, 3, 1, 2, 2],		   //16 : [0]
+			[1, 2, 3, 2, 2, 1],		   //17 : [1]
+			[2, 2, 3, 2, 1, 1],		   //18 : [2]
+			[2, 2, 1, 1, 3, 2],		   //19 : [3]
+			[2, 2, 1, 2, 3, 1],		   //20 : [4]
+			[2, 1, 3, 2, 1, 2],		   //21 : [5]
+			[2, 2, 3, 1, 1, 2],		   //22 : [6]
+			[3, 1, 2, 1, 3, 1],		   //23 : [7]
+			[3, 1, 1, 2, 2, 2],		   //24 : [8]
+			[3, 2, 1, 1, 2, 2],		   //25 : [9]
+			[3, 2, 1, 2, 2, 1],		   //26 : [:]
+			[3, 1, 2, 2, 1, 2],		   //27 : [;]
+			[3, 2, 2, 1, 1, 2],		   //28 : [<]
+			[3, 2, 2, 2, 1, 1],		   //29 : [=]
+			[2, 1, 2, 1, 2, 3],		   //30 : [>]
+			[2, 1, 2, 3, 2, 1],		   //31 : [?]
+			[2, 3, 2, 1, 2, 1],		   //32 : [@]
+			[1, 1, 1, 3, 2, 3],		   //33 : [A]
+			[1, 3, 1, 1, 2, 3],		   //34 : [B]
+			[1, 3, 1, 3, 2, 1],		   //35 : [C]
+			[1, 1, 2, 3, 1, 3],		   //36 : [D]
+			[1, 3, 2, 1, 1, 3],		   //37 : [E]
+			[1, 3, 2, 3, 1, 1],		   //38 : [F]
+			[2, 1, 1, 3, 1, 3],		   //39 : [G]
+			[2, 3, 1, 1, 1, 3],		   //40 : [H]
+			[2, 3, 1, 3, 1, 1],		   //41 : [I]
+			[1, 1, 2, 1, 3, 3],		   //42 : [J]
+			[1, 1, 2, 3, 3, 1],		   //43 : [K]
+			[1, 3, 2, 1, 3, 1],		   //44 : [L]
+			[1, 1, 3, 1, 2, 3],		   //45 : [M]
+			[1, 1, 3, 3, 2, 1],		   //46 : [N]
+			[1, 3, 3, 1, 2, 1],		   //47 : [O]
+			[3, 1, 3, 1, 2, 1],		   //48 : [P]
+			[2, 1, 1, 3, 3, 1],		   //49 : [Q]
+			[2, 3, 1, 1, 3, 1],		   //50 : [R]
+			[2, 1, 3, 1, 1, 3],		   //51 : [S]
+			[2, 1, 3, 3, 1, 1],		   //52 : [T]
+			[2, 1, 3, 1, 3, 1],		   //53 : [U]
+			[3, 1, 1, 1, 2, 3],		   //54 : [V]
+			[3, 1, 1, 3, 2, 1],		   //55 : [W]
+			[3, 3, 1, 1, 2, 1],		   //56 : [X]
+			[3, 1, 2, 1, 1, 3],		   //57 : [Y]
+			[3, 1, 2, 3, 1, 1],		   //58 : [Z]
+			[3, 3, 2, 1, 1, 1],		   //59 : [[]
+			[3, 1, 4, 1, 1, 1],		   //60 : [\]
+			[2, 2, 1, 4, 1, 1],		   //61 : []]
+			[4, 3, 1, 1, 1, 1],		   //62 : [^]
+			[1, 1, 1, 2, 2, 4],		   //63 : [_]
+			[1, 1, 1, 4, 2, 2],		   //64 : [`]
+			[1, 2, 1, 1, 2, 4],		   //65 : [a]
+			[1, 2, 1, 4, 2, 1],		   //66 : [b]
+			[1, 4, 1, 1, 2, 2],		   //67 : [c]
+			[1, 4, 1, 2, 2, 1],		   //68 : [d]
+			[1, 1, 2, 2, 1, 4],		   //69 : [e]
+			[1, 1, 2, 4, 1, 2],		   //70 : [f]
+			[1, 2, 2, 1, 1, 4],		   //71 : [g]
+			[1, 2, 2, 4, 1, 1],		   //72 : [h]
+			[1, 4, 2, 1, 1, 2],		   //73 : [i]
+			[1, 4, 2, 2, 1, 1],		   //74 : [j]
+			[2, 4, 1, 2, 1, 1],		   //75 : [k]
+			[2, 2, 1, 1, 1, 4],		   //76 : [l]
+			[4, 1, 3, 1, 1, 1],		   //77 : [m]
+			[2, 4, 1, 1, 1, 2],		   //78 : [n]
+			[1, 3, 4, 1, 1, 1],		   //79 : [o]
+			[1, 1, 1, 2, 4, 2],		   //80 : [p]
+			[1, 2, 1, 1, 4, 2],		   //81 : [q]
+			[1, 2, 1, 2, 4, 1],		   //82 : [r]
+			[1, 1, 4, 2, 1, 2],		   //83 : [s]
+			[1, 2, 4, 1, 1, 2],		   //84 : [t]
+			[1, 2, 4, 2, 1, 1],		   //85 : [u]
+			[4, 1, 1, 2, 1, 2],		   //86 : [v]
+			[4, 2, 1, 1, 1, 2],		   //87 : [w]
+			[4, 2, 1, 2, 1, 1],		   //88 : [x]
+			[2, 1, 2, 1, 4, 1],		   //89 : [y]
+			[2, 1, 4, 1, 2, 1],		   //90 : [z]
+			[4, 1, 2, 1, 2, 1],		   //91 : [{]
+			[1, 1, 1, 1, 4, 3],		   //92 : [|]
+			[1, 1, 1, 3, 4, 1],		   //93 : [}]
+			[1, 3, 1, 1, 4, 1],		   //94 : [~]
+			[1, 1, 4, 1, 1, 3],		   //95 : [DEL]
+			[1, 1, 4, 3, 1, 1],		   //96 : [FNC3]
+			[4, 1, 1, 1, 1, 3],		   //97 : [FNC2]
+			[4, 1, 1, 3, 1, 1],		   //98 : [SHIFT]
+			[1, 1, 3, 1, 4, 1],		   //99 : [Cswap]
+			[1, 1, 4, 1, 3, 1],		   //100 : [Bswap]
+			[3, 1, 1, 1, 4, 1],		   //101 : [Aswap]
+			[4, 1, 1, 1, 3, 1],		   //102 : [FNC1]
+			[2, 1, 1, 4, 1, 2],		   //103 : [Astart]
+			[2, 1, 1, 2, 1, 4],		   //104 : [Bstart]
+			[2, 1, 1, 2, 3, 2],		   //105 : [Cstart]
+			[2, 3, 3, 1, 1, 1],		   //106 : [STOP]
+			[2, 1],					   //107 : [END BAR]
+		];
 
-		//____________________________ Extension du constructeur _______________________
-		function PDFCode128__construct($orientation='P', $unit='mm', $format='A4') {
-			$this->T128[] = array(2, 1, 2, 2, 2, 2);		   //0 : [ ]			   // composition des caractères
-			$this->T128[] = array(2, 2, 2, 1, 2, 2);		   //1 : [!]
-			$this->T128[] = array(2, 2, 2, 2, 2, 1);		   //2 : ["]
-			$this->T128[] = array(1, 2, 1, 2, 2, 3);		   //3 : [#]
-			$this->T128[] = array(1, 2, 1, 3, 2, 2);		   //4 : [$]
-			$this->T128[] = array(1, 3, 1, 2, 2, 2);		   //5 : [%]
-			$this->T128[] = array(1, 2, 2, 2, 1, 3);		   //6 : [&]
-			$this->T128[] = array(1, 2, 2, 3, 1, 2);		   //7 : [']
-			$this->T128[] = array(1, 3, 2, 2, 1, 2);		   //8 : [(]
-			$this->T128[] = array(2, 2, 1, 2, 1, 3);		   //9 : [)]
-			$this->T128[] = array(2, 2, 1, 3, 1, 2);		   //10 : [*]
-			$this->T128[] = array(2, 3, 1, 2, 1, 2);		   //11 : [+]
-			$this->T128[] = array(1, 1, 2, 2, 3, 2);		   //12 : [,]
-			$this->T128[] = array(1, 2, 2, 1, 3, 2);		   //13 : [-]
-			$this->T128[] = array(1, 2, 2, 2, 3, 1);		   //14 : [.]
-			$this->T128[] = array(1, 1, 3, 2, 2, 2);		   //15 : [/]
-			$this->T128[] = array(1, 2, 3, 1, 2, 2);		   //16 : [0]
-			$this->T128[] = array(1, 2, 3, 2, 2, 1);		   //17 : [1]
-			$this->T128[] = array(2, 2, 3, 2, 1, 1);		   //18 : [2]
-			$this->T128[] = array(2, 2, 1, 1, 3, 2);		   //19 : [3]
-			$this->T128[] = array(2, 2, 1, 2, 3, 1);		   //20 : [4]
-			$this->T128[] = array(2, 1, 3, 2, 1, 2);		   //21 : [5]
-			$this->T128[] = array(2, 2, 3, 1, 1, 2);		   //22 : [6]
-			$this->T128[] = array(3, 1, 2, 1, 3, 1);		   //23 : [7]
-			$this->T128[] = array(3, 1, 1, 2, 2, 2);		   //24 : [8]
-			$this->T128[] = array(3, 2, 1, 1, 2, 2);		   //25 : [9]
-			$this->T128[] = array(3, 2, 1, 2, 2, 1);		   //26 : [:]
-			$this->T128[] = array(3, 1, 2, 2, 1, 2);		   //27 : [;]
-			$this->T128[] = array(3, 2, 2, 1, 1, 2);		   //28 : [<]
-			$this->T128[] = array(3, 2, 2, 2, 1, 1);		   //29 : [=]
-			$this->T128[] = array(2, 1, 2, 1, 2, 3);		   //30 : [>]
-			$this->T128[] = array(2, 1, 2, 3, 2, 1);		   //31 : [?]
-			$this->T128[] = array(2, 3, 2, 1, 2, 1);		   //32 : [@]
-			$this->T128[] = array(1, 1, 1, 3, 2, 3);		   //33 : [A]
-			$this->T128[] = array(1, 3, 1, 1, 2, 3);		   //34 : [B]
-			$this->T128[] = array(1, 3, 1, 3, 2, 1);		   //35 : [C]
-			$this->T128[] = array(1, 1, 2, 3, 1, 3);		   //36 : [D]
-			$this->T128[] = array(1, 3, 2, 1, 1, 3);		   //37 : [E]
-			$this->T128[] = array(1, 3, 2, 3, 1, 1);		   //38 : [F]
-			$this->T128[] = array(2, 1, 1, 3, 1, 3);		   //39 : [G]
-			$this->T128[] = array(2, 3, 1, 1, 1, 3);		   //40 : [H]
-			$this->T128[] = array(2, 3, 1, 3, 1, 1);		   //41 : [I]
-			$this->T128[] = array(1, 1, 2, 1, 3, 3);		   //42 : [J]
-			$this->T128[] = array(1, 1, 2, 3, 3, 1);		   //43 : [K]
-			$this->T128[] = array(1, 3, 2, 1, 3, 1);		   //44 : [L]
-			$this->T128[] = array(1, 1, 3, 1, 2, 3);		   //45 : [M]
-			$this->T128[] = array(1, 1, 3, 3, 2, 1);		   //46 : [N]
-			$this->T128[] = array(1, 3, 3, 1, 2, 1);		   //47 : [O]
-			$this->T128[] = array(3, 1, 3, 1, 2, 1);		   //48 : [P]
-			$this->T128[] = array(2, 1, 1, 3, 3, 1);		   //49 : [Q]
-			$this->T128[] = array(2, 3, 1, 1, 3, 1);		   //50 : [R]
-			$this->T128[] = array(2, 1, 3, 1, 1, 3);		   //51 : [S]
-			$this->T128[] = array(2, 1, 3, 3, 1, 1);		   //52 : [T]
-			$this->T128[] = array(2, 1, 3, 1, 3, 1);		   //53 : [U]
-			$this->T128[] = array(3, 1, 1, 1, 2, 3);		   //54 : [V]
-			$this->T128[] = array(3, 1, 1, 3, 2, 1);		   //55 : [W]
-			$this->T128[] = array(3, 3, 1, 1, 2, 1);		   //56 : [X]
-			$this->T128[] = array(3, 1, 2, 1, 1, 3);		   //57 : [Y]
-			$this->T128[] = array(3, 1, 2, 3, 1, 1);		   //58 : [Z]
-			$this->T128[] = array(3, 3, 2, 1, 1, 1);		   //59 : [[]
-			$this->T128[] = array(3, 1, 4, 1, 1, 1);		   //60 : [\]
-			$this->T128[] = array(2, 2, 1, 4, 1, 1);		   //61 : []]
-			$this->T128[] = array(4, 3, 1, 1, 1, 1);		   //62 : [^]
-			$this->T128[] = array(1, 1, 1, 2, 2, 4);		   //63 : [_]
-			$this->T128[] = array(1, 1, 1, 4, 2, 2);		   //64 : [`]
-			$this->T128[] = array(1, 2, 1, 1, 2, 4);		   //65 : [a]
-			$this->T128[] = array(1, 2, 1, 4, 2, 1);		   //66 : [b]
-			$this->T128[] = array(1, 4, 1, 1, 2, 2);		   //67 : [c]
-			$this->T128[] = array(1, 4, 1, 2, 2, 1);		   //68 : [d]
-			$this->T128[] = array(1, 1, 2, 2, 1, 4);		   //69 : [e]
-			$this->T128[] = array(1, 1, 2, 4, 1, 2);		   //70 : [f]
-			$this->T128[] = array(1, 2, 2, 1, 1, 4);		   //71 : [g]
-			$this->T128[] = array(1, 2, 2, 4, 1, 1);		   //72 : [h]
-			$this->T128[] = array(1, 4, 2, 1, 1, 2);		   //73 : [i]
-			$this->T128[] = array(1, 4, 2, 2, 1, 1);		   //74 : [j]
-			$this->T128[] = array(2, 4, 1, 2, 1, 1);		   //75 : [k]
-			$this->T128[] = array(2, 2, 1, 1, 1, 4);		   //76 : [l]
-			$this->T128[] = array(4, 1, 3, 1, 1, 1);		   //77 : [m]
-			$this->T128[] = array(2, 4, 1, 1, 1, 2);		   //78 : [n]
-			$this->T128[] = array(1, 3, 4, 1, 1, 1);		   //79 : [o]
-			$this->T128[] = array(1, 1, 1, 2, 4, 2);		   //80 : [p]
-			$this->T128[] = array(1, 2, 1, 1, 4, 2);		   //81 : [q]
-			$this->T128[] = array(1, 2, 1, 2, 4, 1);		   //82 : [r]
-			$this->T128[] = array(1, 1, 4, 2, 1, 2);		   //83 : [s]
-			$this->T128[] = array(1, 2, 4, 1, 1, 2);		   //84 : [t]
-			$this->T128[] = array(1, 2, 4, 2, 1, 1);		   //85 : [u]
-			$this->T128[] = array(4, 1, 1, 2, 1, 2);		   //86 : [v]
-			$this->T128[] = array(4, 2, 1, 1, 1, 2);		   //87 : [w]
-			$this->T128[] = array(4, 2, 1, 2, 1, 1);		   //88 : [x]
-			$this->T128[] = array(2, 1, 2, 1, 4, 1);		   //89 : [y]
-			$this->T128[] = array(2, 1, 4, 1, 2, 1);		   //90 : [z]
-			$this->T128[] = array(4, 1, 2, 1, 2, 1);		   //91 : [{]
-			$this->T128[] = array(1, 1, 1, 1, 4, 3);		   //92 : [|]
-			$this->T128[] = array(1, 1, 1, 3, 4, 1);		   //93 : [}]
-			$this->T128[] = array(1, 3, 1, 1, 4, 1);		   //94 : [~]
-			$this->T128[] = array(1, 1, 4, 1, 1, 3);		   //95 : [DEL]
-			$this->T128[] = array(1, 1, 4, 3, 1, 1);		   //96 : [FNC3]
-			$this->T128[] = array(4, 1, 1, 1, 1, 3);		   //97 : [FNC2]
-			$this->T128[] = array(4, 1, 1, 3, 1, 1);		   //98 : [SHIFT]
-			$this->T128[] = array(1, 1, 3, 1, 4, 1);		   //99 : [Cswap]
-			$this->T128[] = array(1, 1, 4, 1, 3, 1);		   //100 : [Bswap]
-			$this->T128[] = array(3, 1, 1, 1, 4, 1);		   //101 : [Aswap]
-			$this->T128[] = array(4, 1, 1, 1, 3, 1);		   //102 : [FNC1]
-			$this->T128[] = array(2, 1, 1, 4, 1, 2);		   //103 : [Astart]
-			$this->T128[] = array(2, 1, 1, 2, 1, 4);		   //104 : [Bstart]
-			$this->T128[] = array(2, 1, 1, 2, 3, 2);		   //105 : [Cstart]
-			$this->T128[] = array(2, 3, 3, 1, 1, 1);		   //106 : [STOP]
-			$this->T128[] = array(2, 1);					   //107 : [END BAR]
+		private static $Aset = "\x20\x21\x22\x23\x24\x25\x26\x27\x28\x29\x2A\x2B\x2C\x2D\x2E\x2F\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x3A\x3B\x3C\x3D\x3E\x3F\x40\x41\x42\x43\x44\x45\x46\x47\x48\x49\x4A\x4B\x4C\x4D\x4E\x4F\x50\x51\x52\x53\x54\x55\x56\x57\x58\x59\x5A\x5B\x5C\x5D\x5E\x5F\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1A\x1B\x1C\x1D\x1E\x1F\xC8\xC9\xCA\xCB\xCC\xCD\xCE\xCF\xD0\xD1\xD2"; // Set A du jeu des caractères éligibles
+		private static $Bset = "\x20\x21\x22\x23\x24\x25\x26\x27\x28\x29\x2A\x2B\x2C\x2D\x2E\x2F\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x3A\x3B\x3C\x3D\x3E\x3F\x40\x41\x42\x43\x44\x45\x46\x47\x48\x49\x4A\x4B\x4C\x4D\x4E\x4F\x50\x51\x52\x53\x54\x55\x56\x57\x58\x59\x5A\x5B\x5C\x5D\x5E\x5F\x60\x61\x62\x63\x64\x65\x66\x67\x68\x69\x6A\x6B\x6C\x6D\x6E\x6F\x70\x71\x72\x73\x74\x75\x76\x77\x78\x79\x7A\x7B\x7C\x7D\x7E\x7F\xC8\xC9\xCA\xCB\xCC\xCD\xCE\xCF\xD0\xD1\xD2"; // Set B du jeu des caractères éligibles
+		private static $Cset = "0123456789\xCE";					                    // Set C du jeu des caractères éligibles
 
-			for ($i = 32; $i <= 95; $i++) {											// jeux de caractères
-				$this->ABCset .= chr($i);
-			}
-			$this->Aset = $this->ABCset;
-			$this->Bset = $this->ABCset;
+		private static $SetFrom = [
+			'A' => "\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1A\x1B\x1C\x1D\x1E\x1F\x20\x21\x22\x23\x24\x25\x26\x27\x28\x29\x2A\x2B\x2C\x2D\x2E\x2F\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x3A\x3B\x3C\x3D\x3E\x3F\x40\x41\x42\x43\x44\x45\x46\x47\x48\x49\x4A\x4B\x4C\x4D\x4E\x4F\x50\x51\x52\x53\x54\x55\x56\x57\x58\x59\x5A\x5B\x5C\x5D\x5E\x5F\xC8\xC9\xCA\xCB\xCC\xCD\xCE\xCF\xD0\xD1\xD2",
+			'B' => "\x20\x21\x22\x23\x24\x25\x26\x27\x28\x29\x2A\x2B\x2C\x2D\x2E\x2F\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x3A\x3B\x3C\x3D\x3E\x3F\x40\x41\x42\x43\x44\x45\x46\x47\x48\x49\x4A\x4B\x4C\x4D\x4E\x4F\x50\x51\x52\x53\x54\x55\x56\x57\x58\x59\x5A\x5B\x5C\x5D\x5E\x5F\x60\x61\x62\x63\x64\x65\x66\x67\x68\x69\x6A\x6B\x6C\x6D\x6E\x6F\x70\x71\x72\x73\x74\x75\x76\x77\x78\x79\x7A\x7B\x7C\x7D\x7E\x7F\xC8\xC9\xCA\xCB\xCC\xCD\xCE\xCF\xD0\xD1\xD2",
+		];							                // Convertisseur source des jeux vers le tableau
+		private static $SetTo = [
+			'A' => "\x40\x41\x42\x43\x44\x45\x46\x47\x48\x49\x4A\x4B\x4C\x4D\x4E\x4F\x50\x51\x52\x53\x54\x55\x56\x57\x58\x59\x5A\x5B\x5C\x5D\x5E\x5F\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1A\x1B\x1C\x1D\x1E\x1F\x20\x21\x22\x23\x24\x25\x26\x27\x28\x29\x2A\x2B\x2C\x2D\x2E\x2F\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x3A\x3B\x3C\x3D\x3E\x3F\x60\x61\x62\x63\x64\x65\x66\x67\x68\x69\x6A",
+			'B' => "\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1A\x1B\x1C\x1D\x1E\x1F\x20\x21\x22\x23\x24\x25\x26\x27\x28\x29\x2A\x2B\x2C\x2D\x2E\x2F\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x3A\x3B\x3C\x3D\x3E\x3F\x40\x41\x42\x43\x44\x45\x46\x47\x48\x49\x4A\x4B\x4C\x4D\x4E\x4F\x50\x51\x52\x53\x54\x55\x56\x57\x58\x59\x5A\x5B\x5C\x5D\x5E\x5F\x60\x61\x62\x63\x64\x65\x66\x67\x68\x69\x6A",
+		];							                // Convertisseur destination des jeux vers le tableau
+		protected $JStart = ['A' => 103, 'B' => 104, 'C' => 105];    // Caractères de sélection de jeu au début du C128
+		protected $JSwap = ['A' => 101, 'B' => 100, 'C' => 99];      // Caractères de changement de jeu
 
-			for ($i = 0; $i <= 31; $i++) {
-				$this->ABCset .= chr($i);
-				$this->Aset .= chr($i);
-			}
-			for ($i = 96; $i <= 127; $i++) {
-				$this->ABCset .= chr($i);
-				$this->Bset .= chr($i);
-			}
-			for ($i = 200; $i <= 210; $i++) {										   // controle 128
-				$this->ABCset .= chr($i);
-				$this->Aset .= chr($i);
-				$this->Bset .= chr($i);
-			}
-			$this->Cset="0123456789".chr(206);
-
-			for ($i=0; $i<96; $i++) {												   // convertisseurs des jeux A & B
-				@$this->SetFrom["A"] .= chr($i);
-				@$this->SetFrom["B"] .= chr($i + 32);
-				@$this->SetTo["A"] .= chr(($i < 32) ? $i+64 : $i-32);
-				@$this->SetTo["B"] .= chr($i);
-			}
-			for ($i=96; $i<107; $i++) {												 // contrôle des jeux A & B
-				@$this->SetFrom["A"] .= chr($i + 104);
-				@$this->SetFrom["B"] .= chr($i + 104);
-				@$this->SetTo["A"] .= chr($i);
-				@$this->SetTo["B"] .= chr($i);
-			}
-		}
-
-		//________________ Fonction encodage et dessin du code 128 _____________________
-		function Code128($x, $y, $code, $w, $h) {
+		/**
+		 * Encodage et dessin du code 128
+		 *
+		 * @param float $x Abscissa of upper-left corner
+		 * @param float $y Ordinate of upper-left corner
+		 * @param string $code Barcode value
+		 * @param float $w Width
+		 * @param float $h Height
+		 * @return void
+		 */
+		public function Code128 (float $x, float $y, string $code, float $w, float $h) : void {
 			$Aguid = "";																	  // Création des guides de choix ABC
 			$Bguid = "";
 			$Cguid = "";
 			for ($i=0; $i < strlen($code); $i++) {
 				$needle = substr($code,$i,1);
-				$Aguid .= ((strpos($this->Aset,$needle)===false) ? "N" : "O");
-				$Bguid .= ((strpos($this->Bset,$needle)===false) ? "N" : "O");
-				$Cguid .= ((strpos($this->Cset,$needle)===false) ? "N" : "O");
+				$Aguid .= ((strpos(self::$Aset,$needle)===false) ? "N" : "O");
+				$Bguid .= ((strpos(self::$Bset,$needle)===false) ? "N" : "O");
+				$Cguid .= ((strpos(self::$Cset,$needle)===false) ? "N" : "O");
 			}
 
 			$SminiC = "OOOO";
@@ -250,7 +230,7 @@
 
 					$crypt .= chr(($crypt > "") ? $this->JSwap[$jeu] : $this->JStart[$jeu]); // début start, sinon swap
 
-					$crypt .= strtr(substr($code, 0,$made), $this->SetFrom[$jeu], $this->SetTo[$jeu]); // conversion selon jeu
+					$crypt .= strtr(substr($code, 0,$made), self::$SetFrom[$jeu], self::$SetTo[$jeu]); // conversion selon jeu
 
 				}
 				$code = substr($code,$made);										   // raccourcir légende et guides de la zone traitée
@@ -271,7 +251,7 @@
 			$modul = $w/$i;
 
 			for ($i=0; $i<strlen($crypt); $i++) {									  // BOUCLE D'IMPRESSION
-				$c = $this->T128[ord($crypt[$i])];
+				$c = self::$T128[ord($crypt[$i])];
 				for ($j=0; $j<count($c); $j++) {
 					$this->Rect($x,$y,$c[$j]*$modul,$h,"F");
 					$x += ($c[$j++]+$c[$j])*$modul;
