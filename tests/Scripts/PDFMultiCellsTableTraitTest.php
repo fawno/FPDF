@@ -5,7 +5,7 @@
 
 	use FPDF;
 	use FPDF\Scripts\PDFMultiCellsTable\PDFMultiCellsTableTrait;
-	use PHPUnit\Framework\TestCase;
+	use Fawno\FPDF\Tests\TestCase;
 
 	class PDFMultiCellsTableTraitTest extends TestCase {
 		public function testPDFMultiCellsTableTrait () {
@@ -25,13 +25,6 @@
 				$pdf->Row($row);
 			}
 
-			$filename = __DIR__ . '/example' . basename(__CLASS__) . '.pdf';
-			$pdf->Output('F', $filename);
-
-			$this->assertFileExists($filename);
-
-			if (is_file($filename)) {
-				unlink($filename);
-			}
+			$this->assertFileCanBeCreated($pdf);
 		}
 	}

@@ -5,9 +5,9 @@
 
 	use Fawno\FPDF\FawnoFPDF;
 	use Fawno\FPDF\PDFWrapper;
+	use Fawno\FPDF\Tests\TestCase;
 	use FPDF;
 	use setasign\Fpdi\Fpdi;
-	use PHPUnit\Framework\TestCase;
 
 	class FawnoFPDFTest extends TestCase {
 		public function testFPDF () {
@@ -49,12 +49,6 @@
 		public function testFawnoFPDF () {
 			include __DIR__ . '/test.php';
 
-			$filename = __DIR__ . '/example.pdf';
-
-			$this->assertFileExists($filename);
-
-			if (is_file($filename)) {
-				unlink($filename);
-			}
+			$this->assertFileWasCreated(__DIR__ . '/example.pdf');
 		}
 	}

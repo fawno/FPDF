@@ -4,8 +4,8 @@
 	namespace Fawno\FPDF\Tests\Scripts;
 
 	use FPDF;
+	use Fawno\FPDF\Tests\TestCase;
 	use Fawno\FPDF\Traits\PDFMacroableTrait;
-	use PHPUnit\Framework\TestCase;
 
 	class PDFMacroable extends FPDF {
 		use PDFMacroableTrait;
@@ -37,13 +37,6 @@
 			$pdf->SetDash(); //restores no dash
 			$pdf->Line(20, 55, 190, 55);
 
-			$filename = __DIR__ . '/example' . basename(__CLASS__) . '.pdf';
-			$pdf->Output('F', $filename);
-
-			$this->assertFileExists($filename);
-
-			if (is_file($filename)) {
-				unlink($filename);
-			}
+			$this->assertFileCanBeCreated($pdf);
 		}
 	}
