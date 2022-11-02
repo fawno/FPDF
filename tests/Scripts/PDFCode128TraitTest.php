@@ -5,7 +5,7 @@
 
 	use FPDF;
 	use FPDF\Scripts\PDFCode128\PDFCode128Trait;
-	use PHPUnit\Framework\TestCase;
+	use Fawno\FPDF\Tests\TestCase;
 
 	class PDFCode128TraitTest extends TestCase {
 		public function testPDFCode128Trait () {
@@ -39,13 +39,6 @@
 			$pdf->SetXY(50, 195);
 			$pdf->Write(5, 'ABC sets combined: "' . $code . '"');
 
-			$filename = __DIR__ . '/example' . basename(__CLASS__) . '.pdf';
-			$pdf->Output('F', $filename);
-
-			$this->assertFileExists($filename);
-
-			if (is_file($filename)) {
-				unlink($filename);
-			}
+			$this->assertFileCanBeCreated($pdf);
 		}
 	}

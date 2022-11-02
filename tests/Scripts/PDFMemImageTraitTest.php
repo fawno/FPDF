@@ -5,7 +5,7 @@
 
 	use FPDF;
 	use FPDF\Scripts\PDFMemImage\PDFMemImageTrait;
-	use PHPUnit\Framework\TestCase;
+	use Fawno\FPDF\Tests\TestCase;
 
 	class PDFMemImageTraitTest extends TestCase {
 		public function testPDFMemImageTrait () {
@@ -32,13 +32,6 @@
 			$pdf->GDImage($im, 120, 25, 40);
 			imagedestroy($im);
 
-			$filename = __DIR__ . '/example' . basename(__CLASS__) . '.pdf';
-			$pdf->Output('F', $filename);
-
-			$this->assertFileExists($filename);
-
-			if (is_file($filename)) {
-				unlink($filename);
-			}
+			$this->assertFileCanBeCreated($pdf);
 		}
 	}

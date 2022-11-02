@@ -5,8 +5,8 @@
 
 	use FPDF;
 	use FPDF\Scripts\PDFDraw\PDFDrawTrait;
+	use Fawno\FPDF\Tests\TestCase;
 	use Fawno\FPDF\Traits\CMYKTrait;
-	use PHPUnit\Framework\TestCase;
 
 	class PDFDrawTraitTest extends TestCase {
 		public function testPDFDrawTrait () {
@@ -103,13 +103,6 @@
 			$pdf->RoundedRect(95, 255, 40, 30, 10.0, '1111', null, $style6);
 			$pdf->RoundedRect(140, 255, 40, 30, 8.0, '0101', 'DF', $style6, [200, 200, 200]);
 
-			$filename = __DIR__ . '/example' . basename(__CLASS__) . '.pdf';
-			$pdf->Output('F', $filename);
-
-			$this->assertFileExists($filename);
-
-			if (is_file($filename)) {
-				unlink($filename);
-			}
+			$this->assertFileCanBeCreated($pdf);
 		}
 	}
