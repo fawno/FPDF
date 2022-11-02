@@ -4,8 +4,8 @@
 	namespace Fawno\FPDF\Tests\Scripts;
 
 	use FPDF;
+	use Fawno\FPDF\Tests\TestCase;
 	use Fawno\FPDF\Traits\CMYKTrait;
-	use PHPUnit\Framework\TestCase;
 
 	class CMYKTraitTest extends TestCase {
 		public function testCMYKTrait () {
@@ -65,13 +65,6 @@
 			$pdf->Rect(10, 90, 20, 20, 'DF');
 			$pdf->Text(10, 120, 'Gray');
 
-			$filename = __DIR__ . '/example' . basename(__CLASS__) . '.pdf';
-			$pdf->Output('F', $filename);
-
-			$this->assertFileExists($filename);
-
-			if (is_file($filename)) {
-				unlink($filename);
-			}
+			$this->assertFileCanBeCreated($pdf);
 		}
 	}

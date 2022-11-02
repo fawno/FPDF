@@ -5,7 +5,7 @@
 
 	use FPDF;
 	use FPDF\Scripts\RPDF\RPDFTrait;
-	use PHPUnit\Framework\TestCase;
+	use Fawno\FPDF\Tests\TestCase;
 
 	class RPDFTraitTest extends TestCase {
 		public function testRPDFTrait () {
@@ -22,13 +22,6 @@
 			$pdf->TextWithDirection(110, 50, 'world!', 'R');
 			$pdf->TextWithDirection(110, 50, 'world!', 'D');
 
-			$filename = __DIR__ . '/example' . basename(__CLASS__) . '.pdf';
-			$pdf->Output('F', $filename);
-
-			$this->assertFileExists($filename);
-
-			if (is_file($filename)) {
-				unlink($filename);
-			}
+			$this->assertFileCanBeCreated($pdf);
 		}
 	}
