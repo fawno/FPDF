@@ -3,6 +3,7 @@
 
 	namespace Fawno\FPDF\Tests;
 
+	use FPDF;
 	use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 	use ReflectionClass;
 
@@ -13,7 +14,7 @@
 			return dirname($reflect->getFileName()) . DIRECTORY_SEPARATOR . 'example' . $reflect->getShortName() . '.pdf';
 		}
 
-		public function assertFileCanBeCreated ($pdf) {
+		public function assertFileCanBeCreated (FPDF $pdf) {
 			$filename = $this->getExampleFileName();
 
 			$pdf->Output('F', $filename);
