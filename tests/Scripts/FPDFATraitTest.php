@@ -3,20 +3,19 @@
 
 	namespace Fawno\FPDF\Tests\Scripts;
 
+	use Fawno\FPDF\Traits\FontsTrait;
 	use FPDF;
 	use FPDF\Scripts\FPDFA\FPDFATrait;
 	use PHPUnit\Framework\TestCase;
 
-	if (!defined('FPDF_FONTPATH')) {
-		define('FPDF_FONTPATH', dirname(__DIR__) . '/Fonts/');
-	}
 	class FPDFATraitTest extends TestCase {
 		public function testFPDFATrait () {
 			$pdf = new class extends FPDF {
+				use FontsTrait;
 				use FPDFATrait;
 			};
 
-			$pdf->AddFont('DejaVuSansCondensed', '', 'DejaVuSansCondensed.php');
+			$pdf->AddFont('DejaVuSansCondensed', '', dirname(dirname(__DIR__)) . '/scripts/FPDFA/DejaVuSansCondensed.php');
 			$pdf->SetFont('DejaVuSansCondensed', '', 16);
 			$pdf->AddPage();
 			$pdf->Write(10, 'This PDF is PDF/A-3b compliant.');
