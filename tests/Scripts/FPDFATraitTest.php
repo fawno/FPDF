@@ -3,10 +3,10 @@
 
 	namespace Fawno\FPDF\Tests\Scripts;
 
-	use Fawno\FPDF\Traits\FontsTrait;
 	use FPDF;
 	use FPDF\Scripts\FPDFA\FPDFATrait;
-	use PHPUnit\Framework\TestCase;
+	use Fawno\FPDF\Tests\TestCase;
+	use Fawno\FPDF\Traits\FontsTrait;
 
 	class FPDFATraitTest extends TestCase {
 		public function testFPDFATrait () {
@@ -20,13 +20,6 @@
 			$pdf->AddPage();
 			$pdf->Write(10, 'This PDF is PDF/A-3b compliant.');
 
-			$filename = __DIR__ . '/example' . basename(__CLASS__) . '.pdf';
-			$pdf->Output('F', $filename);
-
-			$this->assertFileExists($filename);
-
-			if (is_file($filename)) {
-				unlink($filename);
-			}
+			$this->assertFileCanBeCreated($pdf);
 		}
 	}
