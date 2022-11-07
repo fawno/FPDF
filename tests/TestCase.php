@@ -16,6 +16,12 @@
 			return dirname($reflect->getFileName()) . DIRECTORY_SEPARATOR . 'example' . $reflect->getShortName() . '.pdf';
 		}
 
+		private function getExpectedFileName () : string {
+			$reflect = new ReflectionClass(get_class($this));
+
+			return __DIR__ . DIRECTORY_SEPARATOR . 'examples' . DIRECTORY_SEPARATOR . 'example' . $reflect->getShortName() . '.pdf';
+		}
+
 		public function assertFileCanBeCreated (FPDF $pdf, string $message = '') : void {
 			$filename = $this->getExampleFileName();
 
@@ -30,6 +36,11 @@
 			if (is_file($filename)) {
 				unlink($filename);
 			}
+		}
+
+		public function assertPdfIsOk (string $actual) : void {
+			$expected = file_get_contents($this->getExpectedFileName());
+			$this->assertPdfAreEquals($expected, $actual);
 		}
 
 		public function assertPdfAreEquals (string $expected, string $actual) : void {
