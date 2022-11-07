@@ -40,5 +40,7 @@
 			$pdf->Write(5, 'ABC sets combined: "' . $code . '"');
 
 			$this->assertFileCanBeCreated($pdf);
+
+			$this->assertPdfIsOk($pdf->Output('S'));
 		}
 	}

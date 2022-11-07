@@ -38,5 +38,7 @@
 			$pdf->Line(20, 55, 190, 55);
 
 			$this->assertFileCanBeCreated($pdf);
+
+			$this->assertPdfIsOk($pdf->Output('S'));
 		}
 	}

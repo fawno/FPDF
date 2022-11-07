@@ -31,5 +31,7 @@
 			$pdf->Cell(0, 6, 'Paragraph 3');
 
 			$this->assertFileCanBeCreated($pdf);
+
+			$this->assertPdfIsOk($pdf->Output('S'));
 		}
 	}

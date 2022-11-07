@@ -23,5 +23,7 @@
 			$pdf->TextWithDirection(110, 50, 'world!', 'D');
 
 			$this->assertFileCanBeCreated($pdf);
+
+			$this->assertPdfIsOk($pdf->Output('S'));
 		}
 	}

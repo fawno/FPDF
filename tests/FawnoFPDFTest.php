@@ -50,5 +50,7 @@
 			include __DIR__ . '/test.php';
 
 			$this->assertFileWasCreated(__DIR__ . '/example.pdf');
+
+			//$this->assertPdfIsOk($pdf->Output('S'));
 		}
 	}

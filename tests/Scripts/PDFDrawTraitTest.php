@@ -104,5 +104,7 @@
 			$pdf->RoundedRect(140, 255, 40, 30, 8.0, '0101', 'DF', $style6, [200, 200, 200]);
 
 			$this->assertFileCanBeCreated($pdf);
+
+			$this->assertPdfIsOk($pdf->Output('S'));
 		}
 	}

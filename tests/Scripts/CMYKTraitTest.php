@@ -66,5 +66,7 @@
 			$pdf->Text(10, 120, 'Gray');
 
 			$this->assertFileCanBeCreated($pdf);
+
+			$this->assertPdfIsOk($pdf->Output('S'));
 		}
 	}

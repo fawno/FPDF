@@ -19,5 +19,7 @@
 			$pdf->RotatedText(100,60,'Hello!',45);
 
 			$this->assertFileCanBeCreated($pdf);
+
+			$this->assertPdfIsOk($pdf->Output('S'));
 		}
 	}

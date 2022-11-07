@@ -19,5 +19,7 @@
 			$pdf->Write(10, 'You can print me but not copy my text.');
 
 			$this->assertFileCanBeCreated($pdf);
+
+			//$this->assertPdfIsOk($pdf->Output('S'));
 		}
 	}

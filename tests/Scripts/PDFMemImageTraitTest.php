@@ -33,5 +33,7 @@
 			imagedestroy($im);
 
 			$this->assertFileCanBeCreated($pdf);
+
+			$this->assertPdfIsOk($pdf->Output('S'));
 		}
 	}
