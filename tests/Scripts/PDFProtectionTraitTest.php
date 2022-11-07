@@ -22,7 +22,7 @@
 			$this->assertFileCanBeCreated($pdf);
 
 			$this->expectError();
-			$this->expectErrorMessage('Uninitialized string offset: -1');
+			$this->expectErrorMessageMatches('~Uninitialized string offset:? -1~');
 
 			$this->assertPdfIsOk($pdf->Output('S'));
 		}

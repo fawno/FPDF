@@ -52,7 +52,7 @@
 			$this->assertFileWasCreated(__DIR__ . '/example.pdf');
 
 			$this->expectError();
-			$this->expectErrorMessage('Uninitialized string offset: -1');
+			$this->expectErrorMessageMatches('~Uninitialized string offset:? -1~');
 
 			$expected = file_get_contents(__DIR__ . '/examples/example.pdf');
 			$this->assertPdfAreEquals($expected, $pdf->Output('S'));
