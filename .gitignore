@@ -19,6 +19,7 @@ Thumbs.db
 /.vscode
 /composer.lock
 /tests/example.pdf
+/tests/Scripts/example*.pdf
 /scripts/*/example.pdf
 # vim
 *~
