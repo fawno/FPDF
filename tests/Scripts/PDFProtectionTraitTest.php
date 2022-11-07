@@ -3,6 +3,7 @@
 
 	namespace Fawno\FPDF\Tests\Scripts;
 
+	use ddn\sapp\PDFDoc;
 	use FPDF;
 	use FPDF\Scripts\PDFProtection\PDFProtectionTrait;
 	use Fawno\FPDF\Tests\TestCase;
@@ -20,6 +21,9 @@
 
 			$this->assertFileCanBeCreated($pdf);
 
-			//$this->assertPdfIsOk($pdf->Output('S'));
+			$this->expectError();
+			$this->expectErrorMessage('Uninitialized string offset: -1');
+
+			$this->assertPdfIsOk($pdf->Output('S'));
 		}
 	}
