@@ -34,7 +34,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": "@stable",
-        "setasign/fpdi": "@stable"
+        "setasign/fpdi": "@stable",
+        "ddn/sapp": "@stable"
     },
     "autoload-dev": {
         "psr-4": {

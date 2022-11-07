@@ -19,5 +19,9 @@
 			$pdf->RotatedText(100,60,'Hello!',45);
 
 			$this->assertFileCanBeCreated($pdf);
+
+			//$expected = file_get_contents(dirname(dirname(__DIR__)) . '/scripts/PDFRotate/ex.pdf');
+			$expected = file_get_contents(dirname(__DIR__) . '/examples/example' . basename(__CLASS__) . '.pdf');
+			$this->assertPdfAreEquals($expected, $pdf->Output('S'));
 		}
 	}

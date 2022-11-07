@@ -50,5 +50,8 @@
 			include __DIR__ . '/test.php';
 
 			$this->assertFileWasCreated(__DIR__ . '/example.pdf');
+
+			//$expected = file_get_contents(__DIR__ . '/examples/example.pdf');
+			//$this->assertPdfAreEquals($expected, $pdf->Output('S'));
 		}
 	}

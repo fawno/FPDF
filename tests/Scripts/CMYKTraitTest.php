@@ -66,5 +66,8 @@
 			$pdf->Text(10, 120, 'Gray');
 
 			$this->assertFileCanBeCreated($pdf);
+
+			$expected = file_get_contents(dirname(__DIR__) . '/examples/example' . basename(__CLASS__) . '.pdf');
+			$this->assertPdfAreEquals($expected, $pdf->Output('S'));
 		}
 	}

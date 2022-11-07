@@ -40,5 +40,9 @@
 			$pdf->Write(5, 'ABC sets combined: "' . $code . '"');
 
 			$this->assertFileCanBeCreated($pdf);
+
+			$expected = file_get_contents(dirname(dirname(__DIR__)) . '/scripts/PDFCode128/ex.pdf');
+			//$expected = file_get_contents(dirname(__DIR__) . '/examples/example' . basename(__CLASS__) . '.pdf');
+			$this->assertPdfAreEquals($expected, $pdf->Output('S'));
 		}
 	}

@@ -104,5 +104,9 @@
 			$pdf->RoundedRect(140, 255, 40, 30, 8.0, '0101', 'DF', $style6, [200, 200, 200]);
 
 			$this->assertFileCanBeCreated($pdf);
+
+			//$expected = file_get_contents(dirname(dirname(__DIR__)) . '/scripts/PDFDraw/ex.pdf');
+			$expected = file_get_contents(dirname(__DIR__) . '/examples/example' . basename(__CLASS__) . '.pdf');
+			$this->assertPdfAreEquals($expected, $pdf->Output('S'));
 		}
 	}
