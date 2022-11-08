@@ -20,7 +20,7 @@
 	$pdf = new FawnoFPDF();
 
 	// PDFProtection
-	$pdf->SetProtection(['print']);
+	$pdf->SetProtection(['print'], 'admin', 'admin');
 
 	// PDFBookmarkTrait;
 	$pdf->SetFont('Arial', '', 15);
