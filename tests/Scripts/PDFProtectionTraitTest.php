@@ -14,15 +14,12 @@
 				use PDFProtectionTrait;
 			};
 
-			$pdf->SetProtection(['print']);
+			$pdf->SetProtection(['print'], 'admin', 'admin');
 			$pdf->AddPage();
 			$pdf->SetFont('Arial');
 			$pdf->Write(10, 'You can print me but not copy my text.');
 
 			$this->assertFileCanBeCreated($pdf);
-
-			$this->expectError();
-			$this->expectErrorMessageMatches('~Uninitialized string offset:? -1~');
 
 			$this->assertPdfIsOk($pdf);
 		}
