@@ -24,6 +24,6 @@
 			$this->expectError();
 			$this->expectErrorMessageMatches('~Uninitialized string offset:? -1~');
 
-			$this->assertPdfIsOk($pdf->Output('S'));
+			$this->assertPdfIsOk($pdf);
 		}
 	}

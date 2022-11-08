@@ -105,6 +105,6 @@
 
 			$this->assertFileCanBeCreated($pdf);
 
-			$this->assertPdfIsOk($pdf->Output('S'));
+			$this->assertPdfIsOk($pdf);
 		}
 	}

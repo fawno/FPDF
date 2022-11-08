@@ -38,9 +38,9 @@
 			}
 		}
 
-		public function assertPdfIsOk (string $actual) : void {
+		public function assertPdfIsOk (FPDF $pdf) : void {
 			$expected = file_get_contents($this->getExpectedFileName());
-			$this->assertPdfAreEquals($expected, $actual);
+			$this->assertPdfAreEquals($expected, $pdf->Output('S'));
 		}
 
 		public function assertPdfAreEquals (string $expected, string $actual) : void {
