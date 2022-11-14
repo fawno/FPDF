@@ -7,15 +7,19 @@
 	use FPDF\Scripts\PDFMemImage\VariableStream;
 
 	trait PDFMemImageTrait {
+		private static $memImageInitialized;
+
 		/**
 		 * Register var stream protocol
 		 *
 		 * @return void
 		 */
 		private function register_var_stream_wrapper () : void {
-			if (!in_array('var', stream_get_wrappers())) {
+			if (!self::$memImageInitialized && !in_array('var', stream_get_wrappers())) {
 				stream_wrapper_register('var', VariableStream::class);
 			}
+
+			self::$memImageInitialized = true;
 		}
 
 		/**
