@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit bootstrap="vendor/autoload.php" colors="true" cacheResultFile=".phpunit.cache">
+    <php>
+        <const name="_DEBUG_LEVEL" value="0"/>
+    </php>
     <testsuite name="Test directory">
         <directory>tests</directory>
     </testsuite>
