@@ -28,7 +28,15 @@ FPDF requires no extension (except Zlib to enable compression and GD for GIF sup
 
 The [tutorials](http://fpdf.org/en/tutorial/index.php) will give you a quick start. The complete online documentation is [here](http://fpdf.org/en/doc/index.php) and download area is [there](http://fpdf.org/en/download.php). It is strongly advised to read the [FAQ](http://fpdf.org/en/FAQ.php) which lists the most common questions and issues.
 
-A [script](http://fpdf.org/en/script/index.php) section is available and provides some useful extensions (such as bookmarks, rotations, tables, barcodes...).
+A [script](http://fpdf.org/en/script/index.php) section is available and provides some useful extensions (such as bookmarks, rotations, tables, barcodes...). Also, some of these scripts are delivered as traits with this package, you can check the list of available scripts [here](scripts).
+
+## Installation
+
+You can install the package via composer:
+
+```sh
+composer require fawno/fpdf
+```
 
 ## What languages can I use?
 The class can produce documents in many languages other than the Western European ones: Central European, Cyrillic, Greek, Baltic and [Thai](http://fpdf.org/en/script/script87.php), provided you own TrueType or Type1 fonts with the desired character set. [UTF-8 support](http://fpdf.org/en/script/script92.php) is also available.
@@ -42,3 +50,41 @@ You can write to me [here](mailto:oliver@fpdf.org) (but please use the forum for
 
 ## About this repository
 The `/fpdf` directory contains a clone of the official FPDF releases, available at http://www.fpdf.org. No modifications will be made to that directory, which contains the history of changes between versions.
+
+# FawnoFPDF Class
+## What is FawnoFPDF?
+FawnoFPDF is a wrapper FPDF class, FawnoFPDF already includes all the available scripts in the [scripts section](scripts). Also, it includes support for [Setasign/FPDI](https://github.com/Setasign/FPDI).
+
+## Usage
+
+In your php file that you want to use the class add a use statement.
+
+```php
+use Fawno\FPDF\FawnoFPDF;
+```
+
+Then use as per the [FPDF documentation](http://fpdf.org/en/tutorial/index.php).
+
+``` php
+$pdf = new FawnoFPDF();
+$pdf->AddPage();
+$pdf->SetFont('Arial','B',16);
+$pdf->Cell(40,10,'Hello World!');
+$pdf->Output();
+```
+
+Alternatively you can extend as a typical php class and add your own custom scripts.
+
+```php
+class CustomPdf extends FawnoFPDF
+{
+    public function __construct(
+        $orientation = 'P',
+        $unit = 'mm',
+        $size = 'letter'
+    ) {
+        parent::__construct( $orientation, $unit, $size );
+        // ...
+    }
+}
+```
