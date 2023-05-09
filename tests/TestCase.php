@@ -39,16 +39,29 @@
 			}
 		}
 
+		private static function rebuildPdf(string $content){
+			$real_content = \ctype_print($content) && @\file_exists($content)
+				? \file_get_contents(realpath($content)) : $content;
+
+			$pdf = PDFDoc::from_string($real_content);
+
+			if ($pdf === false) {
+				return null;
+			}
+
+			return PDFDoc::from_string($pdf->to_pdf_file_s(true));
+		}
+
 		public function assertPdfIsOk (FPDF $pdf) : void {
 			$expected = file_get_contents($this->getExpectedFileName());
 			$this->assertPdfAreEquals($expected, $pdf->Output('S'));
 		}
 
 		public function assertPdfAreEquals (string $expected, string $actual) : void {
-			$doc_expected = PDFDoc::from_string($expected);
+			$doc_expected = self::rebuildPdf($expected);
 			$this->assertIsObject($doc_expected, 'The expected file can\'t be parsed as PDF.');
 
-			$doc_actual = PDFDoc::from_string($actual);
+			$doc_actual = self::rebuildPdf($actual);
 			$this->assertIsObject($doc_actual, 'The actual file can\'t be parsed as PDF.');
 
 			$differences = $doc_expected->compare($doc_actual);
