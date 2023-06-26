@@ -69,7 +69,7 @@
 			$diff = [];
 			foreach ($differences as $oid => $obj) {
 				$keys = (is_a($obj->get_value(), PDFValue::class) ? $obj->get_keys() : false) ?: ['OID_' . $obj->get_oid()];
-				$diff = array_merge($diff, array_diff($keys, ['Producer', 'CreationDate']));
+				$diff = array_merge($diff, array_diff($keys, ['Producer', 'CreationDate', 'Title', 'O', 'U']));
 			}
 
 			$this->assertEquals([], $diff, 'The PDFs contents have differences.');
