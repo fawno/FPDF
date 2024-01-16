@@ -6,6 +6,8 @@
 
 	trait PDFProtectionTrait {
 		protected $encrypted = false;  //whether document is protected
+		protected $padding;
+		protected $encryption_key;
 		protected $Uvalue;             //U entry in pdf document
 		protected $Ovalue;             //O entry in pdf document
 		protected $Pvalue;             //P entry in pdf document

@@ -5,6 +5,7 @@
 
 	// Stream handler to read from global variables
 	class VariableStream {
+		public $context;
 		private $varname;
 		private $position;
 

@@ -19,7 +19,7 @@
 		 */
 		public function Bookmark (string $txt, bool $isUTF8 = false, int $level = 0, float $y = 0) : void	{
 			if(!$isUTF8)
-				$txt = utf8_encode($txt);
+				$txt = mb_convert_encoding($txt, 'UTF-8', 'ISO-8859-1');
 			if($y==-1)
 				$y = $this->GetY();
 			$this->outlines[] = array('t'=>$txt, 'l'=>$level, 'y'=>($this->h-$y)*$this->k, 'p'=>$this->PageNo());

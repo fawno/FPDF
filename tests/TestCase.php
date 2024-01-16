@@ -39,9 +39,8 @@
 			}
 		}
 
-		private static function rebuildPdf(string $content){
-			$real_content = \ctype_print($content) && @\file_exists($content)
-				? \file_get_contents(realpath($content)) : $content;
+		private static function rebuildPdf (string $content) {
+			$real_content = (ctype_print($content) and @file_exists($content)) ? file_get_contents(realpath($content)) : $content;
 
 			$pdf = PDFDoc::from_string($real_content);
 
