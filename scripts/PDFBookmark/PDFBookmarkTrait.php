@@ -87,17 +87,22 @@
 
 		protected function _putresources()
 		{
-				parent::_putresources();
-				$this->_putbookmarks();
+			parent::_putresources();
+			$this->_putbookmarks();
 		}
 
-		protected function _putcatalog()
-		{
-			parent::_putcatalog();
+		protected function _putbookmarkscatalog()
+		{   
 			if(count($this->outlines)>0)
 			{
 				$this->_put('/Outlines '.$this->outlineRoot.' 0 R');
 				$this->_put('/PageMode /UseOutlines');
 			}
+		}
+
+		protected function _putcatalog()
+		{
+			parent::_putcatalog();
+			$this->_putbookmarkscatalog();
 		}
 	}

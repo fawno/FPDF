@@ -7,6 +7,7 @@
 	use Fawno\FPDF\Traits\PDFMacroableTrait;
 	use Fawno\FPDF\PDFWrapper;
 	use Fawno\FPDF\Traits\FontsTrait;
+	use FPDF\Scripts\Attachments\AttachmentsTrait;
 	use FPDF\Scripts\PDFBookmark\PDFBookmarkTrait;
 	use FPDF\Scripts\PDFCode128\PDFCode128Trait;
 	use FPDF\Scripts\PDFDraw\PDFDrawTrait;
@@ -19,7 +20,14 @@
 	class FawnoFPDF extends PDFWrapper {
 		use FontsTrait;
 		use PDFMacroableTrait;
-		use PDFBookmarkTrait { PDFBookmarkTrait::_putresources as PDFBookmark_putresources; }
+		use AttachmentsTrait {
+			AttachmentsTrait::_putresources as Attachments_putresources;
+			AttachmentsTrait::_putcatalog as Attachments_putcatalog;
+		}
+		use PDFBookmarkTrait {
+			PDFBookmarkTrait::_putresources as PDFBookmark_putresources;
+			PDFBookmarkTrait::_putcatalog as PDFBookmark_putcatalog;
+		}
 		use PDFProtectionTrait { PDFProtectionTrait::_putresources as PDFProtection_putresources; }
 		use PDFRotateTrait;
 		use CMYKTrait;
@@ -33,5 +41,13 @@
 			parent::_putresources();
 			$this->_putbookmarks();
 			$this->_encrypresources();
+			$this->_putfiles();
+		}
+
+		protected function _putcatalog()
+		{
+			parent::_putcatalog();
+			$this->_putbookmarkscatalog();
+			$this->_putfilescatalog();
 		}
 	}
