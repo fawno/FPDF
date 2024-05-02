@@ -279,4 +279,12 @@
 	$pdf->SetXY(50, 195);
 	$pdf->Write(5, 'ABC sets combined: "' . $code . '"');
 
+	//Attachments
+	$pdf->AddPage();
+	$pdf->Bookmark('Attachments', false);
+	$pdf->Attach(__DIR__ . '/../scripts/Attachments/attached.txt');
+	$pdf->OpenAttachmentPane();
+	$pdf->SetFont('Arial','',14);
+	$pdf->Write(5,'This PDF contains an attached file.');
+
 	$pdf->Output('F', __DIR__ . '/example.pdf');
