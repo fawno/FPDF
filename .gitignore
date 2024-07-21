@@ -15,6 +15,7 @@ Thumbs.db
 /vendor
 /tmp
 .phpunit.cache
+.phpunit.*.cache
 .workflows
 /.vscode
 /composer.lock
