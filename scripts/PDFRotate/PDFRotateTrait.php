@@ -15,7 +15,7 @@
 		 * @param float|int $y Ordinate of the rotation center. Default value: current position.
 		 * @return void
 		 */
-		public function Rotate (float $angle, float $x = null, float $y = null) {
+		public function Rotate (float $angle, ?float $x = null, ?float $y = null) {
 			$x = $x ?? $this->x;
 			$y = $y ?? $this->x;
 
