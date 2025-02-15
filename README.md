@@ -12,7 +12,7 @@
 ## What is FPDF?
 FPDF is a PHP class which allows to generate PDF files with pure PHP, that is to say without using the PDFlib library. F from FPDF stands for Free: you may use it for any kind of usage and modify it to suit your needs.
 
-FPDF has other advantages: high level functions. Here is a list of its main features:
+FPDF has other benefits: high level functions. Here is a list of its main features:
 
 - Choice of measure unit, page format and margins
 - Page header and footer management
@@ -24,9 +24,9 @@ FPDF has other advantages: high level functions. Here is a list of its main feat
 - TrueType, Type1 and encoding support
 - Page compression
 
-FPDF requires no extension (except Zlib to enable compression and GD for GIF support). The latest version requires at least PHP 5.1.
+FPDF requires no extension (except Zlib to enable compression and GD for GIF support). The latest version requires at least PHP 5.1 and is compatible with PHP 7 and PHP 8.
 
-The [tutorials](http://fpdf.org/en/tutorial/index.php) will give you a quick start. The complete online documentation is [here](http://fpdf.org/en/doc/index.php) and download area is [there](http://fpdf.org/en/download.php). It is strongly advised to read the [FAQ](http://fpdf.org/en/FAQ.php) which lists the most common questions and issues.
+The [tutorials](http://fpdf.org/en/tutorial/index.php) will give you a quick start. The complete online documentation is [here](http://fpdf.org/en/doc/index.php) and download area is [there](http://fpdf.org/en/download.php). It is advised to read the [FAQ](http://fpdf.org/en/FAQ.php) which lists the most common questions and issues.
 
 A [script](http://fpdf.org/en/script/index.php) section is available and provides some useful extensions (such as bookmarks, rotations, tables, barcodes...). Also, some of these scripts are delivered as traits with this package, you can check the list of available scripts [here](scripts).
 
