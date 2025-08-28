@@ -400,7 +400,7 @@
 				$ns = 3;
 			if ((bool) $circle)
 				$this->Circle($x0, $y0, $r, 0, 360, $circle_style, $circle_line_style, $circle_fill_color);
-			$p = null;
+			$p = [];
 			for ($i = 0; $i < $ns; $i++) {
 				$a = $angle + ($i * 360 / $ns);
 				$a_rad = deg2rad((float) $a);
@@ -431,8 +431,8 @@
 				$nv = 2;
 			if ($circle)
 				$this->Circle($x0, $y0, $r, 0, 360, $circle_style, $circle_line_style, $circle_fill_color);
-			$p2 = null;
-			$visited = null;
+			$p2 = [];
+			$visited = [];
 			for ($i = 0; $i < $nv; $i++) {
 				$a = $angle + ($i * 360 / $nv);
 				$a_rad = deg2rad((float) $a);
@@ -440,7 +440,7 @@
 				$p2[] = $y0 + ($r * cos($a_rad));
 				$visited[] = false;
 			}
-			$p = null;
+			$p = [];
 			$i = 0;
 			do {
 				$p[] = $p2[$i * 2];
