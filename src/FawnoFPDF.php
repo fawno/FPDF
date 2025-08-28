@@ -15,6 +15,7 @@
 	use FPDF\Scripts\PDFMultiCellsTable\PDFMultiCellsTableTrait;
 	use FPDF\Scripts\PDFProtection\PDFProtectionTrait;
 	use FPDF\Scripts\PDFRotate\PDFRotateTrait;
+	use FPDF\Scripts\PDFTransform\PDFTransformTrait;
 	use FPDF\Scripts\RPDF\RPDFTrait;
 
 	class FawnoFPDF extends PDFWrapper {
@@ -36,6 +37,7 @@
 		use PDFMemImageTrait;
 		use PDFCode128Trait;
 		use PDFMultiCellsTableTrait;
+	  use PDFTransformTrait;
 
 		protected function _putresources () {
 			parent::_putresources();

@@ -5,11 +5,13 @@
 
 	use FPDF;
 	use FPDF\Scripts\PDFRotate\PDFRotateTrait;
+	use FPDF\Scripts\PDFTransform\PDFTransformTrait;
 	use Fawno\FPDF\Tests\TestCase;
 
 	class PDFRotateTraitTest extends TestCase {
 		public function testPDFRotateTrait () {
 			$pdf = new class extends FPDF {
+				use PDFTransformTrait;
 				use PDFRotateTrait;
 			};
 

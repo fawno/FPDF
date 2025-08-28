@@ -2,11 +2,14 @@
 	declare(strict_types=1);
 
 	require dirname(dirname(__DIR__)) . '/fpdf/fpdf.php';
+	require dirname(__DIR__) . '/PDFTransform/PDFTransformTrait.php';
 	require __DIR__ . '/PDFRotateTrait.php';
 
 	use FPDF\Scripts\PDFRotate\PDFRotateTrait;
+	use FPDF\Scripts\PDFTransform\PDFTransformTrait;
 
 	$pdf = new class extends FPDF {
+		use PDFTransformTrait;
 		use PDFRotateTrait;
 	};
 
