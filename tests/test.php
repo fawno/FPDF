@@ -433,4 +433,13 @@
 	$pdf->SetFont('Arial','',14);
 	$pdf->Write(5,'This PDF contains an attached file.');
 
+	//PDFCircularText
+	$pdf->AddPage();
+	$pdf->Bookmark('PDFCircularText', false);
+	$pdf->SetFont('Arial', '', 32);
+
+	$text='Circular Text';
+	$pdf->CircularText(105, 50, 30, $text, 'top');
+	$pdf->CircularText(105, 50, 30, $text, 'bottom');
+
 	$pdf->Output('F', __DIR__ . '/example.pdf');

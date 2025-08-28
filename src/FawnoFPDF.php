@@ -9,6 +9,7 @@
 	use Fawno\FPDF\Traits\FontsTrait;
 	use FPDF\Scripts\Attachments\AttachmentsTrait;
 	use FPDF\Scripts\PDFBookmark\PDFBookmarkTrait;
+	use FPDF\Scripts\PDFCircularText\PDFCircularTextTrait;
 	use FPDF\Scripts\PDFCode128\PDFCode128Trait;
 	use FPDF\Scripts\PDFDraw\PDFDrawTrait;
 	use FPDF\Scripts\PDFMemImage\PDFMemImageTrait;
@@ -38,6 +39,7 @@
 		use PDFCode128Trait;
 		use PDFMultiCellsTableTrait;
 	  use PDFTransformTrait;
+		use PDFCircularTextTrait;
 
 		protected function _putresources () {
 			parent::_putresources();
