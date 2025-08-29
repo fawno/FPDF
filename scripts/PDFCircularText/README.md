@@ -22,9 +22,10 @@ The public methods are:
  * @param string $align text alignment: top or bottom. Default value: top
  * @param float $kerning spacing between letters in percentage.Default value: 120. Zero is not allowed.
  * @param float $fontwidth width of letters in percentage. Default value: 100. Zero is not allowed.
+ * @param null|float $angle Rotate matrix for the first letter to center the text. Default (null) is half of total degrees.
  * @return void
  */
-PDFCircularTextTrait::CircularText (float $x, float $y, float $r, string $text [, string $align = 'top' [, float $kerning = 120 [, float $fontwidth = 100]]]);
+PDFCircularTextTrait::CircularText (float $x, float $y, float $r, string $text [, string $align = 'top' [, float $kerning = 120 [, float $fontwidth = 100 [, ?float $angle = null]]]]);
 
 ```
 
