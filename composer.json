@@ -27,6 +27,7 @@
     "autoload": {
         "psr-4": {
             "Fawno\\FPDF\\": "src/",
+            "Fawno\\Barcode\\": "barcode/",
             "FPDF\\Scripts\\": "scripts/"
         },
         "classmap": [
