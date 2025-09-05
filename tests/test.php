@@ -38,6 +38,11 @@
 	$pdf->Bookmark('Paragraph 3', false, 1, -1);
 	$pdf->Cell(0, 6, 'Paragraph 3');
 
+	//EAN13Trait
+	$pdf->AddPage();
+	$pdf->Bookmark('EAN13 Barcode', false);
+	$pdf->BarcodeEAN13(80, 40, '123456789012');
+
 	//PDFTransformTrait
 	$pdf->AddPage();
 	$pdf->Bookmark('PDFTransform', false);

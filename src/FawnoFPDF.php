@@ -6,6 +6,8 @@
 	use Fawno\FPDF\Traits\CMYKTrait;
 	use Fawno\FPDF\Traits\PDFMacroableTrait;
 	use Fawno\FPDF\PDFWrapper;
+	use Fawno\FPDF\Traits\BasicFunctionsTrait;
+	use Fawno\FPDF\Traits\EAN13Trait;
 	use Fawno\FPDF\Traits\FontsTrait;
 	use FPDF\Scripts\Attachments\AttachmentsTrait;
 	use FPDF\Scripts\PDFBookmark\PDFBookmarkTrait;
@@ -40,6 +42,8 @@
 		use PDFMultiCellsTableTrait;
 	  use PDFTransformTrait;
 		use PDFCircularTextTrait;
+		use EAN13Trait;
+		use BasicFunctionsTrait;
 
 		protected function _putresources () {
 			parent::_putresources();
