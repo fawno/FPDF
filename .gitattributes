@@ -53,6 +53,7 @@ fpdf/** eol=crlf
 *.bz2 binary
 *.7z binary
 *.zip binary
+*.dat binary
 
 
 # Avoid exporting to vendor
