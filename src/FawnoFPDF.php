@@ -19,6 +19,7 @@
 	use FPDF\Scripts\PDFProtection\PDFProtectionTrait;
 	use FPDF\Scripts\PDFRotate\PDFRotateTrait;
 	use FPDF\Scripts\PDFTransform\PDFTransformTrait;
+	use FPDF\Scripts\QRcode\QRcodeTrait;
 	use FPDF\Scripts\RPDF\RPDFTrait;
 
 	class FawnoFPDF extends PDFWrapper {
@@ -40,10 +41,11 @@
 		use PDFMemImageTrait;
 		use PDFCode128Trait;
 		use PDFMultiCellsTableTrait;
-	  use PDFTransformTrait;
+		use PDFTransformTrait;
 		use PDFCircularTextTrait;
 		use EAN13Trait;
 		use BasicFunctionsTrait;
+		use QRcodeTrait;
 
 		protected function _putresources () {
 			parent::_putresources();
