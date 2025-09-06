@@ -429,6 +429,11 @@
 	$pdf->Code128(50, 170, $code, 125, 20);
 	$pdf->SetXY(50, 195);
 	$pdf->Write(5, 'ABC sets combined: "' . $code . '"');
+    
+	//QRcodeTrait
+	$pdf->AddPage();
+	$pdf->Bookmark('QR Code', false);
+	$pdf->QRcode(5, 5, 50, 'Generated QR Code Data');
 
 	//Attachments
 	$pdf->AddPage();

@@ -18,3 +18,5 @@ $pdf = new class extends FPDF {
 82. [PDFCircularText](PDFCircularText) by **Andreas Würmserr** (2006-04-09)
 88. [PDFCode128](PDFCode128) by **Roland Gautier** (2016-01-31)
 95. [Attachments](Attachments) by **Olivier** (2012-04-29)
+
+- [QRcode](QRcode) by **Laurent MINGUET** (2010-04-29)
