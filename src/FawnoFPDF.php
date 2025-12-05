@@ -9,6 +9,7 @@
 	use Fawno\FPDF\Traits\BasicFunctionsTrait;
 	use Fawno\FPDF\Traits\EAN13Trait;
 	use Fawno\FPDF\Traits\FontsTrait;
+	use FPDF\Scripts\ESignaturePlaceholder\ESignaturePlaceholderTrait;
 	use FPDF\Scripts\Attachments\AttachmentsTrait;
 	use FPDF\Scripts\PDFBookmark\PDFBookmarkTrait;
 	use FPDF\Scripts\PDFCircularText\PDFCircularTextTrait;
@@ -28,6 +29,9 @@
 		use AttachmentsTrait {
 			AttachmentsTrait::_putresources as Attachments_putresources;
 			AttachmentsTrait::_putcatalog as Attachments_putcatalog;
+		}
+		use ESignaturePlaceholderTrait{
+			ESignaturePlaceholderTrait::_putcatalog as ESignaturePlaceholder_putcatalog;
 		}
 		use PDFBookmarkTrait {
 			PDFBookmarkTrait::_putresources as PDFBookmark_putresources;
@@ -59,5 +63,6 @@
 			parent::_putcatalog();
 			$this->_putbookmarkscatalog();
 			$this->_putfilescatalog();
+			$this->_putesignatureplaceholdercatalog();
 		}
 	}

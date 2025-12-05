@@ -20,3 +20,4 @@ $pdf = new class extends FPDF {
 95. [Attachments](Attachments) by **Olivier** (2012-04-29)
 
 - [QRcode](QRcode) by **Laurent MINGUET** (2010-04-29)
+- [ESignaturePlaceholder](ESignaturePlaceholder) by **Erik N.** (2025-12-06)
