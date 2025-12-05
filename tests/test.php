@@ -38,6 +38,14 @@
 	$pdf->Bookmark('Paragraph 3', false, 1, -1);
 	$pdf->Cell(0, 6, 'Paragraph 3');
 
+	// ESignaturePlaceholderTrait
+	// Page 3
+	$pdf->AddPage();
+	$pdf->AddSignatureField(20, 15, 120, 40);
+	// Page 4
+	$pdf->AddPage();
+	$pdf->AddSignatureField(20, 15, 120, 40);
+
 	//EAN13Trait
 	$pdf->AddPage();
 	$pdf->Bookmark('EAN13 Barcode', false);
