@@ -36,6 +36,5 @@
 	imagefilledrectangle($im, 130, 40, 160, 148, $color3);
 	// Output it
 	$pdf->GDImage($im, 120, 25, 40);
-	imagedestroy($im);
 
 	$pdf->Output('F', __DIR__ . '/example.pdf');

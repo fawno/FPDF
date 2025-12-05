@@ -30,7 +30,6 @@
 			imagefilledrectangle($im, 80, 80, 110, 148, $color2);
 			imagefilledrectangle($im, 130, 40, 160, 148, $color3);
 			$pdf->GDImage($im, 120, 25, 40);
-			imagedestroy($im);
 
 			$this->assertFileCanBeCreated($pdf);
 
