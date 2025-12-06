@@ -13,12 +13,19 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        php-versions: ["7.4", "8.3", "8.4", "8.5"]
+        phpunit-versions: ["latest"]
+
     steps:
     - uses: actions/checkout@v4
 
     - name: Validate composer.json and composer.lock
       uses: php-actions/composer@v6
       with:
+        php_version: ${{ matrix.php-versions }}
         command: validate --strict
 
     - name: Cache Composer packages
@@ -33,6 +40,7 @@ jobs:
     - name: Install dependencies
       uses: php-actions/composer@v6
       with:
+        php_version: ${{ matrix.php-versions }}
         args: --prefer-dist --no-progress
 
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
@@ -41,4 +49,5 @@ jobs:
     - name: Run test suite
       uses: php-actions/phpunit@v4
       with:
+        php_version: ${{ matrix.php-versions }}
         php_extensions: gd
