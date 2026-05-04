@@ -3,15 +3,19 @@
 
 	namespace FPDF\Scripts\PDFProtection;
 	//http://www.fpdf.org/en/script/script37.php
+	//https://github.com/klemenv/FPDF_Protection
 
 	trait PDFProtectionTrait {
 		protected $encrypted = false;  //whether document is protected
-		protected $padding;
-		protected $encryption_key;
 		protected $Uvalue;             //U entry in pdf document
 		protected $Ovalue;             //O entry in pdf document
 		protected $Pvalue;             //P entry in pdf document
-		protected $enc_obj_id;         //encryption object id
+		protected $enc_obj_id;         //encryption PDF object id
+		protected $enc_algorithm;      //Encryption algorithm, RC4 or AES
+		protected $enc_security_handler;//Security handler version, 2 for basic, 3 for AES and 40+ bits
+		protected $enc_key;            //Key used for encryption
+		protected $enc_key_len;        //Number of bytes used for encryption key
+		protected $id;                 //Document ID
 
 		/**
 		 * Set permissions as well as user and owner passwords
@@ -36,13 +40,18 @@
 				$protection += $options[$permission];
 			}
 
+			$this->enc_key_len = 5;
+			$this->id = uniqid().__FILE__.rand();
+
 			if ($owner_pass === null) {
 				$owner_pass = uniqid((string) rand());
 			}
 
 			$this->encrypted = true;
-			$this->padding = "\x28\xBF\x4E\x5E\x4E\x75\x8A\x41\x64\x00\x4E\x56\xFF\xFA\x01\x08\x2E\x2E\x00\xB6\xD0\x68\x3E\x80\x2F\x0C\xA9\xFE\x64\x53\x69\x7A";
-			$this->_generateencryptionkey((string) $user_pass, $owner_pass, $protection);
+			$this->_setOvalue($owner_pass, $user_pass);
+			$this->_setEncryptionKey($user_pass, $protection);
+			$this->_setUvalue();
+			$this->_setPvalue($protection);
 		}
 
 		protected function RC4 (string $key, string $data) {
@@ -112,7 +121,10 @@
 		* Compute key depending on object number where the encrypted data is stored
 		*/
 		protected function _objectkey ($n) {
-			return substr($this->_md5_16($this->encryption_key.pack('VXxx',$n)), 0, 10);
+			$key = $this->enc_key.pack('VXxx', $n);
+			$len = $this->enc_key_len + 5;
+
+			return substr($this->_md5_16($key), 0, $len);
 		}
 
 		protected function _putresources () {
@@ -132,7 +144,8 @@
 		}
 
 		protected function _putencryption () {
-			$this->_put('/Filter /Standard');
+			$this->_put('/Filter');
+			$this->_put('/Standard');
 			$this->_put('/V 1');
 			$this->_put('/R 2');
 			$this->_put('/O (' . $this->_escape($this->Ovalue) . ')');
@@ -143,49 +156,74 @@
 		protected function _puttrailer () {
 			parent::_puttrailer();
 			if ($this->encrypted) {
+				$id = md5($this->id);
 				$this->_put('/Encrypt '.$this->enc_obj_id.' 0 R');
-				$this->_put('/ID [()()]');
+				$this->_put('/ID [ <'.$id.'> <'.$id.'> ]');
 			}
 		}
 
 		/**
-		* Get MD5 as binary string
+		* Get MD5 as 16 byte binary string
 		*/
 		protected function _md5_16 ($string) {
 			return md5($string, true);
 		}
 
-		/**
-		* Compute O value
-		*/
-		protected function _Ovalue ($user_pass, $owner_pass) {
-			$tmp = $this->_md5_16($owner_pass);
-			$owner_RC4_key = substr($tmp,0,5);
-			return $this->RC4($owner_RC4_key, $user_pass);
+		private function _pad ($string, $len = 0) {
+			$padding = "\x28\xBF\x4E\x5E\x4E\x75\x8A\x41\x64\x00\x4E\x56\xFF\xFA\x01\x08".
+				"\x2E\x2E\x00\xB6\xD0\x68\x3E\x80\x2F\x0C\xA9\xFE\x64\x53\x69\x7A";
+			if ($len == 0) {
+				$len = strlen($padding);
+			}
+
+			return substr($string.$padding, 0, $len);
 		}
 
 		/**
-		* Compute U value
+		* Compute O (owner password) value
+		*
+		* Depends on following member variables:
+		* - enc_key_len
 		*/
-		protected function _Uvalue () {
-			return $this->RC4($this->encryption_key, $this->padding);
+		protected function _setOvalue ($owner_pass, $user_pass) {
+			$key = $this->_md5_16( $this->_pad($owner_pass, 32) );
+			$key = substr($key,0,$this->enc_key_len);
+			$encrypted = $this->RC4($key, $this->_pad($user_pass, 32) );
+			$this->Ovalue = $encrypted;
+		}
+
+		/**
+		* Compute U (user password) value
+		*
+		* Depends on following member variables:
+		* - enc_key
+		* - enc_key_len
+		*/
+		protected function _setUvalue () {
+			$padding = $this->_pad('', 32);
+			$encrypted = $this->RC4($this->enc_key, $padding);
+			$this->Uvalue = $encrypted;
+		}
+
+		/**
+		* Set Pvalue
+		*/
+		protected function _setPvalue ($protection) {
+			$this->Pvalue = -(($protection^255)+1);
 		}
 
 		/**
 		* Compute encryption key
+		*
+		* Depends on following member variables:
+		* - Ovalue
+		* - enc_key_len
 		*/
-		protected function _generateencryptionkey ($user_pass, $owner_pass, $protection) {
-			// Pad passwords
-			$user_pass = substr($user_pass.$this->padding,0,32);
-			$owner_pass = substr($owner_pass.$this->padding,0,32);
-			// Compute O value
-			$this->Ovalue = $this->_Ovalue($user_pass,$owner_pass);
-			// Compute encyption key
-			$tmp = $this->_md5_16($user_pass.$this->Ovalue.chr($protection)."\xFF\xFF\xFF");
-			$this->encryption_key = substr($tmp,0,5);
-			// Compute U value
-			$this->Uvalue = $this->_Uvalue();
-			// Compute P value
-			$this->Pvalue = -(($protection^255)+1);
+		protected function _setEncryptionKey ($user_pass, $protection) {
+			$user_pass = $this->_pad($user_pass, 32);
+			$id = $this->_md5_16($this->id);
+			$hash = $this->_md5_16($user_pass.$this->Ovalue.pack("V", $protection | 0xFFFFFF00).$id);
+
+			$this->enc_key = substr($hash, 0, $this->enc_key_len);
 		}
 	}
