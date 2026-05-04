@@ -27,21 +27,61 @@
 		 * - annot-forms
 		 * @param string $user_pass If a user password is set, user will be prompted before document is opened
 		 * @param null|string $owner_pass If an owner password is set, document can be opened in privilege mode with no restriction if that password is entered
+         * @param string $algorithm must be one of 'ARCFOUR' or 'AES'
+         * @param int $bits is number of bits used as encryption algorithm, must be a multiple of 8 in range between 40 and 128
+         *
+         * Output PDF is version 1.3 when using RC4 40bit or 1.4 when using RC4 40+bit or AES encryption.
+		 *
 		 * @return void
 		 */
-		public function SetProtection (array $permissions = [], ?string $user_pass = null, ?string $owner_pass = null) : void {
+		public function SetProtection (array $permissions = [], ?string $user_pass = null, ?string $owner_pass = null, string $algorithm = "RC4", int $bits = 40) : void {
+			$this->id = uniqid().__FILE__.rand();
 			$options = ['print' => 4, 'modify' => 8, 'copy' => 16, 'annot-forms' => 32];
 			$protection = 192;
 
 			foreach ($permissions as $permission) {
 				if (!isset($options[$permission])) {
 					$this->Error('Incorrect permission: ' . $permission);
+				} else {
+					$protection += $options[$permission];
 				}
-				$protection += $options[$permission];
 			}
 
-			$this->enc_key_len = 5;
-			$this->id = uniqid().__FILE__.rand();
+			if (strncmp($algorithm, "RC4", 7) !== 0 && strncasecmp($algorithm, "AES", 3) !== 0) {
+				$this->Error('Invalid encryption algorithm '.$algorithm.', supported RC4 and AES');
+
+				return;
+			}
+
+			if (strncasecmp($algorithm, "AES", 3) === 0) {
+				$this->Error('Encryption algorithm AES, bo supported yet');
+
+				return;
+			}
+
+			$bits = intval($bits);
+			if ($bits < 40 || $bits > 128) {
+				$this->Error('Number of bits limited between 40 and 128');
+
+				return;
+			}
+
+			if (($bits % 8 ) != 0) {
+				$this->Error('Number of bits not a multiple of 8');
+
+				return;
+			}
+
+			$this->enc_key_len = $bits / 8;
+			$this->enc_algorithm = strtoupper(substr($algorithm,0,3));
+			if ($bits == 40 && strcmp($this->enc_algorithm, "RC4") == 0) {
+				$this->enc_security_handler = 2;
+			} else {
+				$this->enc_security_handler = 3;
+				if ($this->PDFVersion<'1.4') {
+					$this->PDFVersion = '1.4';
+				}
+			}
 
 			if ($owner_pass === null) {
 				$owner_pass = uniqid((string) rand());
@@ -54,7 +94,7 @@
 			$this->_setPvalue($protection);
 		}
 
-		protected function RC4 (string $key, string $data) {
+		protected function ARCFOUR (string $key, string $data) {
 			static $last_key;
 			static $last_state;
 
@@ -100,7 +140,7 @@
 
 		protected function _putstream ($s) {
 			if ($this->encrypted) {
-				$s = $this->RC4($this->_objectkey($this->n), $s);
+				$s = $this->ARCFOUR($this->_objectkey($this->n), $s);
 			}
 			parent::_putstream($s);
 		}
@@ -111,7 +151,7 @@
 			}
 
 			if ($this->encrypted) {
-				$s = $this->RC4($this->_objectkey($this->n), $s);
+				$s = $this->ARCFOUR($this->_objectkey($this->n), $s);
 			}
 
 			return '(' . $this->_escape($s) . ')';
@@ -146,8 +186,14 @@
 		protected function _putencryption () {
 			$this->_put('/Filter');
 			$this->_put('/Standard');
-			$this->_put('/V 1');
-			$this->_put('/R 2');
+			if ($this->enc_security_handler == 2) {
+				$this->_put('/V 1');
+				$this->_put('/R 2');
+			} else {// ($this->enc_security_handler == 3)
+				$this->_put('/V 2');
+				$this->_put('/Length '.$this->enc_key_len*8);
+				$this->_put('/R 3');
+			}
 			$this->_put('/O (' . $this->_escape($this->Ovalue) . ')');
 			$this->_put('/U (' . $this->_escape($this->Uvalue) . ')');
 			$this->_put('/P ' . $this->Pvalue);
@@ -183,12 +229,27 @@
 		* Compute O (owner password) value
 		*
 		* Depends on following member variables:
+		* - enc_security_handler
 		* - enc_key_len
 		*/
 		protected function _setOvalue ($owner_pass, $user_pass) {
-			$key = $this->_md5_16( $this->_pad($owner_pass, 32) );
-			$key = substr($key,0,$this->enc_key_len);
-			$encrypted = $this->RC4($key, $this->_pad($user_pass, 32) );
+			$key = $this->_md5_16($this->_pad($owner_pass, 32));
+			if ($this->enc_security_handler >= 3) {
+				for ($i=0; $i<50; $i++) {
+					$key = $this->_md5_16($key);
+				}
+			}
+			$key = substr($key, 0, $this->enc_key_len);
+			$encrypted = $this->ARCFOUR($key, $this->_pad($user_pass, 32));
+			if ($this->enc_security_handler >= 3) {
+				for ($i=1; $i<=19; $i++) {
+					$loop_key = '';
+					for ($j=0; $j<$this->enc_key_len; $j++) {
+						$loop_key .= chr(ord($key[$j]) ^ $i);
+					}
+					$encrypted = $this->ARCFOUR($loop_key, $encrypted ?: '');
+				}
+			}
 			$this->Ovalue = $encrypted;
 		}
 
@@ -196,12 +257,27 @@
 		* Compute U (user password) value
 		*
 		* Depends on following member variables:
+		* - enc_security_handler
 		* - enc_key
 		* - enc_key_len
 		*/
 		protected function _setUvalue () {
 			$padding = $this->_pad('', 32);
-			$encrypted = $this->RC4($this->enc_key, $padding);
+			if ($this->enc_security_handler == 2) {
+				$encrypted = $this->ARCFOUR($this->enc_key, $padding);
+			} else {
+				$id = $this->_md5_16($this->id);
+				$hash = $this->_md5_16($padding.$id);
+				$encrypted = $this->ARCFOUR($this->enc_key, $hash);
+				for ($i=1; $i<=19; $i++) {
+					$key = '';
+					for ($j=0; $j<$this->enc_key_len; $j++) {
+						$key .= chr( ord($this->enc_key[$j]) ^ $i );
+					}
+					$encrypted = $this->ARCFOUR($key, $encrypted ?: '');
+				}
+				$encrypted = $this->_pad($encrypted, 32);
+			}
 			$this->Uvalue = $encrypted;
 		}
 
@@ -217,12 +293,21 @@
 		*
 		* Depends on following member variables:
 		* - Ovalue
+		* - enc_security_handler
 		* - enc_key_len
 		*/
 		protected function _setEncryptionKey ($user_pass, $protection) {
 			$user_pass = $this->_pad($user_pass, 32);
 			$id = $this->_md5_16($this->id);
 			$hash = $this->_md5_16($user_pass.$this->Ovalue.pack("V", $protection | 0xFFFFFF00).$id);
+
+			if ($this->enc_security_handler >= 3) {
+				for ($i=0; $i<50; $i++) {
+					$hash = $this->_md5_16(substr($hash, 0, $this->enc_key_len));
+				}
+			} else {
+				$key_len = 5;
+			}
 
 			$this->enc_key = substr($hash, 0, $this->enc_key_len);
 		}
