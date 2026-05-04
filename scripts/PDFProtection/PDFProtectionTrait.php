@@ -53,12 +53,6 @@
 				return;
 			}
 
-			if (strncasecmp($algorithm, "AES", 3) === 0) {
-				$this->Error('Encryption algorithm AES, bo supported yet');
-
-				return;
-			}
-
 			$bits = intval($bits);
 			if ($bits < 40 || $bits > 128) {
 				$this->Error('Number of bits limited between 40 and 128');
@@ -72,8 +66,19 @@
 				return;
 			}
 
-			$this->enc_key_len = $bits / 8;
 			$this->enc_algorithm = strtoupper(substr($algorithm,0,3));
+			if ($this->enc_algorithm === 'AES') {
+				if (!function_exists('openssl_encrypt')) { // fallback
+					$this->enc_algorithm = 'RC4';
+				} else {
+					$bits = 128;
+					if ($this->PDFVersion<'1.5') {
+						$this->PDFVersion = '1.5';
+					}
+				}
+			}
+
+			$this->enc_key_len = $bits / 8;
 			if ($bits == 40 && strcmp($this->enc_algorithm, "RC4") == 0) {
 				$this->enc_security_handler = 2;
 			} else {
@@ -92,6 +97,20 @@
 			$this->_setEncryptionKey($user_pass, $protection);
 			$this->_setUvalue();
 			$this->_setPvalue($protection);
+		}
+
+		protected function _encryptData($key, $data) {
+			if ($this->enc_algorithm === 'AES') {
+				return $this->AES($key, $data);
+			}
+
+			return $this->ARCFOUR($key, $data);
+		}
+		protected function AES (string $key, string $data) {
+			$iv = random_bytes(16);
+			$cipher = openssl_encrypt($data, 'aes-128-cbc', $key, OPENSSL_RAW_DATA, $iv);
+
+			return $iv . $cipher;
 		}
 
 		protected function ARCFOUR (string $key, string $data) {
@@ -140,7 +159,7 @@
 
 		protected function _putstream ($s) {
 			if ($this->encrypted) {
-				$s = $this->ARCFOUR($this->_objectkey($this->n), $s);
+				$s = $this->_encryptData($this->_objectkey($this->n), $s);
 			}
 			parent::_putstream($s);
 		}
@@ -151,7 +170,7 @@
 			}
 
 			if ($this->encrypted) {
-				$s = $this->ARCFOUR($this->_objectkey($this->n), $s);
+				$s = $this->_encryptData($this->_objectkey($this->n), $s);
 			}
 
 			return '(' . $this->_escape($s) . ')';
@@ -162,6 +181,9 @@
 		*/
 		protected function _objectkey ($n) {
 			$key = $this->enc_key.pack('VXxx', $n);
+			if ($this->enc_algorithm === 'AES') {
+				$key .= "sAlT";
+			}
 			$len = $this->enc_key_len + 5;
 
 			return substr($this->_md5_16($key), 0, $len);
@@ -186,13 +208,23 @@
 		protected function _putencryption () {
 			$this->_put('/Filter');
 			$this->_put('/Standard');
-			if ($this->enc_security_handler == 2) {
-				$this->_put('/V 1');
-				$this->_put('/R 2');
-			} else {// ($this->enc_security_handler == 3)
-				$this->_put('/V 2');
-				$this->_put('/Length '.$this->enc_key_len*8);
-				$this->_put('/R 3');
+			if ($this->enc_algorithm === 'AES') {
+				$this->_put('/V 4');
+				$this->_put('/R 4');
+				$this->_put('/Length 128');
+
+				$this->_put('/CF << /StdCF << /CFM /AESV2 /Length 16 >> >>');
+				$this->_put('/StmF /StdCF');
+				$this->_put('/StrF /StdCF');
+			} else {
+				if ($this->enc_security_handler == 2) {
+					$this->_put('/V 1');
+					$this->_put('/R 2');
+				} else {// ($this->enc_security_handler == 3)
+					$this->_put('/V 2');
+					$this->_put('/Length '.$this->enc_key_len*8);
+					$this->_put('/R 3');
+				}
 			}
 			$this->_put('/O (' . $this->_escape($this->Ovalue) . ')');
 			$this->_put('/U (' . $this->_escape($this->Uvalue) . ')');
