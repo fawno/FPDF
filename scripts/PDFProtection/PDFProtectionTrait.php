@@ -68,7 +68,7 @@
 
 			$this->enc_algorithm = strtoupper(substr($algorithm,0,3));
 			if ($this->enc_algorithm === 'AES') {
-				if (!function_exists('openssl_encrypt')) { // fallback
+				if (!function_exists('openssl_encrypt') || !in_array('aes-128-cbc', openssl_get_cipher_methods(), true)) { // fallback
 					$this->enc_algorithm = 'RC4';
 				} else {
 					$bits = 128;
@@ -117,7 +117,7 @@
 			static $last_key;
 			static $last_state;
 
-			if (function_exists('openssl_encrypt')) {
+			if (function_exists('openssl_encrypt') && in_array('RC4-40', openssl_get_cipher_methods(), true)) {
 				return openssl_encrypt($data, 'RC4-40', $key, OPENSSL_RAW_DATA);
 			}
 
