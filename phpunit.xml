@@ -8,7 +8,7 @@
   displayDetailsOnTestsThatTriggerWarnings="true"
 >
     <php>
-        <const name="_DEBUG_LEVEL" value="0"/>
+        <const name="_DEBUG_LEVEL" value="2"/>
     </php>
     <testsuite name="Test directory">
         <directory>tests</directory>

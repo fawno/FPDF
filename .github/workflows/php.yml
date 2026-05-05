@@ -50,4 +50,4 @@ jobs:
       uses: php-actions/phpunit@v4
       with:
         php_version: ${{ matrix.php-versions }}
-        php_extensions: gd
+        php_extensions: openssl gd
